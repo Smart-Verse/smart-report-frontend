@@ -20,7 +20,7 @@ export class SignUp {
             type: 'password'
         },
         {
-            fieldName: 'confirPassword',
+            fieldName: 'confirmPassword',
             required: false,
             hidden: false,
             type: 'password'

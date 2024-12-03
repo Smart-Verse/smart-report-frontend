@@ -2,40 +2,40 @@
 <div class="login">
     <div class="login-container">
         <div class="formgrid grid">
-            <div class="field col-12 md:col-12 image-logo">
+            <div class="field col-12 md:col-12 ">
+              <div class="title">SmartReport</div>
             </div>
             <div class="field col-12 md:col-12 c-margin">
                 <p class="text">Login na sua conta</p>
             </div>
-            <form class="field col-12 md:col-12" [formGroup]="loginForm">
-                <div class="field col-12 md:col-12 c-margin">
+            <div class="field col-12 md:col-12" [formGroup]="loginForm">
+                <div class="field">
                     <p-floatLabel >
                         <input pInputText id="email" formControlName="email" class="w-full" />
                         <label for="email">Email</label>
                     </p-floatLabel>
                 </div>
-                <div class="field col-12 md:col-12 c-margin">
+                <div class="field c-margin">
                     <p-floatLabel >
                         <input pInputText type="password" id="password" formControlName="password" class="w-full" />
                         <label for="password">Senha</label>
                     </p-floatLabel>
                 </div>
-            </form>
-            
-            <div class="outline field col-12 md:col-12">
-                <p-button (onClick)="onLogin()" pRipple [outlined]="false"  styleClass="p-button-rounded w-full">
-                    <div class="btn-tx">
-                    Login
-                    </div>
-                </p-button>
             </div>
-            <div class="outline field col-12 md:col-12">
-                <p-button pRipple [outlined]="true"  styleClass="p-button-rounded w-full">
-                    <div class="btn-tx">
-                    Recupere a senha
-                    </div>
-                </p-button>
-            </div>
+          <div class="outline field col-12 md:col-12 ">
+            <p-button  (onClick)="onLogin()" [outlined]="false"  styleClass="p-button-rounded p-button-primary w-full">
+              <div pRipple class="btn-tx">
+                Login
+              </div>
+            </p-button>
+          </div>
+          <div class="outline field col-12 md:col-12 ">
+            <p-button  [outlined]="true"  styleClass="p-button-rounded p-button-contrast w-full">
+              <div pRipple class="btn-tx">
+                Recupere a senha
+              </div>
+            </p-button>
+          </div>
             <div class="w-full">
                 <div class="text-sign">Não possui conta? <a (click)="onSignUp()">Cadastre-se</a></div>
             </div>

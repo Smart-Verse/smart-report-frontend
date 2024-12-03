@@ -16,10 +16,8 @@ export function authInterceptor(originalRequest: HttpRequest<unknown>, next: Htt
 
     let headers = new HttpHeaders();
     if(cookiesService.get(EnumCookie.AUTHORIZATION) !== null){
-        headers = headers.set('DOtoken', cookiesService.get(EnumCookie.AUTHORIZATION));
-        headers = headers.set('Authorization', environment.basicAuth);
+      headers = headers.set('Authorization', "Bearer " + cookiesService.get(EnumCookie.AUTHORIZATION));
     }
-    
 
     request = originalRequest.clone({
         headers: headers,
@@ -29,7 +27,7 @@ export function authInterceptor(originalRequest: HttpRequest<unknown>, next: Htt
     return next(request).pipe(
         catchError((error: HttpErrorResponse) => {
 
-            if(error.status === 401 || error.status === 0){
+            if(error.status === 401){
               cookiesService.delete(EnumCookie.AUTHORIZATION);
               router.navigate(['login']);
             }

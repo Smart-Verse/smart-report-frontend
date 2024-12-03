@@ -7,7 +7,7 @@
             <div class="field col-12 md:col-12">
                 <p class="text">Cadastre-se</p>
             </div>
-            <form class="field col-12 md:col-12" action="" [formGroup]="signUp">
+            <div class="field col-12 md:col-12" [formGroup]="signUp">
                 <div class="field">
                     <p-floatLabel>
                         <input pInputText id="name" class="w-full"  formControlName="name"/>
@@ -21,21 +21,21 @@
                     </p-floatLabel>
                 </div>
                 <div class="field c-margin">
-                    <p-floatLabel >
+                    <p-floatLabel>
                         <input type="password" pInputText id="password" class="w-full" formControlName="password"/>
                         <label for="password">Senha</label>
                     </p-floatLabel>
                 </div>
                 <div class="field c-margin">
-                    <p-floatLabel >
-                        <input type="password" pInputText id="confirPassword" class="w-full" formControlName="confirPassword"/>
-                        <label for="confirPassword">Confirmação de senha</label>
+                    <p-floatLabel>
+                        <input type="password" pInputText id="confirmPassword" class="w-full" formControlName="confirmPassword"/>
+                        <label for="confirmPassword">Confirmação de senha</label>
                     </p-floatLabel>
                 </div>
-            </form>
+            </div>
             <div class="outline field col-12 md:col-12 ">
-                <p-button pRipple (onClick)="onRegister()" [outlined]="false"  styleClass="p-button-rounded w-full">
-                    <div class="btn-tx">
+                <p-button  (onClick)="onRegister()" [outlined]="false"  styleClass="p-button-rounded w-full">
+                    <div pRipple class="btn-tx">
                     Criar conta
                     </div>
                 </p-button>

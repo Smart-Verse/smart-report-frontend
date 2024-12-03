@@ -8,11 +8,12 @@ import {  Router } from '@angular/router';
 import { SecurityService } from '../services/security.service';
 import { ToastService } from '../../shared/services/toast/toast.service';
 import {LoadingComponent} from "../../shared/loading/loading.component";
+import {Ripple} from "primeng/ripple";
 
 @Component({
   selector: 'app-signup',
   standalone: true,
-  imports: [SharedCommonModule, LoadingComponent],
+  imports: [SharedCommonModule, LoadingComponent, Ripple],
   providers: [SecurityService,ToastService],
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.scss'
@@ -37,7 +38,7 @@ export class SignupComponent implements OnInit {
   }
 
   onValidator(): boolean{
-    if(this.signUp.valid && this.signUp.get("confirPassword ")?.value === this.signUp.value.get('password')?.value){
+    if(this.signUp.valid && this.signUp.get('confirmPassword')?.value === this.signUp.get('password')?.value){
       return true;
     }
     return false;
