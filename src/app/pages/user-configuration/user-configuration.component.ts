@@ -18,7 +18,9 @@ import {SharedCommonModule} from "../../shared/common/shared-common.module";
     SharedCommonModule,
   ],
   providers: [
-    UserConfigurationService
+    UserConfigurationService,
+    ToastService,
+    ThemeService
   ],
   templateUrl: './user-configuration.component.html',
   styleUrl: './user-configuration.component.scss'
