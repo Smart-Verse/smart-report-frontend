@@ -23,12 +23,6 @@ export class UserConfigurationConfig {
       type: 'string'
     },
     {
-      fieldName: 'userPhoto',
-      required: false,
-      hidden: false,
-      type: 'string'
-    },
-    {
       fieldName: 'theme',
       required: true,
       hidden: false,

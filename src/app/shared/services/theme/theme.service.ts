@@ -34,9 +34,9 @@ export class ThemeService {
 
   onConfigurationTheme(theme: string): void {
     if(theme === 'DARK'){
-      this.setTheme("aura-dark-purple");
+      this.setTheme("aura-dark-cyan");
     } else {
-      this.setTheme("aura-light-purple");
+      this.setTheme("aura-light-cyan");
     }
   }
 }

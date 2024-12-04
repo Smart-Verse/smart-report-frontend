@@ -3,7 +3,7 @@
   <h2>{{translateService.translate("user_configuration")}}</h2>
   <hr>
   <div class="user-configuration-fields ">
-    <div class="image-view">
+    <div *ngIf="false" class="image-view">
       <app-image-upload
         [imageUrl]="urlImage"
         (eventLoading)="loading()"

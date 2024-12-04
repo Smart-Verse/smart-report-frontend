@@ -74,9 +74,10 @@ export class UserConfigurationComponent extends BaseComponent implements OnInit 
       next: (res) => {
         res.output.theme = this._theme.find(e => e.key === res.output.theme);
         res.output.lang = this._language.find(e => e.key === res.output.lang);
-        this.imageToken = res.output.userPhoto;
+        //this.imageToken = res.output.userPhoto;
         this.formGroup.patchValue(res.output);
-        this.onGetUrlImage();
+        this.onShowLoading();
+        //this.onGetUrlImage();
       },
       error: (err) => {
         this.onShowLoading();
