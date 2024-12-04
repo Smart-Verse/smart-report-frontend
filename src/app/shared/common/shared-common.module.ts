@@ -17,6 +17,7 @@ import {InputTextComponent} from "../components/inputs/input-text/input-text.com
 import {LoadingComponent} from "../loading/loading.component";
 import {FloatLabelModule} from "primeng/floatlabel";
 import {ButtonModule} from "primeng/button";
+import { MenuModule } from 'primeng/menu';
 
 
 @NgModule({
@@ -51,7 +52,8 @@ import {ButtonModule} from "primeng/button";
     InputDateComponent,
     InputMaskComponent,
     InputNumberComponent,
-    ImageUploadComponent
+    ImageUploadComponent,
+    MenuModule
   ]
 })
 export class SharedCommonModule { }

@@ -21,10 +21,16 @@ export function authInterceptor(originalRequest: HttpRequest<unknown>, next: Htt
       headers = headers.set('Authorization', "Bearer " + cookiesService.get(EnumCookie.AUTHORIZATION));
     }
 
-    request = originalRequest.clone({
+    if(urlPermission(originalRequest)){
+      request = originalRequest.clone({
+        url: `${originalRequest.url}`,
+      });
+    } else {
+      request = originalRequest.clone({
         headers: headers,
         url: `${environment.apiUrl}/${originalRequest.url}`,
-    });
+      });
+    }
 
     return next(request).pipe(
         catchError((error: HttpErrorResponse) => {
@@ -38,4 +44,7 @@ export function authInterceptor(originalRequest: HttpRequest<unknown>, next: Htt
             });
           })
     );
+}
+export function urlPermission(request: HttpRequest<unknown>): boolean {
+  return request.url.indexOf("amazon") > -1;
 }

@@ -2,7 +2,8 @@
   <div class="logo">
     SmarReport
   </div>
-  <div class="headers-btn" (click)="onConfigUser()">
+  <div class="headers-btn" (click)="menu.toggle($event)">
+    <p-menu #menu [model]="items" [popup]="true" />
     <p-avatar
       label="U"
       styleClass="mr-2"
