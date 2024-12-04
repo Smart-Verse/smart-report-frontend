@@ -5,13 +5,17 @@ import {TranslateService} from "../../shared/services/translate/translate.servic
 import {DatatableComponent} from "../../shared/components/datatable/datatable.component";
 import {RequestData} from "../../shared/components/request-data";
 import {DataTable} from "../../shared/components/datatable/datatable";
+import {Button} from "primeng/button";
+import {Ripple} from "primeng/ripple";
 
 @Component({
   selector: 'app-workspace',
   standalone: true,
   imports: [
     LoadingComponent,
-    DatatableComponent
+    DatatableComponent,
+    Button,
+    Ripple
   ],
   templateUrl: './workspace.component.html',
   styleUrl: './workspace.component.scss'

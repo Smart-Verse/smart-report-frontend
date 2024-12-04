@@ -73,7 +73,7 @@
                           icon="pi pi-trash"
                           (click)="onDeleteData(rowData, 0)">
                         </p-button>
-                        <ng-container *ngTemplateOutlet="actionTemplate; context: { $implicit: row }"></ng-container>
+                        <ng-container *ngTemplateOutlet="actionTemplate; context: { $implicit: rowData }"></ng-container>
                       </div>
                     </td>
                 </tr>

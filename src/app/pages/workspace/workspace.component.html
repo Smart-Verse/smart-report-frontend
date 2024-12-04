@@ -7,5 +7,15 @@
     (onRegister)="onSelectedData($event)"
     [config]="datatable"
     labelAdd="Criar workspace"
+    [actionTemplate]="actionButtons"
   ></app-datatable>
 </div>
+
+<ng-template #actionButtons let-row>
+  <p-button
+    type="button"
+    pRipple
+    styleClass="p-button-text"
+    icon="pi pi-report">
+  </p-button>
+</ng-template>
