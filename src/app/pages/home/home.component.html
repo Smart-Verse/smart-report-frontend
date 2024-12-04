@@ -1,0 +1,16 @@
+<div class="home-header">
+  <div class="logo">
+    SmarReport
+  </div>
+  <div class="headers-btn" (click)="onConfigUser()">
+    <p-avatar
+      label="U"
+      styleClass="mr-2"
+      [style]="{ 'background-color': '#dee9fc', color: '#1a2551' }"
+      shape="circle" />
+  </div>
+</div>
+<div class="content">
+  <router-outlet></router-outlet>
+</div>
+
