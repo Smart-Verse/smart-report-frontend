@@ -96,4 +96,12 @@ export class UserConfigurationComponent extends BaseComponent implements OnInit 
     })
   }
 
+  public loading(): void {
+    this.onShowLoading();
+  }
+
+  public onGetTokenImage(image: any): void {
+    this.imageToken = image;
+  }
+
 }
