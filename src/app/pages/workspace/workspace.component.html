@@ -2,8 +2,9 @@
   <h2>{{translateService.translate("workspace")}}</h2>
   <hr>
   <app-datatable
-    (onRefresh)="onLoadAllData($event)"
+    (onRefresh)="onGetAll($event)"
     (onRegister)="onSelectedData($event)"
+    (onSelectedRow)="onSelectedRow($event)"
     [config]="datatable"
     labelAdd="Criar workspace"
     [enableActions]="false"

@@ -4,7 +4,8 @@ import {DataTable} from "../components/datatable/datatable";
 export interface ImplementsBase {
 
   datatable: DataTable;
-  onLoadAllData($event: RequestData): void;
+  onGetAll($event: RequestData): void;
+  onGet(obj: any): void;
   onSave(obj: any): void;
   onUpdate(obj: any): void;
   onSelectedData($event: any): void;

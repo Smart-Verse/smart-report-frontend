@@ -55,6 +55,7 @@ export class DatatableComponent {
 
   @Output() onRegister: EventEmitter<any> = new EventEmitter();
   @Output() onRefresh: EventEmitter<RequestData> = new EventEmitter();
+  @Output() onSelectedRow: EventEmitter<any> = new EventEmitter();
   selectedItem: any;
 
   constructor(
@@ -107,6 +108,10 @@ export class DatatableComponent {
 
   onRefreshData(){
     this.onRefresh.emit(new RequestData());
+  }
+
+  onRowSelected($event: any) {
+    this.onSelectedRow.emit($event.data);
   }
 
   onDeleteData(item: any, action: Action){

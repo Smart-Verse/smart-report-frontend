@@ -8,6 +8,7 @@ import {WorkspaceComponent} from "./pages/workspace/workspace.component";
 import {UserConfigurationComponent} from "./pages/user-configuration/user-configuration.component";
 import {UserConfirmationComponent} from "./pages/user-confirmation/user-confirmation.component";
 import {ReportsComponent} from "./pages/reports/reports.component";
+import {ReportStudioComponent} from "./pages/report-studio/report-studio.component";
 
 export const routes: Routes = [
 
@@ -22,6 +23,7 @@ export const routes: Routes = [
       { path: 'workspace', component: WorkspaceComponent },
       { path: 'userConfiguration', component: UserConfigurationComponent },
       { path: 'reports/:hash', component: ReportsComponent },
+      { path: 'report-studio/:hash', component: ReportStudioComponent },
       { path: '', redirectTo: 'workspace', pathMatch: 'full' },
     ]
   },

@@ -16,6 +16,7 @@
     </div>
     <div class="table">
         <p-table
+            (onRowSelect)="onRowSelected($event)"
             [columns]="config.fields"
             [value]="config.values"
             [rows]="10"

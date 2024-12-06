@@ -57,7 +57,7 @@ export class WorkspaceComponent implements OnInit, ImplementsBase {
 
   onSetPropertiesDatatable(obj: any): void  {
     this.datatable.fields = obj.fields;
-    this.onLoadAllData(new RequestData());
+    this.onGetAll(new RequestData());
   }
 
   private includeFilters(requestData: RequestData) {
@@ -71,7 +71,7 @@ export class WorkspaceComponent implements OnInit, ImplementsBase {
         this.toastService.success({ detail: "salvo com sucesso", summary: "Mensagem" });
         this.loadingService.showLoading.next(false);
         this.originalClose(null);
-        this.onLoadAllData(new RequestData());
+        this.onGetAll(new RequestData());
       },
       error: err => {
         this.loadingService.showLoading.next(false);
@@ -84,7 +84,7 @@ export class WorkspaceComponent implements OnInit, ImplementsBase {
     this.crudService.onUpdate("workspace",obj.id, obj).subscribe({
       next: (res) => {
         this.loadingService.showLoading.next(false);
-        this.onLoadAllData(new RequestData());
+        this.onGetAll(new RequestData());
         this.originalClose(null);
       },
       error: err => {
@@ -98,7 +98,7 @@ export class WorkspaceComponent implements OnInit, ImplementsBase {
     this.crudService.onDelete("workspace",obj.id).subscribe({
       next: (res) => {
         this.loadingService.showLoading.next(false);
-        this.onLoadAllData(new RequestData());
+        this.onGetAll(new RequestData());
       },
       error: err => {
         this.loadingService.showLoading.next(false);
@@ -106,7 +106,7 @@ export class WorkspaceComponent implements OnInit, ImplementsBase {
     });
   }
 
-  onLoadAllData(requestData: RequestData) {
+  onGetAll(requestData: RequestData) {
     requestData = this.includeFilters(requestData);
     this.loadingService.showLoading.next(true);
     this.crudService.onGetAll("workspace",requestData).subscribe({
@@ -162,5 +162,12 @@ export class WorkspaceComponent implements OnInit, ImplementsBase {
 
   onReports(row: any) {
     this.router.navigate(["home","reports",row.id]);
+  }
+
+  onSelectedRow(item: any){
+    this.onReports(item);
+  }
+
+  onGet(obj: any): void {
   }
 }

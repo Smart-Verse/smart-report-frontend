@@ -18,6 +18,8 @@ import {LoadingComponent} from "../loading/loading.component";
 import {FloatLabelModule} from "primeng/floatlabel";
 import {ButtonModule} from "primeng/button";
 import { MenuModule } from 'primeng/menu';
+import {TabsComponent} from "../components/tabs/tabs.component";
+import {TabComponent} from "../components/tabs/tab/tab.component";
 
 
 @NgModule({
@@ -31,7 +33,9 @@ import { MenuModule } from 'primeng/menu';
     InputDateComponent,
     InputMaskComponent,
     InputNumberComponent,
-    ImageUploadComponent
+    ImageUploadComponent,
+    TabsComponent,
+    TabComponent
   ],
   exports: [
     CommonModule,
@@ -53,7 +57,9 @@ import { MenuModule } from 'primeng/menu';
     InputMaskComponent,
     InputNumberComponent,
     ImageUploadComponent,
-    MenuModule
+    MenuModule,
+    TabsComponent,
+    TabComponent
   ]
 })
 export class SharedCommonModule { }
