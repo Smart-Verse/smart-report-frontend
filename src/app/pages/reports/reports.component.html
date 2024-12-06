@@ -1,0 +1,10 @@
+<div class="page">
+  <h2>{{translateService.translate("workspace")}}</h2>
+  <hr>
+  <app-datatable
+    (onRefresh)="onLoadAllData($event)"
+    (onRegister)="onSelectedData($event)"
+    [config]="datatable"
+    labelAdd="Criar workspace"
+  ></app-datatable>
+</div>

@@ -51,9 +51,11 @@ export class DatatableComponent {
   @Input() config: DataTable = new DataTable();
   @Input() labelAdd: string = "Adicionar"
   @Input() actionTemplate!: TemplateRef<any>;
+  @Input() enableActions: boolean = true;
 
   @Output() onRegister: EventEmitter<any> = new EventEmitter();
   @Output() onRefresh: EventEmitter<RequestData> = new EventEmitter();
+  selectedItem: any;
 
   constructor(
     private confirmationService: ConfirmationService,

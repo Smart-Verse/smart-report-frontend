@@ -6,6 +6,7 @@
     (onRegister)="onSelectedData($event)"
     [config]="datatable"
     labelAdd="Criar workspace"
+    [enableActions]="false"
     [actionTemplate]="actionButtons"
   ></app-datatable>
 </div>
@@ -13,8 +14,9 @@
 <ng-template #actionButtons let-row>
   <p-button
     type="button"
+    (click)="onReports(row)"
     pRipple
     styleClass="p-button-text"
-    icon="pi pi-report">
+    icon="pi pi-book">
   </p-button>
 </ng-template>

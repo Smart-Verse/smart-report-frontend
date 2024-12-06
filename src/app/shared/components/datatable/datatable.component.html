@@ -19,6 +19,9 @@
             [columns]="config.fields"
             [value]="config.values"
             [rows]="10"
+            [metaKeySelection]="true"
+            [(selection)]="selectedItem"
+            selectionMode="single"
             styleClass="p-datatable-sm"
             [dataKey]="'id'"
             [autoLayout]="true"
@@ -39,26 +42,23 @@
             </div>
           </ng-template>
             <ng-template pTemplate="header" let-columns>
-                <tr>
-                    <th style="width: 1%"><p-tableHeaderCheckbox /></th>
+                <tr >
                     <th [style]="'width:' + col.width " *ngFor="let col of columns">
                         {{ col.header }}
                     </th>
-                    <th style="width: 10%;text-align: center">
+                    <th style="width: 10%;text-align: center" *ngIf="enableActions">
                         Ações
                     </th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-rowData let-columns="columns">
-                <tr>
-                    <td style="width: 1%">
-                        <p-tableCheckbox [value]="rowData" />
-                    </td>
+                <tr [pSelectableRow]="rowData">
                     <td [style]="'width:' + col.width " *ngFor="let col of columns">
                         {{ onRowData(rowData,col.field, col) }}
                     </td>
-                    <td style="width: 10%;">
+                    <td style="width: 10%;" *ngIf="enableActions">
                       <div class="actions">
+                        <ng-container *ngTemplateOutlet="actionTemplate; context: { $implicit: rowData }"></ng-container>
                         <p-button
                           type="button"
                           pRipple
@@ -73,7 +73,7 @@
                           icon="pi pi-trash"
                           (click)="onDeleteData(rowData, 0)">
                         </p-button>
-                        <ng-container *ngTemplateOutlet="actionTemplate; context: { $implicit: rowData }"></ng-container>
+
                       </div>
                     </td>
                 </tr>

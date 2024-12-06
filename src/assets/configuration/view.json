@@ -10,5 +10,17 @@
         "width": "80%"
       }
     ]
+  },
+  {
+    "route": "reports",
+    "hash": "reports",
+    "filters": [],
+    "fields": [
+      {
+        "field": "description",
+        "header": "Descrição",
+        "width": "80%"
+      }
+    ]
   }
 ]

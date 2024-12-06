@@ -5,7 +5,7 @@ import {TranslateService} from "../../shared/services/translate/translate.servic
 import {DatatableComponent} from "../../shared/components/datatable/datatable.component";
 import {RequestData} from "../../shared/components/request-data";
 import {DataTable} from "../../shared/components/datatable/datatable";
-import {Button} from "primeng/button";
+import {ButtonModule} from "primeng/button";
 import {Ripple} from "primeng/ripple";
 import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
 import {ToastService} from "../../shared/services/toast/toast.service";
@@ -13,7 +13,7 @@ import {WorkspaceModalComponent} from "../../components/workspace-modal/workspac
 import {CrudService} from "../../shared/services/crud/crud.service";
 import {LoadingService} from "../../shared/services/loading/loading.service";
 import {ImplementsBase} from "../../shared/interfaces/implements-base";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {RegisterService} from "../../shared/services/register/register.service";
 
 @Component({
@@ -22,7 +22,7 @@ import {RegisterService} from "../../shared/services/register/register.service";
   imports: [
     LoadingComponent,
     DatatableComponent,
-    Button,
+    ButtonModule,
     Ripple
   ],
   providers: [
@@ -41,7 +41,7 @@ export class WorkspaceComponent implements OnInit, ImplementsBase {
 
 
   constructor(
-    private readonly activatedRoute: ActivatedRoute,
+    private readonly router: Router,
     public readonly translateService: TranslateService,
     private readonly registerService: RegisterService,
     private readonly dialogService: DialogService,
@@ -59,9 +59,6 @@ export class WorkspaceComponent implements OnInit, ImplementsBase {
     this.datatable.fields = obj.fields;
     this.onLoadAllData(new RequestData());
   }
-
-
-
 
   private includeFilters(requestData: RequestData) {
     return requestData;
@@ -161,5 +158,9 @@ export class WorkspaceComponent implements OnInit, ImplementsBase {
         this.originalClose(null);
       }
     };
+  }
+
+  onReports(row: any) {
+    this.router.navigate(["home","reports",row.id]);
   }
 }
