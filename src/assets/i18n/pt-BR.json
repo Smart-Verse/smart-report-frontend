@@ -1,5 +1,7 @@
-
 {
+  "common_save": "Salvar",
+  "common_cancel": "Cancelar",
+  "common_description": "Description",
   "user_configuration": "Configurações do usuário",
 
   "workspace": "Workspace"
