@@ -12,15 +12,22 @@ import {MenuItem} from "primeng/api";
   styleUrl: './repository.component.scss'
 })
 export class RepositoryComponent implements OnInit {
-  items: MenuItem[] | undefined;
+  repository: MenuItem[] | undefined;
+  reports: MenuItem[] | undefined;
 
   constructor() {
   }
 
   ngOnInit(): void {
-    this.items = [
+    this.repository = [
       {
-        label: 'New Reposotory',
+        label: 'New repository',
+      }
+    ]
+
+    this.reports = [
+      {
+        label: 'New report',
       }
     ]
   }

@@ -9,7 +9,7 @@
           Repositorios
         </div>
         <div class="cursor" (click)="menu.toggle($event)">
-          <p-menu #menu [model]="items" [popup]="true" />
+          <p-menu #menu [model]="repository" [popup]="true" />
           <i class="pi pi-ellipsis-v"></i>
         </div>
       </div>
@@ -28,6 +28,24 @@
     </div>
   </div>
   <div class="reports">
-    aqui é os relatórios do repository
+    <div class="space report-headers">
+      <div class="text-repository">
+        DataOn
+      </div>
+      <div class="flex">
+        <div class="cursor">
+          <i class="pi pi-search"></i>
+        </div>
+        <div class="cursor" (click)="repo.toggle($event)">
+          <p-menu #repo [model]="reports" [popup]="true" />
+          <i class="pi pi-ellipsis-v"></i>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="list-report">
+        Receitas
+      </div>
+    </div>
   </div>
 </div>
