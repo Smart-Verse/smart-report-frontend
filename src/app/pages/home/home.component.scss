@@ -1,5 +1,4 @@
 .home-header{
-  position: fixed;
   top: 0;
   height: 70px;
   width: 100%;
@@ -16,5 +15,7 @@
   }
 }
 .content{
-  margin-top: 70px;
+  padding: 10px;
+  height: calc(100% - 70px);
+  overflow: auto;
 }

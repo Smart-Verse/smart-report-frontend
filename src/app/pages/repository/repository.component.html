@@ -1,0 +1,33 @@
+<div class="header">
+  Aqui é o header com informações do token e documentação
+</div>
+<div class="repository">
+  <div class="repositories">
+    <div class="formgrid grid">
+      <div class="field space col-12 md:col-12">
+        <div class="text-repository">
+          Repositorios
+        </div>
+        <div class="cursor" (click)="menu.toggle($event)">
+          <p-menu #menu [model]="items" [popup]="true" />
+          <i class="pi pi-ellipsis-v"></i>
+        </div>
+      </div>
+      <app-input-text
+        label="Buscar"
+        class="field col-12 md:col-12">
+      </app-input-text>
+      <div class="field col-12 md:col-12">
+        <div class="list-view">
+          DataOn
+        </div>
+        <div class="list-view">
+          DataOn
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="reports">
+    aqui é os relatórios do repository
+  </div>
+</div>

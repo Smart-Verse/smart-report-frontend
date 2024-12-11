@@ -4,11 +4,9 @@ import {publicGuard} from "./security/guards/public.guard";
 import {SignupComponent} from "./security/signup/signup.component";
 import {HomeComponent} from "./pages/home/home.component";
 import {privateGuard} from "./security/guards/private.guard";
-import {WorkspaceComponent} from "./pages/workspace/workspace.component";
 import {UserConfigurationComponent} from "./pages/user-configuration/user-configuration.component";
 import {UserConfirmationComponent} from "./pages/user-confirmation/user-confirmation.component";
-import {ReportsComponent} from "./pages/reports/reports.component";
-import {ReportStudioComponent} from "./pages/report-studio/report-studio.component";
+import {RepositoryComponent} from "./pages/repository/repository.component";
 
 export const routes: Routes = [
 
@@ -20,11 +18,9 @@ export const routes: Routes = [
     component: HomeComponent,
     canActivate: [privateGuard],
     children: [
-      { path: 'workspace', component: WorkspaceComponent },
       { path: 'userConfiguration', component: UserConfigurationComponent },
-      { path: 'reports/:hash', component: ReportsComponent },
-      { path: 'report-studio/:hash', component: ReportStudioComponent },
-      { path: '', redirectTo: 'workspace', pathMatch: 'full' },
+      { path: 'repository', component: RepositoryComponent },
+      { path: '', redirectTo: 'repository', pathMatch: 'full' },
     ]
   },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
