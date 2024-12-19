@@ -1,12 +1,15 @@
 import {Component, OnInit} from '@angular/core';
 import {SharedCommonModule} from "../../shared/common/shared-common.module";
 import {MenuItem} from "primeng/api";
+import {RepositoryItemComponent} from "../../components/repository-item/repository-item.component";
+import {RepositoryConfig} from "./repository.config";
 
 @Component({
   selector: 'app-repository',
   standalone: true,
   imports: [
-    SharedCommonModule
+    SharedCommonModule,
+    RepositoryItemComponent
   ],
   templateUrl: './repository.component.html',
   styleUrl: './repository.component.scss'
@@ -14,6 +17,7 @@ import {MenuItem} from "primeng/api";
 export class RepositoryComponent implements OnInit {
   repository: MenuItem[] | undefined;
   reports: MenuItem[] | undefined;
+  repositoryConfig: RepositoryConfig = new RepositoryConfig();
 
   constructor() {
   }
@@ -30,6 +34,11 @@ export class RepositoryComponent implements OnInit {
         label: 'New report',
       }
     ]
+  }
+
+
+  onSelectedItem($event: any){
+    console.log($event);
   }
 
 }
