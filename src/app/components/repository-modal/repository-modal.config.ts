@@ -9,7 +9,7 @@ export class RepositoryModalConfig {
       type: 'string'
     },
     {
-      fieldName: 'description',
+      fieldName: 'name',
       required: true,
       hidden: false,
       type: 'string'
@@ -19,7 +19,7 @@ export class RepositoryModalConfig {
   convertToDTO(formGroup: FormGroup): any {
     return {
       id: formGroup.get('id')?.value,
-      description: formGroup.get('description')?.value
+      name: formGroup.get('name')?.value
     };
   }
 }
