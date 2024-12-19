@@ -18,36 +18,6 @@ export class RepositoryConfig {
     },
     {
       name: "DataOn"
-    },
-    {
-      name: "SmartVerse"
-    },
-    {
-      name: "DataOn"
-    },
-    {
-      name: "SmartVerse"
-    },
-    {
-      name: "DataOn"
-    },
-    {
-      name: "SmartVerse"
-    },
-    {
-      name: "DataOn"
-    },
-    {
-      name: "SmartVerse"
-    },
-    {
-      name: "DataOn"
-    },
-    {
-      name: "SmartVerse"
-    },
-    {
-      name: "DataOn"
     }
   ]
 }
