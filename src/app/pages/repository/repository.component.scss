@@ -6,20 +6,26 @@
   height: calc(100% - 100px);
   display: flex;
   .repositories{
+    height: 100%;
     border: 1px solid #1c1c1c;
     border-radius: 5px;
     padding: 10px;
     width: 300px;
-
+    .container-list-repository{
+      height: calc(100% - 100px);
+      overflow: auto;
+    }
   }
   .reports{
     background-color: #18181B;
     width: calc(100% - 200px);
     .list-report{
-
     }
   }
 }
+
+
+
 
 .space{
   font-weight: bold;
@@ -40,3 +46,4 @@
   -webkit-box-shadow: -1px 25px 48px -23px rgba(0,0,0,0.42);
   -moz-box-shadow: -1px 25px 48px -23px rgba(0,0,0,0.42);
 }
+

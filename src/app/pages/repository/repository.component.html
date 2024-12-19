@@ -3,25 +3,28 @@
 </div>
 <div class="repository">
   <div class="repositories">
-    <div class="formgrid grid">
-      <div class="field space col-12 md:col-12">
-        <div class="text-repository">
-          Repositorios
-        </div>
-        <div class="cursor" (click)="menu.toggle($event)">
-          <p-menu #menu [model]="repository" [popup]="true" />
-          <i class="pi pi-ellipsis-v"></i>
-        </div>
+    <div class="field space col-12 md:col-12">
+      <div class="text-repository">
+        Repositorios
       </div>
-      <app-input-text
-        label="Buscar"
-        class="field col-12 md:col-12">
-      </app-input-text>
-      <app-repository-item [repositorys]="repositoryConfig.repositoryes"
-        class="col-12 md:col-12">
+      <div class="cursor" (click)="menu.toggle($event)">
+        <p-menu #menu [model]="repository" [popup]="true" />
+        <i class="pi pi-ellipsis-v"></i>
+      </div>
+    </div>
+    <app-input-text
+      label="Buscar"
+      class="field col-12 md:col-12">
+    </app-input-text>
+    <div class="container-list-repository col-12 md:col-12">
+      <app-repository-item
+        [repositorys]="repositoryConfig.repositoryes"
+        (selectedItem)="onSelectedItem($event)">
       </app-repository-item>
     </div>
-  </div>
+
+    </div>
+
   <div class="reports">
     <div class="space report-headers">
       <div class="text-repository">
