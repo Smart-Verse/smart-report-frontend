@@ -5,7 +5,7 @@ import {RepositoryItemComponent} from "../../components/repository-item/reposito
 import {RepositoryConfig} from "./repository.config";
 import {CookiesService} from "../../shared/services/cookies/cookies.service";
 import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
-import {WorkspaceModalComponent} from "../../components/workspace-modal/workspace-modal.component";
+import {RepositoryModalComponent} from "../../components/repository-modal/repository-modal.component";
 
 @Component({
   selector: 'app-repository',
@@ -56,7 +56,7 @@ export class RepositoryComponent implements OnInit {
   }
 
   onRepository(obj: any){
-    this.ref = this.dialogService.open(WorkspaceModalComponent,
+    this.ref = this.dialogService.open(RepositoryModalComponent,
       {
         header: "Repositorio",
         width: '40vw',

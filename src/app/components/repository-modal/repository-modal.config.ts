@@ -1,6 +1,6 @@
 import {FormGroup} from "@angular/forms";
 
-export class WorkspaceModalConfig {
+export class RepositoryModalConfig {
   fields: any[] = [
     {
       fieldName: 'id',

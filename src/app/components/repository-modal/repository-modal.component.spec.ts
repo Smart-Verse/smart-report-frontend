@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { WorkspaceModalComponent } from './workspace-modal.component';
+import { RepositoryModalComponent } from './repository-modal.component';
 
 describe('WorkspaceModalComponent', () => {
-  let component: WorkspaceModalComponent;
-  let fixture: ComponentFixture<WorkspaceModalComponent>;
+  let component: RepositoryModalComponent;
+  let fixture: ComponentFixture<RepositoryModalComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [WorkspaceModalComponent]
+      imports: [RepositoryModalComponent]
     })
     .compileComponents();
-    
-    fixture = TestBed.createComponent(WorkspaceModalComponent);
+
+    fixture = TestBed.createComponent(RepositoryModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -2,14 +2,14 @@ import {Component, OnInit} from '@angular/core';
 import {LoadingService} from "../../shared/services/loading/loading.service";
 import {FieldsService} from "../../shared/services/fields/fields.service";
 import {FormGroup} from "@angular/forms";
-import {WorkspaceModalConfig} from "./workspace-modal.config";
+import {RepositoryModalConfig} from "./repository-modal.config";
 import {SharedCommonModule} from "../../shared/common/shared-common.module";
 import {DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
 import {TranslateService} from "../../shared/services/translate/translate.service";
 import {ToastService} from "../../shared/services/toast/toast.service";
 
 @Component({
-  selector: 'app-workspace-modal',
+  selector: 'app-repository-modal',
   standalone: true,
   imports: [
     SharedCommonModule
@@ -17,13 +17,13 @@ import {ToastService} from "../../shared/services/toast/toast.service";
   providers: [
     ToastService
   ],
-  templateUrl: './workspace-modal.component.html',
-  styleUrl: './workspace-modal.component.scss'
+  templateUrl: './repository-modal.component.html',
+  styleUrl: './repository-modal.component.scss'
 })
-export class WorkspaceModalComponent implements OnInit{
+export class RepositoryModalComponent implements OnInit{
 
   public formGroup: FormGroup;
-  private configuration: WorkspaceModalConfig = new WorkspaceModalConfig();
+  private configuration: RepositoryModalConfig = new RepositoryModalConfig();
 
   constructor(
     public readonly ref: DynamicDialogRef,
