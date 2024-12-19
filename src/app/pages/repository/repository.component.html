@@ -40,10 +40,11 @@
         </div>
       </div>
     </div>
-    <div>
-      <div class="list-report">
-        Receitas
-      </div>
+    <div class="list-report">
+      <app-repository-item
+        [repositorys]="repositoryConfig.repositoryes"
+        (selectedItem)="onSelectedItem($event)">
+      </app-repository-item>
     </div>
   </div>
 </div>
