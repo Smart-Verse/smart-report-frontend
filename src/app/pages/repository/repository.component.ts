@@ -9,6 +9,7 @@ import {RepositoryConfig} from "./repository.config";
   standalone: true,
   imports: [
     SharedCommonModule,
+    RepositoryItemComponent,
     RepositoryItemComponent
   ],
   templateUrl: './repository.component.html',
