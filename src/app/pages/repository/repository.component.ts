@@ -1,11 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {SharedCommonModule} from "../../shared/common/shared-common.module";
-import {MenuItem, MenuItemCommandEvent} from "primeng/api";
+import {MenuItem} from "primeng/api";
 import {RepositoryItemComponent} from "../../components/repository-item/repository-item.component";
 import {RepositoryConfig} from "./repository.config";
-import {CookiesService} from "../../shared/services/cookies/cookies.service";
 import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
 import {RepositoryModalComponent} from "../../components/repository-modal/repository-modal.component";
+import {CrudService} from "../../shared/services/crud/crud.service";
+import {RequestData} from "../../shared/components/request-data";
 
 @Component({
   selector: 'app-repository',
@@ -16,7 +17,8 @@ import {RepositoryModalComponent} from "../../components/repository-modal/reposi
     RepositoryItemComponent
   ],
   providers: [
-    DialogService
+    DialogService,
+    CrudService
   ],
   templateUrl: './repository.component.html',
   styleUrl: './repository.component.scss'
@@ -30,24 +32,28 @@ export class RepositoryComponent implements OnInit {
 
   constructor(
     private readonly dialogService: DialogService,
+    private readonly crudService: CrudService,
   ) {
   }
 
   ngOnInit(): void {
     this.repository = [
       {
-        label: 'New repository',
+        label: 'Novo reposutório',
         command: () => {
           this.onRepository(null);
         }
       }
+
     ]
 
     this.reports = [
       {
-        label: 'New report',
+        label: 'Novo relatório',
       }
     ]
+
+    this.onGetAll();
   }
 
 
@@ -66,6 +72,25 @@ export class RepositoryComponent implements OnInit {
         data: obj,
         baseZIndex: 999999,
       });
+
+    this.ref.onClose.subscribe({
+      next: result => {
+        this.onGetAll();
+      }
+    })
   }
+
+  onGetAll(){
+    this.crudService.onGetAll("repository", new RequestData()).subscribe({
+      next: data => {
+        this.repositoryConfig.repositoryes = data.contents;
+      },
+      error: error => {
+        console.log(error);
+      }
+    })
+  }
+
+
 
 }
