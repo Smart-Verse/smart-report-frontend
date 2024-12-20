@@ -7,6 +7,7 @@ import {privateGuard} from "./security/guards/private.guard";
 import {UserConfigurationComponent} from "./pages/user-configuration/user-configuration.component";
 import {UserConfirmationComponent} from "./pages/user-confirmation/user-confirmation.component";
 import {RepositoryComponent} from "./pages/repository/repository.component";
+import {ConstructorReportComponent} from "./pages/constructor-report/constructor-report.component";
 
 export const routes: Routes = [
 
@@ -20,6 +21,7 @@ export const routes: Routes = [
     children: [
       { path: 'userConfiguration', component: UserConfigurationComponent },
       { path: 'repository', component: RepositoryComponent },
+      { path: 'constructor/:id', component: ConstructorReportComponent },
       { path: '', redirectTo: 'repository', pathMatch: 'full' },
     ]
   },

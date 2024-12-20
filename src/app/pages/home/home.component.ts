@@ -45,6 +45,13 @@ export class HomeComponent implements OnInit {
             }
           },
           {
+            label: 'Página Inicial',
+            icon: 'pi pi-cog',
+            command: () => {
+              this.router.navigate(['home']);
+            }
+          },
+          {
             label: 'Logout',
             icon: 'pi pi-sign-out',
             command: () => {

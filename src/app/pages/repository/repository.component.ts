@@ -3,7 +3,7 @@ import {SharedCommonModule} from "../../shared/common/shared-common.module";
 import {MenuItem} from "primeng/api";
 import {RepositoryItemComponent} from "../../components/repository-item/repository-item.component";
 import {RepositoryConfig} from "./repository.config";
-import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
+import {DialogService, DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
 import {RepositoryModalComponent} from "../../components/repository-modal/repository-modal.component";
 import {CrudService} from "../../shared/services/crud/crud.service";
 import {RequestData} from "../../shared/components/request-data";
@@ -11,6 +11,7 @@ import {ReportModalComponent} from "../../components/report-modal/report-modal.c
 import {ToastService} from "../../shared/services/toast/toast.service";
 import { ContextMenuModule } from 'primeng/contextmenu';
 import {CustomCardComponent} from "../../components/custom-card/custom-card.component";
+import {Route, Router} from "@angular/router";
 
 @Component({
   selector: 'app-repository',
@@ -42,6 +43,7 @@ export class RepositoryComponent implements OnInit {
     private readonly dialogService: DialogService,
     private readonly crudService: CrudService,
     private readonly toastService: ToastService,
+    private readonly router: Router,
   ) {
   }
 
@@ -57,7 +59,7 @@ export class RepositoryComponent implements OnInit {
   }
 
   onSelectedReport($event: any){
-
+    this.router.navigate(["home","constructor",$event.id]);
   }
 
   onRepository(obj: any){
