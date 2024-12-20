@@ -17,7 +17,13 @@ export class ReportModalConfig {
     },
     {
       fieldName: 'templateId',
-      required: true,
+      required: false,
+      hidden: false,
+      type: 'string'
+    },
+    {
+      fieldName: 'repository',
+      required: false,
       hidden: false,
       type: 'string'
     }

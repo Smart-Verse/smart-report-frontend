@@ -1,3 +1,12 @@
 <div *ngFor="let item of repositorys" class="list-view" (click)="onSelectedItem(item)">
-  {{ item.name }}
+  <div class="item">
+    <div>
+      {{ item.name }}
+    </div>
+    <div class="cursor" (click)="repo.toggle($event)">
+      <p-menu #repo [model]="_menu" [popup]="true" />
+      <i class="pi pi-angle-down"></i>
+    </div>
+  </div>
 </div>
+

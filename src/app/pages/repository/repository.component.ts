@@ -7,6 +7,10 @@ import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
 import {RepositoryModalComponent} from "../../components/repository-modal/repository-modal.component";
 import {CrudService} from "../../shared/services/crud/crud.service";
 import {RequestData} from "../../shared/components/request-data";
+import {ReportModalComponent} from "../../components/report-modal/report-modal.component";
+import {ToastService} from "../../shared/services/toast/toast.service";
+import { ContextMenuModule } from 'primeng/contextmenu';
+import {CustomCardComponent} from "../../components/custom-card/custom-card.component";
 
 @Component({
   selector: 'app-repository',
@@ -14,11 +18,14 @@ import {RequestData} from "../../shared/components/request-data";
   imports: [
     SharedCommonModule,
     RepositoryItemComponent,
-    RepositoryItemComponent
+    RepositoryItemComponent,
+    ContextMenuModule,
+    CustomCardComponent
   ],
   providers: [
     DialogService,
-    CrudService
+    CrudService,
+    ToastService
   ],
   templateUrl: './repository.component.html',
   styleUrl: './repository.component.scss'
@@ -28,11 +35,13 @@ export class RepositoryComponent implements OnInit {
   reports: MenuItem[] | undefined;
   repositoryConfig: RepositoryConfig = new RepositoryConfig();
   ref: DynamicDialogRef | undefined;
+  _currentReposrt: any;
 
 
   constructor(
     private readonly dialogService: DialogService,
     private readonly crudService: CrudService,
+    private readonly toastService: ToastService,
   ) {
   }
 
@@ -43,6 +52,7 @@ export class RepositoryComponent implements OnInit {
 
 
   onSelectedItem($event: any){
+    this._currentReposrt = $event;
     this.onGetAllReport($event);
   }
 
@@ -65,6 +75,25 @@ export class RepositoryComponent implements OnInit {
     this.ref.onClose.subscribe({
       next: result => {
         this.onGetAll();
+      }
+    })
+  }
+
+  onReport(obj: any){
+    this.ref = this.dialogService.open(ReportModalComponent,
+      {
+        header: "Relatorio",
+        width: '40vw',
+        modal:true,
+        draggable: true,
+        maximizable: false,
+        data: {obj: obj, repository: this._currentReposrt},
+        baseZIndex: 999999,
+      });
+
+    this.ref.onClose.subscribe({
+      next: result => {
+        this.onGetAllReport(this._currentReposrt);
       }
     })
   }
@@ -113,7 +142,11 @@ export class RepositoryComponent implements OnInit {
       {
         label: 'Novo relatório',
         command: () => {
-
+          if(this._currentReposrt){
+            this.onReport(null);
+          } else {
+            this.toastService.warn({summary: "Mensagem", detail: "Selecione um repósitório"});
+          }
         }
       }
     ]

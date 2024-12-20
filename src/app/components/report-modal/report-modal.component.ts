@@ -45,7 +45,7 @@ export class ReportModalComponent implements OnInit {
         this.formGroup.patchValue(this.config.data.obj);
       }
       this.formGroup.patchValue({
-        repository: this.config.data.obj.repository,
+        repository: this.config.data.repository,
       });
     }
   }

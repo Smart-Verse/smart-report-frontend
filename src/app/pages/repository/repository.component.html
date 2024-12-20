@@ -1,11 +1,12 @@
 <div class="header">
-  Aqui é o header com informações do token e documentação
+  <app-custom-card></app-custom-card>
+  <app-custom-card></app-custom-card>
 </div>
 <div class="repository">
   <div class="repositories">
     <div class="field space col-12 md:col-12">
       <div class="text-repository">
-        Repositorios
+        Repositórios
       </div>
       <div class="cursor" (click)="menu.toggle($event)">
         <p-menu #menu [model]="repository" [popup]="true" />
@@ -31,7 +32,7 @@
         SmartVerse
       </div>
       <div class="flex">
-        <div class="cursor">
+        <div style="margin-right: 5px" class="cursor">
           <i class="pi pi-search"></i>
         </div>
         <div class="cursor" (click)="repo.toggle($event)">
