@@ -54,6 +54,7 @@ export class ConstructorReportComponent implements AfterContentInit, OnInit {
       this.id = params.get('id') || '';
     });
     this.onConfigureMenus();
+    this.currentTemplate = this.tHtml;
   }
 
   private onConfigureMenus() {
@@ -62,24 +63,26 @@ export class ConstructorReportComponent implements AfterContentInit, OnInit {
       {
         label: 'Modelo',
         command: () => {
-
+          this.currentTemplate = this.tHtml;
         }
       },
       {
         label: 'Data',
         command: () => {
+          this.currentTemplate = this.tJson;
         }
       },
       {
         label: 'Assets',
         command: () => {
+          this.currentTemplate = this.tAssets;
         }
       }
     ]
   }
 
   ngAfterContentInit(): void {
-    this.currentTemplate = this.tHtml;
+
   }
 
 }
