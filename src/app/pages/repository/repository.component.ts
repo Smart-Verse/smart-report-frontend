@@ -59,7 +59,7 @@ export class RepositoryComponent implements OnInit {
   }
 
   onSelectedReport($event: any){
-    this.router.navigate(["home","constructor",$event.id]);
+    this.router.navigate(["home","studio",$event.id]);
   }
 
   onRepository(obj: any){

@@ -1,0 +1,15 @@
+.studio{
+  height: 100%;
+  .header{
+    height: 50px;
+    display: flex;
+    align-items: center;
+  }
+  .body{
+    height: calc(100% - 50px);
+  }
+}
+.content{
+  height: 100%;
+  width: 100%;
+}

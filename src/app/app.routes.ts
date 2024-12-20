@@ -21,7 +21,7 @@ export const routes: Routes = [
     children: [
       { path: 'userConfiguration', component: UserConfigurationComponent },
       { path: 'repository', component: RepositoryComponent },
-      { path: 'constructor/:id', component: ConstructorReportComponent },
+      { path: 'studio/:id', component: ConstructorReportComponent },
       { path: '', redirectTo: 'repository', pathMatch: 'full' },
     ]
   },

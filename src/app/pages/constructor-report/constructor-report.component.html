@@ -1,1 +1,25 @@
-<p>constructor-report works!</p>
+<div class="studio">
+  <div class="header">
+    <p-button> Executar</p-button>
+  </div>
+  <div class="body">
+    <p-splitter
+      [panelSizes]="[15, 85]"
+      [style]="{ height: '100%' }"
+      styleClass="mb-5">
+      <ng-template pTemplate>
+        <div>
+          <p-menu [model]="menuitens" />
+        </div>
+      </ng-template>
+      <ng-template pTemplate>
+        <div class="content">
+          <ngx-monaco-editor *ngIf="true" style="height: 100%; width: 100%"
+                             [(ngModel)]="json"
+                             [options]="editorJson"
+          ></ngx-monaco-editor>
+        </div>
+      </ng-template>
+    </p-splitter>
+  </div>
+</div>
