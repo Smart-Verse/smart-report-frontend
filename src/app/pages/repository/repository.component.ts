@@ -37,27 +37,16 @@ export class RepositoryComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.repository = [
-      {
-        label: 'Novo reposutório',
-        command: () => {
-          this.onRepository(null);
-        }
-      }
-
-    ]
-
-    this.reports = [
-      {
-        label: 'Novo relatório',
-      }
-    ]
-
+    this.onConfigureMenus();
     this.onGetAll();
   }
 
 
   onSelectedItem($event: any){
+    this.onGetAllReport($event);
+  }
+
+  onSelectedReport($event: any){
 
   }
 
@@ -91,6 +80,42 @@ export class RepositoryComponent implements OnInit {
     })
   }
 
+  onGetAllReport(repository: any){
 
+    this.crudService.onGetAll("report", this.onFilterReport(repository)).subscribe({
+      next: data => {
+        this.repositoryConfig.reports = data.contents;
+      },
+      error: error => {
+        console.log(error);
+      }
+    });
+  }
 
+  private onFilterReport(repository: any): RequestData {
+    let requestData = new RequestData();
+    requestData.filter = ` repository.id eq ${repository.id}`
+    return requestData;
+  }
+
+  private onConfigureMenus() {
+    this.repository = [
+      {
+        label: 'Novo repositório',
+        command: () => {
+          this.onRepository(null);
+        }
+      }
+
+    ]
+
+    this.reports = [
+      {
+        label: 'Novo relatório',
+        command: () => {
+
+        }
+      }
+    ]
+  }
 }
