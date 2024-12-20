@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterContentInit, Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {CommonModule} from "@angular/common";
 import {SharedCommonModule} from "../../shared/common/shared-common.module";
@@ -28,12 +28,18 @@ import {MenuItem} from "primeng/api";
   templateUrl: './constructor-report.component.html',
   styleUrl: './constructor-report.component.scss'
 })
-export class ConstructorReportComponent implements OnInit {
+export class ConstructorReportComponent implements AfterContentInit, OnInit {
+
+  @ViewChild('tHtml') tHtml!: TemplateRef<any>;
+  @ViewChild('tJson') tJson!: TemplateRef<any>;
+  @ViewChild('tAssets') tAssets!: TemplateRef<any>;
+
 
   id!: string;
   html: string = "";
   json: string = "";
-  menuitens: MenuItem[] | undefined;
+  menuItens: MenuItem[] | undefined;
+  currentTemplate!: TemplateRef<any>;
 
   editorJson = {theme: 'vs-dark', language: 'json'};
   editorHtml = {theme: 'vs-dark', language: 'html'};
@@ -51,10 +57,12 @@ export class ConstructorReportComponent implements OnInit {
   }
 
   private onConfigureMenus() {
-    this.menuitens = [
+
+    this.menuItens = [
       {
         label: 'Modelo',
         command: () => {
+
         }
       },
       {
@@ -68,6 +76,10 @@ export class ConstructorReportComponent implements OnInit {
         }
       }
     ]
+  }
+
+  ngAfterContentInit(): void {
+    this.currentTemplate = this.tHtml;
   }
 
 }

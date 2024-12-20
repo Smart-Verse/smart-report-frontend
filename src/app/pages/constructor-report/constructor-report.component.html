@@ -9,17 +9,35 @@
       styleClass="mb-5">
       <ng-template pTemplate>
         <div>
-          <p-menu [model]="menuitens" />
+          <p-menu [model]="menuItens" />
         </div>
       </ng-template>
       <ng-template pTemplate>
         <div class="content">
-          <ngx-monaco-editor *ngIf="true" style="height: 100%; width: 100%"
-                             [(ngModel)]="json"
-                             [options]="editorJson"
-          ></ngx-monaco-editor>
+          <ng-content *ngTemplateOutlet="currentTemplate"></ng-content>
         </div>
       </ng-template>
     </p-splitter>
   </div>
 </div>
+
+<ng-template #tJson>
+  <ngx-monaco-editor *ngIf="true" style="height: 100%; width: 100%"
+                     [(ngModel)]="json"
+                     [options]="editorJson"
+  ></ngx-monaco-editor>
+</ng-template>
+
+<ng-template #tHtml>
+  <ngx-monaco-editor *ngIf="true" style="height: 100%; width: 100%"
+                     [(ngModel)]="html"
+                     [options]="editorHtml"
+  ></ngx-monaco-editor>
+</ng-template>
+
+<ng-template #tAssets>
+  <div>
+    Aqui serãop incluido os assets
+  </div>
+</ng-template>
+
