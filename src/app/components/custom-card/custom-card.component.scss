@@ -1,0 +1,17 @@
+.card{
+  height: 80px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  .value{
+    width: 20%;
+    font-size: 30px;
+    text-align: center;
+  }
+  .title{
+    font-size: 20px;
+    width: 80%;
+  }
+}
