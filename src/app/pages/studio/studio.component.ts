@@ -6,6 +6,8 @@ import { SplitterModule } from 'primeng/splitter';
 import {MonacoEditorModule, NGX_MONACO_EDITOR_CONFIG} from "ngx-monaco-editor-v2";
 import { MenuModule } from 'primeng/menu';
 import {MenuItem} from "primeng/api";
+import {TreeModule, TreeNodeSelectEvent} from 'primeng/tree';
+import {StudioConfig} from "./studio.config";
 
 @Component({
   selector: 'app-constructor-report',
@@ -15,7 +17,8 @@ import {MenuItem} from "primeng/api";
     SharedCommonModule,
     SplitterModule,
     MonacoEditorModule,
-    MenuModule
+    MenuModule,
+    TreeModule
   ],
   providers: [
     {
@@ -25,64 +28,48 @@ import {MenuItem} from "primeng/api";
       },
     },
   ],
-  templateUrl: './constructor-report.component.html',
-  styleUrl: './constructor-report.component.scss'
+  templateUrl: './studio.component.html',
+  styleUrl: './studio.component.scss'
 })
-export class ConstructorReportComponent implements AfterContentInit, OnInit {
+export class StudioComponent extends StudioConfig implements AfterContentInit, OnInit {
 
   @ViewChild('tHtml') tHtml!: TemplateRef<any>;
   @ViewChild('tJson') tJson!: TemplateRef<any>;
-  @ViewChild('tAssets') tAssets!: TemplateRef<any>;
+  @ViewChild('tCss') tCss!: TemplateRef<any>;
+  @ViewChild('tJs') tJs!: TemplateRef<any>;
 
-
-  id!: string;
-  html: string = "";
-  json: string = "";
-  menuItens: MenuItem[] | undefined;
-  currentTemplate!: TemplateRef<any>;
-
-  editorJson = {theme: 'vs-dark', language: 'json'};
-  editorHtml = {theme: 'vs-dark', language: 'html'};
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,
   ) {
+    super()
   }
 
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe(params => {
       this.id = params.get('id') || '';
     });
-    this.onConfigureMenus();
     this.currentTemplate = this.tHtml;
-  }
-
-  private onConfigureMenus() {
-
-    this.menuItens = [
-      {
-        label: 'Modelo',
-        command: () => {
-          this.currentTemplate = this.tHtml;
-        }
-      },
-      {
-        label: 'Data',
-        command: () => {
-          this.currentTemplate = this.tJson;
-        }
-      },
-      {
-        label: 'Assets',
-        command: () => {
-          this.currentTemplate = this.tAssets;
-        }
-      }
-    ]
   }
 
   ngAfterContentInit(): void {
 
   }
 
+  nodeSelect($event: TreeNodeSelectEvent) {
+    switch ($event.node.label){
+      case 'js':
+        this.currentTemplate = this.tJs;
+        break;
+      case 'css':
+        this.currentTemplate = this.tCss;
+        break;
+      case 'template':
+        this.currentTemplate = this.tHtml;
+        break;
+      case 'data':
+        this.currentTemplate = this.tJson;
+        break;
+    }
+  }
 }

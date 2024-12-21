@@ -1,15 +1,21 @@
 <div class="studio">
   <div class="header">
+    <p-button> Salvar</p-button>
     <p-button> Executar</p-button>
   </div>
   <div class="body">
     <p-splitter
-      [panelSizes]="[15, 85]"
+      [panelSizes]="[20, 80]"
       [style]="{ height: '100%' }"
       styleClass="mb-5">
       <ng-template pTemplate>
-        <div>
-          <p-menu [model]="menuItens" />
+        <div class="tree">
+          <p-tree
+            [value]="tree"
+            selectionMode="single"
+            [(selection)]="selected"
+            (onNodeSelect)="nodeSelect($event)"
+            class="w-full md:w-30rem" />
         </div>
       </ng-template>
       <ng-template pTemplate>
@@ -35,9 +41,18 @@
   ></ngx-monaco-editor>
 </ng-template>
 
-<ng-template #tAssets>
-  <div>
-    Aqui serãop incluido os assets
-  </div>
+<ng-template #tCss>
+  <ngx-monaco-editor *ngIf="true" style="height: 100%; width: 100%"
+                     [(ngModel)]="css"
+                     [options]="editorCss"
+  ></ngx-monaco-editor>
 </ng-template>
+
+<ng-template #tJs>
+  <ngx-monaco-editor *ngIf="true" style="height: 100%; width: 100%"
+                     [(ngModel)]="js"
+                     [options]="editorJs"
+  ></ngx-monaco-editor>
+</ng-template>
+
 
