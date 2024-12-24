@@ -18,6 +18,6 @@ export class ReportService {
   }
 
   public generateReport(params: any) : Observable<any> {
-    return this.httpClient.post<any>(`saveTemplate`,params);
+    return this.httpClient.post<any>(`generateReport`,params);
   }
 }
