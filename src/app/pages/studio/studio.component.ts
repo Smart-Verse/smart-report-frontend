@@ -55,6 +55,7 @@ export class StudioComponent extends StudioConfig implements OnInit {
       this.id = params.get('id') || '';
     });
     this.currentTemplate = this.tHtml;
+    this.onGet();
   }
 
   nodeSelect($event: TreeNodeSelectEvent) {
@@ -85,6 +86,22 @@ export class StudioComponent extends StudioConfig implements OnInit {
     }
     this.reportService.saveTemplate(param).subscribe({
       next: (data) => {
+        this.loadingService.showLoading.next(false);
+      },
+      error: error => {
+        this.loadingService.showLoading.next(false);
+      }
+    })
+  }
+
+  onGet(){
+    this.loadingService.showLoading.next(true);
+    this.reportService.getTemplate(this.id).subscribe({
+      next: (data) => {
+        this.js = data.js;
+        this.json = data.data;
+        this.html = data.html;
+        this.css = data.css;
         this.loadingService.showLoading.next(false);
       },
       error: error => {

@@ -13,6 +13,10 @@ export class ReportService {
     return this.httpClient.post<any>(`saveTemplate`,params);
   }
 
+  public getTemplate(id: any) : Observable<any> {
+    return this.httpClient.get<any>(`getTemplate?idreport=${id}`);
+  }
+
   public generateReport(params: any) : Observable<any> {
     return this.httpClient.post<any>(`saveTemplate`,params);
   }
