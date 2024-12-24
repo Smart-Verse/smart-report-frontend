@@ -79,7 +79,7 @@ export class StudioComponent extends StudioConfig implements OnInit {
     }
   }
 
-  onSave(){
+  onSave(generated: boolean = false): void {
     this.loadingService.showLoading.next(true);
     var param = {
       idreport: this.id,
@@ -91,7 +91,12 @@ export class StudioComponent extends StudioConfig implements OnInit {
     this.reportService.saveTemplate(param).subscribe({
       next: (data) => {
         this.loadingService.showLoading.next(false);
-        this.toastService.success({summary: "SmartVerse", detail: "Salvo com sucesso"});
+        if(generated){
+          this.onGenerate();
+        } else{
+          this.toastService.success({summary: "SmartVerse", detail: "Salvo com sucesso"});
+        }
+
       },
       error: error => {
         this.loadingService.showLoading.next(false);
