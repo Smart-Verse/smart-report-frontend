@@ -20,6 +20,7 @@
     </app-input-text>
     <div class="container-list-repository">
       <app-repository-item
+        (deleteItem)="onDeleteRepository($event)"
         [repositorys]="repositoryConfig.repositoryes"
         (selectedItem)="onSelectedItem($event)">
       </app-repository-item>
@@ -44,6 +45,7 @@
     </div>
     <div class="list-report">
       <app-repository-item
+        (deleteItem)="onDeleteReport($event)"
         [repositorys]="repositoryConfig.reports"
         (selectedItem)="onSelectedReport($event)">
       </app-repository-item>

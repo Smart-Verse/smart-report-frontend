@@ -15,9 +15,11 @@ import {MenuItem} from "primeng/api";
 })
 export class RepositoryItemComponent implements OnInit {
 
-  @Input() repositorys: any[] = []
+  @Input() repositorys: any[] = [];
   @Output() selectedItem: EventEmitter<any> = new EventEmitter();
+  @Output() deleteItem = new EventEmitter();
   _menu: MenuItem[] | undefined;
+  _currentItem: any;
 
   ngOnInit(): void {
     this.onConfigureMenus();
@@ -40,6 +42,7 @@ export class RepositoryItemComponent implements OnInit {
           {
             label: 'Excluir',
             command: () => {
+              this.deleteItem.emit(this._currentItem);
             }
           }
         ]
@@ -48,6 +51,7 @@ export class RepositoryItemComponent implements OnInit {
     ]
   }
 
-
-
+  onOver(item: any) {
+    this._currentItem = item;
+  }
 }

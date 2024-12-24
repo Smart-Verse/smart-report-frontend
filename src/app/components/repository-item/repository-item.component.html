@@ -1,5 +1,5 @@
 <div *ngFor="let item of repositorys" class="list-view" >
-  <div class="item">
+  <div (mouseover)="onOver(item)" class="item">
     <div (click)="onSelectedItem(item)">
       {{ item.name }}
     </div>

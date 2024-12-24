@@ -153,4 +153,26 @@ export class RepositoryComponent implements OnInit {
       }
     ]
   }
+
+  onDeleteRepository($event: any){
+    this.crudService.onDelete("repository", $event.id).subscribe({
+      next: data => {
+        this.onGetAll();
+      },
+      error: error => {
+        console.log(error);
+      }
+    });
+  }
+
+  onDeleteReport($event: any){
+    this.crudService.onDelete("report", $event.id).subscribe({
+      next: data => {
+        this.onGetAllReport($event.repository);
+      },
+      error: error => {
+        console.log(error);
+      }
+    });
+  }
 }
