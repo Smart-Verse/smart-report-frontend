@@ -8,6 +8,8 @@ import { MenuModule } from 'primeng/menu';
 import {MenuItem} from "primeng/api";
 import {TreeModule, TreeNodeSelectEvent} from 'primeng/tree';
 import {StudioConfig} from "./studio.config";
+import {ReportService} from "../../services/report/report.service";
+import {LoadingService} from "../../shared/services/loading/loading.service";
 
 @Component({
   selector: 'app-constructor-report',
@@ -27,11 +29,12 @@ import {StudioConfig} from "./studio.config";
         baseUrl: 'assets',
       },
     },
+    ReportService
   ],
   templateUrl: './studio.component.html',
   styleUrl: './studio.component.scss'
 })
-export class StudioComponent extends StudioConfig implements AfterContentInit, OnInit {
+export class StudioComponent extends StudioConfig implements OnInit {
 
   @ViewChild('tHtml') tHtml!: TemplateRef<any>;
   @ViewChild('tJson') tJson!: TemplateRef<any>;
@@ -41,6 +44,8 @@ export class StudioComponent extends StudioConfig implements AfterContentInit, O
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,
+    private readonly reportService: ReportService,
+    private readonly loadingService: LoadingService,
   ) {
     super()
   }
@@ -50,10 +55,6 @@ export class StudioComponent extends StudioConfig implements AfterContentInit, O
       this.id = params.get('id') || '';
     });
     this.currentTemplate = this.tHtml;
-  }
-
-  ngAfterContentInit(): void {
-
   }
 
   nodeSelect($event: TreeNodeSelectEvent) {
@@ -71,5 +72,24 @@ export class StudioComponent extends StudioConfig implements AfterContentInit, O
         this.currentTemplate = this.tJson;
         break;
     }
+  }
+
+  onSave(){
+    this.loadingService.showLoading.next(true);
+    var param = {
+      idreport: this.id,
+      js: this.js,
+      html: this.html,
+      css: this.css,
+      data: this.json
+    }
+    this.reportService.saveTemplate(param).subscribe({
+      next: (data) => {
+        this.loadingService.showLoading.next(false);
+      },
+      error: error => {
+        this.loadingService.showLoading.next(false);
+      }
+    })
   }
 }

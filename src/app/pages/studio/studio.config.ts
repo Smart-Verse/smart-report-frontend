@@ -35,12 +35,12 @@ export class StudioConfig {
           icon: 'pi pi-fw pi-cog',
         },
         {
-          key: '0-3',
+          key: '0-2',
           label: 'css',
           icon: 'pi pi-fw pi-cog',
         },
         {
-          key: '0-4',
+          key: '0-3',
           label: 'data',
           icon: 'pi pi-fw pi-database',
         }
