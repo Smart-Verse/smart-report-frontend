@@ -20,4 +20,8 @@ export class ReportService {
   public generateReport(params: any) : Observable<any> {
     return this.httpClient.post<any>(`generatePreview`,params);
   }
+
+  public getMetrics() : Observable<any> {
+    return this.httpClient.get<any>(`getMetrics`);
+  }
 }

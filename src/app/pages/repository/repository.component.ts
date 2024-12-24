@@ -12,6 +12,8 @@ import {ToastService} from "../../shared/services/toast/toast.service";
 import { ContextMenuModule } from 'primeng/contextmenu';
 import {CustomCardComponent} from "../../components/custom-card/custom-card.component";
 import {Route, Router} from "@angular/router";
+import {ReportService} from "../../services/report/report.service";
+import {LoadingService} from "../../shared/services/loading/loading.service";
 
 @Component({
   selector: 'app-repository',
@@ -26,7 +28,8 @@ import {Route, Router} from "@angular/router";
   providers: [
     DialogService,
     CrudService,
-    ToastService
+    ToastService,
+    ReportService
   ],
   templateUrl: './repository.component.html',
   styleUrl: './repository.component.scss'
@@ -38,18 +41,25 @@ export class RepositoryComponent implements OnInit {
   ref: DynamicDialogRef | undefined;
   _currentReposrt: any;
 
+  _reports: number = 0;
+  _repositorys: number = 0;
+  _totalGenerated: number = 0;
+
 
   constructor(
     private readonly dialogService: DialogService,
     private readonly crudService: CrudService,
     private readonly toastService: ToastService,
     private readonly router: Router,
+    private readonly reportService: ReportService,
+    private readonly loadingService: LoadingService
   ) {
   }
 
   ngOnInit(): void {
     this.onConfigureMenus();
     this.onGetAll();
+    this.onGetMetrics();
   }
 
 
@@ -104,6 +114,7 @@ export class RepositoryComponent implements OnInit {
     this.crudService.onGetAll("repository", new RequestData()).subscribe({
       next: data => {
         this.repositoryConfig.repositoryes = data.contents;
+        this.onGetMetrics();
       },
       error: error => {
         console.log(error);
@@ -158,6 +169,7 @@ export class RepositoryComponent implements OnInit {
     this.crudService.onDelete("repository", $event.id).subscribe({
       next: data => {
         this.onGetAll();
+        this.onGetMetrics();
       },
       error: error => {
         console.log(error);
@@ -169,10 +181,26 @@ export class RepositoryComponent implements OnInit {
     this.crudService.onDelete("report", $event.id).subscribe({
       next: data => {
         this.onGetAllReport($event.repository);
+        this.onGetMetrics();
       },
       error: error => {
         console.log(error);
       }
     });
+  }
+
+  onGetMetrics(){
+    this.loadingService.showLoading.next(true);
+    this.reportService.getMetrics().subscribe({
+      next: (data) => {
+        this._reports = data.report;
+        this._repositorys = data.repository;
+        this._totalGenerated = data.generateds;
+        this.loadingService.showLoading.next(false);
+      },
+      error: (error) => {
+        this.loadingService.showLoading.next(false);
+      }
+    })
   }
 }

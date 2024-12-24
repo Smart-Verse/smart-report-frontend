@@ -14,6 +14,6 @@ export class CustomCardComponent {
 
   @Input() backgroundColor: string = "";
   @Input() title: string = "";
-  @Input() value: string = "";
+  @Input() value: number = 0;
 
 }
