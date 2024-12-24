@@ -123,7 +123,7 @@ export class StudioComponent extends StudioConfig implements OnInit {
   onGenerate(){
     this.loadingService.showLoading.next(true);
     const param = {
-      data: "",
+      data: null,
       idreport: this.id
     }
     this.reportService.generateReport(param).subscribe({
