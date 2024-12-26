@@ -18,7 +18,7 @@ export class RegisterService {
 
     let urlProduction = "";
     if(environment.production){
-      urlProduction = "/church-lite"
+      urlProduction = "/smart-report"
     }
 
     return this.http.get<any[]>(`${urlProduction}/assets/configuration/view.json`).pipe(
