@@ -20,6 +20,7 @@
             "outputPath": "dist/smart-report-frontend",
             "index": "src/index.html",
             "deployUrl": "/smartreport/",
+            "baseHref": "/smart-report/",
             "browser": "src/main.ts",
             "polyfills": [
               "zone.js"
