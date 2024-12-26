@@ -19,7 +19,7 @@
           "options": {
             "outputPath": "dist/smart-report-frontend",
             "index": "src/index.html",
-            "deployUrl": "/smartreport/",
+            "deployUrl": "/smart-report/",
             "baseHref": "/smart-report/",
             "browser": "src/main.ts",
             "polyfills": [
