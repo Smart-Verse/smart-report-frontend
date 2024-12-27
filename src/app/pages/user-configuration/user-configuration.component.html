@@ -17,7 +17,7 @@
         name="name"
         [field]="formGroup"
         class="field col-12 md:col-6 c-margin"
-        [label]="translateService.translate('personal_field_name')"
+        [label]="translateService.translate('user_configuration_name')"
         type="text">
       </app-input-text>
       <app-input-text
@@ -26,14 +26,14 @@
         [disabled]="true"
         [field]="formGroup"
         class="field col-12 md:col-6 c-margin"
-        [label]="translateService.translate('personal_field_email')"
+        [label]="translateService.translate('user_configuration_email')"
         type="text">
       </app-input-text>
       <app-dropdown
         formControlName="theme"
         name="theme"
         [field]="formGroup"
-        [label]="translateService.translate('personal_field_status')"
+        [label]="translateService.translate('user_configuration_theme')"
         [options]="_theme"
         optionLabel="value"
         class="field col-12 md:col-6 c-margin">
@@ -42,7 +42,7 @@
         formControlName="lang"
         name="lang"
         [field]="formGroup"
-        [label]="translateService.translate('personal_field_status')"
+        [label]="translateService.translate('user_configuration_language')"
         [options]="_language"
         optionLabel="value"
         class="field col-12 md:col-6 c-margin">
@@ -50,7 +50,7 @@
     </div>
     <div class="buttons">
       <div>
-        <p-button  [label]="translateService.translate('common_action_save')" (onClick)="onSave()" />
+        <p-button  [label]="translateService.translate('common_save')" (onClick)="onSave()" />
       </div>
     </div>
 

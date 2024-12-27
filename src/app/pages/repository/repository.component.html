@@ -1,13 +1,13 @@
 <div class="header formgrid grid">
-  <app-custom-card title="Repositorios" [value]="_repositorys" backgroundColor="#1E1E2F" class="col-12 md:col-4"></app-custom-card>
-  <app-custom-card title="Relatórios" [value]="_reports"  backgroundColor="#2B2B3C" class="col-12 md:col-4"></app-custom-card>
-  <app-custom-card title="Relatórios gerados" [value]="_totalGenerated" backgroundColor="#383850" class="col-12 md:col-4"></app-custom-card>
+  <app-custom-card [title]="translateService.translate('common_repositories')" [value]="_repositorys" backgroundColor="#053c3c" class="col-12 md:col-4"></app-custom-card>
+  <app-custom-card [title]="translateService.translate('common_report')" [value]="_reports"  backgroundColor="#0b7373" class="col-12 md:col-4"></app-custom-card>
+  <app-custom-card [title]="translateService.translate('common_report_generate')" [value]="_totalGenerated" backgroundColor="#4c8c8c" class="col-12 md:col-4"></app-custom-card>
 </div>
 <div class="repository">
   <div class="repositories">
     <div class="field space col-12 md:col-12">
       <div class="text-repository">
-        Repositórios
+        {{ translateService.translate('common_repositories') }}
       </div>
       <div class="cursor" (click)="menu.toggle($event)">
         <p-menu #menu [model]="repository" [popup]="true" />
@@ -15,7 +15,7 @@
       </div>
     </div>
     <app-input-text
-      label="Buscar"
+      [label]="translateService.translate('common_search')"
       class="field col-12 md:col-12">
     </app-input-text>
     <div class="container-list-repository">
@@ -34,9 +34,6 @@
         {{ _currentReposrt?.name || "" }}
       </div>
       <div class="flex">
-        <div style="margin-right: 5px" class="cursor">
-          <i class="pi pi-search"></i>
-        </div>
         <div class="cursor" (click)="repo.toggle($event)">
           <p-menu #repo [model]="reports" [popup]="true" />
           <i class="pi pi-ellipsis-v"></i>

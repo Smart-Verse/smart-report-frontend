@@ -1,3 +1,27 @@
 {
+  "user_configuration": "User Configuration",
+  "user_configuration_name": "User Name",
+  "user_configuration_email": "Email",
+  "user_configuration_theme": "Theme",
+  "user_configuration_language": "Language",
 
+  "home_initial_page": "Home Page",
+  "home_settings": "Settings",
+  "home_logout": "Logout",
+
+  "common_repository": "Repository",
+  "common_repositories": "Repositories",
+  "common_report": "Reports",
+  "common_report_generate": "Generated Reports",
+  "common_search": "Search",
+  "common_new_repository": "New Repository",
+  "common_new_report": "New Report",
+  "common_options": "Options",
+  "common_edit": "Edit",
+  "common_delete": "Delete",
+  "common_description": "Repository Name",
+  "common_description_report": "Report Name",
+  "common_preview": "Preview",
+  "common_cancel": "Cancel",
+  "common_save": "Save"
 }

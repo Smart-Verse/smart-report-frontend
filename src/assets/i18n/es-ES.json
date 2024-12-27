@@ -1,3 +1,27 @@
 {
+  "user_configuration": "Configuración del usuario",
+  "user_configuration_name": "Nombre de usuario",
+  "user_configuration_email": "Correo electrónico",
+  "user_configuration_theme": "Tema",
+  "user_configuration_language": "Idioma",
 
+  "home_initial_page": "Página de inicio",
+  "home_settings": "Configuraciones",
+  "home_logout": "Cerrar sesión",
+
+  "common_repository": "Repositorio",
+  "common_repositories": "Repositorios",
+  "common_report": "Informes",
+  "common_report_generate": "Informes generados",
+  "common_search": "Buscar",
+  "common_new_repository": "Nuevo repositorio",
+  "common_new_report": "Nuevo informe",
+  "common_options": "Opciones",
+  "common_edit": "Editar",
+  "common_delete": "Eliminar",
+  "common_description": "Nombre del repositorio",
+  "common_description_report": "Nombre del informe",
+  "common_preview": "Vista previa",
+  "common_cancel": "Cancelar",
+  "common_save": "Guardar"
 }

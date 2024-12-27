@@ -6,6 +6,7 @@ import {MenuItem} from "primeng/api";
 import {EnumCookie} from "../../shared/services/cookies/cookie.enum";
 import {SecurityService} from "../../security/services/security.service";
 import {CookiesService} from "../../shared/services/cookies/cookies.service";
+import {TranslateService} from "../../shared/services/translate/translate.service";
 
 
 @Component({
@@ -25,7 +26,8 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private readonly cookiesService: CookiesService
+    private readonly cookiesService: CookiesService,
+    private readonly translateService: TranslateService
   ) {}
 
   onConfigUser() {
@@ -38,21 +40,21 @@ export class HomeComponent implements OnInit {
         label: '',
         items: [
           {
-            label: 'Configurações',
-            icon: 'pi pi-cog',
-            command: () => {
-              this.onConfigUser();
-            }
-          },
-          {
-            label: 'Página Inicial',
+            label: this.translateService.translate("home_initial_page"),
             icon: 'pi pi-cog',
             command: () => {
               this.router.navigate(['home']);
             }
           },
           {
-            label: 'Logout',
+            label: this.translateService.translate("home_settings"),
+            icon: 'pi pi-cog',
+            command: () => {
+              this.onConfigUser();
+            }
+          },
+          {
+            label: this.translateService.translate("home_logout"),
             icon: 'pi pi-sign-out',
             command: () => {
               this.cookiesService.delete(EnumCookie.AUTHORIZATION);

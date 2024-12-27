@@ -12,6 +12,7 @@ import {ReportService} from "../../services/report/report.service";
 import {LoadingService} from "../../shared/services/loading/loading.service";
 import {ToastService} from "../../shared/services/toast/toast.service";
 import {base64ToBlob} from "../../shared/util/constants";
+import {TranslateService} from "../../shared/services/translate/translate.service";
 
 @Component({
   selector: 'app-constructor-report',
@@ -50,6 +51,7 @@ export class StudioComponent extends StudioConfig implements OnInit {
     private readonly reportService: ReportService,
     private readonly loadingService: LoadingService,
     private readonly toastService: ToastService,
+    public readonly translateService: TranslateService
   ) {
     super()
   }

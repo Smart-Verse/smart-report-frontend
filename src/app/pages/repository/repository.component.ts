@@ -14,6 +14,7 @@ import {CustomCardComponent} from "../../components/custom-card/custom-card.comp
 import {Route, Router} from "@angular/router";
 import {ReportService} from "../../services/report/report.service";
 import {LoadingService} from "../../shared/services/loading/loading.service";
+import {TranslateService} from "../../shared/services/translate/translate.service";
 
 @Component({
   selector: 'app-repository',
@@ -52,7 +53,8 @@ export class RepositoryComponent implements OnInit {
     private readonly toastService: ToastService,
     private readonly router: Router,
     private readonly reportService: ReportService,
-    private readonly loadingService: LoadingService
+    private readonly loadingService: LoadingService,
+    public readonly translateService: TranslateService,
   ) {
   }
 
@@ -75,7 +77,7 @@ export class RepositoryComponent implements OnInit {
   onRepository(obj: any){
     this.ref = this.dialogService.open(RepositoryModalComponent,
       {
-        header: "Repositorio",
+        header: this.translateService.translate("common_repository"),
         width: '40vw',
         modal:true,
         draggable: true,
@@ -123,13 +125,15 @@ export class RepositoryComponent implements OnInit {
   }
 
   onGetAllReport(repository: any){
-
+    this.loadingService.showLoading.next(true);
     this.crudService.onGetAll("report", this.onFilterReport(repository)).subscribe({
       next: data => {
         this.repositoryConfig.reports = data.contents;
+        this.loadingService.showLoading.next(false);
       },
       error: error => {
         console.log(error);
+        this.loadingService.showLoading.next(false);
       }
     });
   }
@@ -143,7 +147,7 @@ export class RepositoryComponent implements OnInit {
   private onConfigureMenus() {
     this.repository = [
       {
-        label: 'Novo repositório',
+        label: this.translateService.translate("common_new_repository"),
         command: () => {
           this.onRepository(null);
         }
@@ -153,7 +157,7 @@ export class RepositoryComponent implements OnInit {
 
     this.reports = [
       {
-        label: 'Novo relatório',
+        label: this.translateService.translate("common_new_report"),
         command: () => {
           if(this._currentReposrt){
             this.onReport(null);

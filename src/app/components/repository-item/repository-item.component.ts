@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {CommonModule} from "@angular/common";
 import {MenuModule} from "primeng/menu";
 import {MenuItem} from "primeng/api";
+import {TranslateService} from "../../shared/services/translate/translate.service";
 
 @Component({
   selector: 'app-repository-item',
@@ -21,6 +22,11 @@ export class RepositoryItemComponent implements OnInit {
   _menu: MenuItem[] | undefined;
   _currentItem: any;
 
+  constructor(
+    public readonly translateService: TranslateService,
+  ) {
+  }
+
   ngOnInit(): void {
     this.onConfigureMenus();
   }
@@ -32,15 +38,15 @@ export class RepositoryItemComponent implements OnInit {
   private onConfigureMenus(){
     this._menu = [
       {
-        label: "Opções",
+        label: this.translateService.translate("common_options"),
         items: [
           {
-            label: 'Editar',
+            label: this.translateService.translate("common_edit"),
             command: () => {
             }
           },
           {
-            label: 'Excluir',
+            label: this.translateService.translate("common_delete"),
             command: () => {
               this.deleteItem.emit(this._currentItem);
             }
