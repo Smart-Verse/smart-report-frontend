@@ -21,6 +21,8 @@ export class DocumentationComponent {
   readonly htmlExample = `<section class="invoice">
   <h1>{{ data.company }}</h1>
   <p>Cliente: {{ data.customer.name }}</p>
+  <p v-if="data.paid">Pagamento confirmado</p>
+  <p v-else>Pagamento pendente</p>
 
   <table>
     <tr v-for="item in data.items" :key="item.id">

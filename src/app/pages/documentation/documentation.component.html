@@ -12,13 +12,13 @@
   <div class="docs-layout">
     <aside class="docs-navigation">
       <span>Nesta página</span>
-      <a href="#overview">Visão geral</a><a href="#first-report">Primeiro relatório</a><a href="#studio">Usando o Studio</a><a href="#data">Dados e Vue</a><a href="#api">Integração por API</a><a href="#tips">Boas práticas</a>
+      <a href="#overview">Visão geral</a><a href="#first-report">Primeiro relatório</a><a href="#studio">Usando o Studio</a><a href="#data">Dados e diretivas</a><a href="#api">Integração por API</a><a href="#tips">Boas práticas</a>
     </aside>
 
     <main class="docs-content">
       <section id="overview" class="docs-section">
         <span class="section-number">01</span><div><h2>Como o SmartReport funciona</h2><p>Você organiza templates em repositórios, cria o layout com tecnologias web e envia um JSON. O SmartReport combina esses elementos e devolve um PDF A4 pronto para uso.</p>
-        <div class="flow"><div><i class="pi pi-database"></i><strong>JSON</strong><small>Dados da aplicação</small></div><i class="pi pi-arrow-right"></i><div><i class="pi pi-code"></i><strong>Template</strong><small>HTML, CSS e Vue</small></div><i class="pi pi-arrow-right"></i><div><i class="pi pi-file-pdf"></i><strong>PDF</strong><small>Documento final</small></div></div></div>
+        <div class="flow"><div><i class="pi pi-database"></i><strong>JSON</strong><small>Dados da aplicação</small></div><i class="pi pi-arrow-right"></i><div><i class="pi pi-code"></i><strong>Template</strong><small>HTML, CSS e dados</small></div><i class="pi pi-arrow-right"></i><div><i class="pi pi-file-pdf"></i><strong>PDF</strong><small>Documento final</small></div></div></div>
       </section>
 
       <section id="first-report" class="docs-section">
@@ -31,15 +31,15 @@
 
       <section id="studio" class="docs-section">
         <span class="section-number">03</span><div><h2>Os arquivos do Studio</h2><div class="file-doc-grid">
-          <article><span class="file-type html">HTML</span><h3>template.html</h3><p>Estrutura do documento. Use interpolação e diretivas Vue diretamente no markup.</p></article>
+          <article><span class="file-type html">HTML</span><h3>template.html</h3><p>Estrutura do documento. Use interpolação e diretivas diretamente no markup.</p></article>
           <article><span class="file-type css">CSS</span><h3>styles.css</h3><p>Aparência na tela e no PDF. Prefira medidas previsíveis e regras específicas de impressão.</p></article>
-          <article><span class="file-type js">JS</span><h3>script.js</h3><p>Métodos auxiliares do Vue. Declare funções nomeadas, como formatação de valores e datas.</p></article>
+          <article><span class="file-type js">JS</span><h3>script.js</h3><p>Métodos auxiliares do template, como formatação de valores e datas.</p></article>
           <article><span class="file-type json">JSON</span><h3>data.json</h3><p>Dados usados na visualização do Studio. Na integração, podem ser substituídos pelo payload da API.</p></article>
         </div></div>
       </section>
 
       <section id="data" class="docs-section">
-        <span class="section-number">04</span><div><h2>Dados e templates Vue</h2><p>O objeto enviado fica disponível como <code>data</code>. Use <code>{{ '{{ data.campo }}' }}</code> para valores e <code>v-for</code> para listas.</p>
+        <span class="section-number">04</span><div><h2>Dados e diretivas do template</h2><p>O objeto enviado fica disponível como <code>data</code>. Use <code>{{ '{{ data.campo }}' }}</code> para exibir valores, <code>v-if</code> e <code>v-else</code> para conteúdo condicional, <code>v-for</code> para listas e <code>:class</code>, <code>:style</code> ou <code>:key</code> para atributos dinâmicos.</p>
           <div class="code-block"><header><span>template.html</span><button (click)="copy(htmlExample, 'html')"><i [class]="copiedSnippet === 'html' ? 'pi pi-check' : 'pi pi-copy'"></i>{{ copiedSnippet === 'html' ? 'Copiado' : 'Copiar' }}</button></header><pre><code>{{ htmlExample }}</code></pre></div>
           <div class="code-grid"><div class="code-block"><header><span>data.json</span><button (click)="copy(jsonExample, 'json')"><i class="pi pi-copy"></i>Copiar</button></header><pre><code>{{ jsonExample }}</code></pre></div><div class="code-block"><header><span>script.js</span><button (click)="copy(jsExample, 'js')"><i class="pi pi-copy"></i>Copiar</button></header><pre><code>{{ jsExample }}</code></pre></div></div>
         </div>
