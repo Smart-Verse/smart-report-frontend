@@ -31,7 +31,10 @@ export class TranslateService {
     if(environment.production){
       urlProduction = "/smart-report"
     }
-    return this.http.get<{ [key: string]: string }>(`${urlProduction}/assets/i18n/${this.language}.json`).pipe(
+
+    const lang = (this.language === "pt" ? "pt-BR" : this.language);
+
+    return this.http.get<{ [key: string]: string }>(`${urlProduction}/assets/i18n/${lang}.json`).pipe(
       map((data) => {
         this.translations = data;
       })
@@ -44,6 +47,8 @@ export class TranslateService {
     if(environment.production){
       urlProduction = "/smart-report"
     }
+
+
     this.http.get<{ [key: string]: string }>(`${urlProduction}/assets/i18n/${languages[lang]}.json`).subscribe({
       next: (data) => {
         this.translations = data;

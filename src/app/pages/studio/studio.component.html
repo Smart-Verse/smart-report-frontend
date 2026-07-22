@@ -1,58 +1,39 @@
-<div class="studio">
-  <div class="header">
-    <p-button (onClick)="onSave()">{{ translateService.translate('common_save') }}</p-button>
-    <p-button (onClick)="onSave(true)">{{ translateService.translate('common_preview') }}</p-button>
+<section class="studio-shell">
+  <header class="studio-toolbar">
+    <div class="studio-title">
+      <button type="button" class="back-button" (click)="goBack()" aria-label="Voltar para a biblioteca" title="Voltar"><i class="pi pi-arrow-left"></i></button>
+      <div class="studio-mark" aria-hidden="true"><i class="pi pi-file-edit"></i></div>
+      <div><div class="eyebrow">SmartReport Studio</div><div class="title-row"><h1>Editor de relatório</h1><span class="save-state" [class.unsaved]="hasUnsavedChanges"><span class="state-dot"></span>{{ hasUnsavedChanges ? 'Alterações não salvas' : 'Tudo salvo' }}</span></div><button type="button" class="report-id" (click)="copyReportId()" [title]="id"><span>ID</span><code>{{ id }}</code><i [class]="copiedReportId ? 'pi pi-check' : 'pi pi-copy'"></i></button></div>
+    </div>
+    <div class="toolbar-actions">
+      <p-button icon="pi pi-eye" [label]="translateService.translate('common_preview')" severity="secondary" [outlined]="true" (onClick)="onSave(true)" />
+      <p-button icon="pi pi-save" [label]="translateService.translate('common_save')" (onClick)="onSave()" />
+    </div>
+  </header>
+  <div class="studio-workspace">
+    <aside class="file-explorer" aria-label="Arquivos do relatório">
+      <div class="explorer-heading"><span>Arquivos</span><span class="file-count">{{ files.length }}</span></div>
+      <nav class="file-list">
+        @for (file of files; track file.key) {
+          <button type="button" class="file-item" [class.active]="activeFileKey === file.key" [attr.aria-current]="activeFileKey === file.key ? 'page' : null" (click)="selectFile(file)">
+            <span class="file-icon" [attr.data-language]="file.key"><i [class]="file.icon"></i></span>
+            <span class="file-copy"><strong>{{ file.name }}</strong><small>{{ file.description }}</small></span>
+            <i class="pi pi-chevron-right file-chevron"></i>
+          </button>
+        }
+      </nav>
+      <div class="explorer-tip"><i class="pi pi-info-circle"></i><span>Use <kbd>Ctrl</kbd> + <kbd>F</kbd> para buscar no arquivo.</span></div>
+    </aside>
+    <main class="editor-panel">
+      <div class="editor-tabbar">
+        <div class="active-tab"><span class="language-dot" [attr.data-language]="activeFile.key"></span><span>{{ activeFile.name }}</span>@if (hasUnsavedChanges) { <span class="tab-dirty" title="Alterações não salvas"></span> }</div>
+        <div class="editor-tools">@if (activeFileKey === 'json') { <button type="button" class="tool-button" (click)="formatJson()"><i class="pi pi-align-left"></i>Formatar JSON</button> }<span class="language-badge">{{ activeFile.badge }}</span></div>
+      </div>
+      <div class="editor-surface"><app-code-editor [ngModel]="activeContent" (ngModelChange)="updateActiveContent($event)" [language]="activeFile.language" [ariaLabel]="'Editor de ' + activeFile.name" /></div>
+      <footer class="editor-statusbar">
+        <div class="status-group"><span><i class="pi pi-file"></i> {{ activeFile.name }}</span><span>{{ lineCount }} {{ lineCount === 1 ? 'linha' : 'linhas' }}</span><span>{{ activeContent.length }} caracteres</span></div>
+        <div class="status-group">@if (lastSavedAt) { <span>Salvo às {{ lastSavedAt | date:'HH:mm' }}</span> }<span>UTF-8</span></div>
+      </footer>
+    </main>
   </div>
-  <div class="body">
-    <p-splitter
-      [panelSizes]="[20, 80]"
-      [style]="{ height: '100%' }"
-      styleClass="mb-5">
-      <ng-template pTemplate>
-        <div class="tree">
-          <p-tree
-            [value]="tree"
-            selectionMode="single"
-            [(selection)]="selected"
-            (onNodeSelect)="nodeSelect($event)"
-            class="w-full md:w-30rem" />
-        </div>
-      </ng-template>
-      <ng-template pTemplate>
-        <div class="content">
-          <ng-content *ngTemplateOutlet="currentTemplate"></ng-content>
-        </div>
-      </ng-template>
-    </p-splitter>
-  </div>
-</div>
-
-<ng-template #tJson>
-  <ngx-monaco-editor style="height: 100%; width: 100%"
-                     [(ngModel)]="json"
-                     [options]="editorJson"
-  ></ngx-monaco-editor>
-</ng-template>
-
-<ng-template #tHtml>
-  <ngx-monaco-editor style="height: 100%; width: 100%"
-                     [(ngModel)]="html"
-                     [options]="editorHtml"
-  ></ngx-monaco-editor>
-</ng-template>
-
-<ng-template #tCss>
-  <ngx-monaco-editor style="height: 100%; width: 100%"
-                     [(ngModel)]="css"
-                     [options]="editorCss"
-  ></ngx-monaco-editor>
-</ng-template>
-
-<ng-template #tJs>
-  <ngx-monaco-editor style="height: 100%; width: 100%"
-                     [(ngModel)]="js"
-                     [options]="editorJs"
-  ></ngx-monaco-editor>
-</ng-template>
-
-
+</section>

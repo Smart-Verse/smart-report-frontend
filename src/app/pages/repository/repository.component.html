@@ -1,51 +1,94 @@
-<div class="header formgrid grid">
-  <app-custom-card [title]="translateService.translate('common_repositories')" [value]="_repositorys" backgroundColor="#053c3c" class="col-12 md:col-4"></app-custom-card>
-  <app-custom-card [title]="translateService.translate('common_report')" [value]="_reports"  backgroundColor="#0b7373" class="col-12 md:col-4"></app-custom-card>
-  <app-custom-card [title]="translateService.translate('common_report_generate')" [value]="_totalGenerated" backgroundColor="#4c8c8c" class="col-12 md:col-4"></app-custom-card>
-</div>
-<div class="repository">
-  <div class="repositories">
-    <div class="field space col-12 md:col-12">
-      <div class="text-repository">
-        {{ translateService.translate('common_repositories') }}
-      </div>
-      <div class="cursor" (click)="menu.toggle($event)">
-        <p-menu #menu [model]="repository" [popup]="true" />
-        <i class="pi pi-ellipsis-v"></i>
-      </div>
+<section class="dashboard-page">
+  <header class="dashboard-hero">
+    <div>
+      <span class="eyebrow">Visão geral</span>
+      <h1>Seus relatórios, organizados.</h1>
+      <p>Crie templates, organize por repositório e acompanhe tudo o que já foi gerado.</p>
     </div>
-    <app-input-text
-      [label]="translateService.translate('common_search')"
-      class="field col-12 md:col-12">
-    </app-input-text>
-    <div class="container-list-repository">
-      <app-repository-item
-        (deleteItem)="onDeleteRepository($event)"
-        [repositorys]="repositoryConfig.repositoryes"
-        (selectedItem)="onSelectedItem($event)">
-      </app-repository-item>
+    <div class="hero-actions">
+      <p-button icon="pi pi-folder-plus" label="Novo repositório" severity="secondary" [outlined]="true" (onClick)="openRepository()" />
+      <p-button icon="pi pi-plus" label="Novo template" (onClick)="openReport()" />
     </div>
+  </header>
 
-    </div>
 
-  <div class="reports">
-    <div class="space report-headers">
-      <div class="text-repository">
-        {{ _currentReposrt?.name || "" }}
+  @if (planOverview?.currentPlan?.code === 'FREE') {
+    <aside class="free-plan-banner">
+      <div class="plan-banner-icon"><i class="pi pi-sparkles"></i></div>
+      <div class="plan-banner-copy">
+        <span>Você está no plano Free</span>
+        <p><strong>{{ planOverview?.apiUsed }}</strong> de <strong>{{ planOverview?.currentPlan?.apiMonthlyLimit }}</strong> gerações por API utilizadas neste mês. Seus templates continuam ilimitados.</p>
       </div>
-      <div class="flex">
-        <div class="cursor" (click)="repo.toggle($event)">
-          <p-menu #repo [model]="reports" [popup]="true" />
-          <i class="pi pi-ellipsis-v"></i>
-        </div>
-      </div>
-    </div>
-    <div class="list-report">
-      <app-repository-item
-        (deleteItem)="onDeleteReport($event)"
-        [repositorys]="repositoryConfig.reports"
-        (selectedItem)="onSelectedReport($event)">
-      </app-repository-item>
-    </div>
+      <button type="button" (click)="openUpgrade()"><i class="pi pi-arrow-up-right"></i> Fazer upgrade</button>
+    </aside>
+  }
+
+  <div class="metric-grid">
+    <article class="metric-card repositories-metric">
+      <div class="metric-icon"><i class="pi pi-folder"></i></div>
+      <div><span>Repositórios</span><strong>{{ repositoriesTotal }}</strong><small>coleções organizadas</small></div>
+    </article>
+    <article class="metric-card reports-metric">
+      <div class="metric-icon"><i class="pi pi-file-edit"></i></div>
+      <div><span>Templates</span><strong>{{ reportsTotal }}</strong><small>modelos disponíveis</small></div>
+    </article>
+    <article class="metric-card generated-metric">
+      <div class="metric-icon"><i class="pi pi-chart-line"></i></div>
+      <div><span>Relatórios gerados</span><strong>{{ generatedTotal }}</strong><small>documentos processados</small></div>
+    </article>
   </div>
-</div>
+
+  <div class="content-grid">
+    <section class="dashboard-panel repositories-panel">
+      <header class="panel-header">
+        <div><span class="panel-kicker">Biblioteca</span><h2>Repositórios</h2></div>
+        <button class="icon-button" type="button" title="Novo repositório" (click)="openRepository()"><i class="pi pi-plus"></i></button>
+      </header>
+      <label class="search-box">
+        <i class="pi pi-search"></i>
+        <input type="search" [(ngModel)]="repositorySearch" placeholder="Buscar repositório" aria-label="Buscar repositório">
+        @if (repositorySearch) { <button type="button" (click)="repositorySearch = ''" aria-label="Limpar busca"><i class="pi pi-times"></i></button> }
+      </label>
+      <div class="panel-list">
+        <app-repository-item
+          itemType="repository"
+          [items]="filteredRepositories"
+          [selectedId]="currentRepository?.id"
+          emptyTitle="Nenhum repositório encontrado"
+          emptyText="Crie uma coleção para começar a organizar seus templates."
+          (selectedItem)="selectRepository($event)"
+          (editItem)="openRepository($event)"
+          (deleteItem)="deleteRepository($event)" />
+      </div>
+    </section>
+
+    <section class="dashboard-panel reports-panel">
+      <header class="panel-header reports-header">
+        <div>
+          <span class="panel-kicker">Templates de relatório</span>
+          <h2>{{ currentRepository?.name || 'Selecione um repositório' }}</h2>
+        </div>
+        <p-button icon="pi pi-plus" label="Novo template" size="small" [disabled]="!currentRepository" (onClick)="openReport()" />
+      </header>
+      <label class="search-box">
+        <i class="pi pi-search"></i>
+        <input type="search" [(ngModel)]="reportSearch" placeholder="Buscar template" aria-label="Buscar template" [disabled]="!currentRepository">
+        @if (reportSearch) { <button type="button" (click)="reportSearch = ''" aria-label="Limpar busca"><i class="pi pi-times"></i></button> }
+      </label>
+      <div class="panel-list report-list">
+        @if (currentRepository) {
+          <app-repository-item
+            itemType="report"
+            [items]="filteredReports"
+            emptyTitle="Nenhum template por aqui"
+            emptyText="Crie o primeiro template deste repositório."
+            (selectedItem)="openStudio($event)"
+            (editItem)="openReport($event)"
+            (deleteItem)="deleteReport($event)" />
+        } @else {
+          <div class="select-repository-state"><div class="empty-illustration"><i class="pi pi-folder-open"></i></div><h3>Escolha um repositório</h3><p>Os templates da coleção selecionada aparecerão aqui.</p></div>
+        }
+      </div>
+    </section>
+  </div>
+</section>

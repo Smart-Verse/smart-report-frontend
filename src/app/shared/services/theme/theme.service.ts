@@ -1,42 +1,44 @@
-import {Injectable, Renderer2, RendererFactory2} from '@angular/core';
-import {environment} from "../../../../environments/environment";
+import {DOCUMENT} from '@angular/common';
+import {Inject, Injectable} from '@angular/core';
 
-@Injectable({
-  providedIn: 'root'
-})
+export type AppTheme = 'light' | 'dark';
+
+@Injectable({providedIn: 'root'})
 export class ThemeService {
+  private readonly storageKey = 'smart-report-theme';
 
-  private renderer: Renderer2;
-  private themeLinkElement: HTMLLinkElement | null = null;
-
-  constructor(rendererFactory: RendererFactory2) {
-    this.renderer = rendererFactory.createRenderer(null, null);
-  }
+  constructor(@Inject(DOCUMENT) private readonly document: Document) {}
 
   setTheme(theme: string): void {
+    const normalizedTheme: AppTheme = theme.toLowerCase().includes('dark') ? 'dark' : 'light';
+    const root = this.document.documentElement;
 
-    let urlProduction = "";
-    if(environment.production){
-      urlProduction = ""
+    root.classList.toggle('app-dark', normalizedTheme === 'dark');
+    root.dataset['theme'] = normalizedTheme;
+    root.style.colorScheme = normalizedTheme;
+
+    try {
+      localStorage.setItem(this.storageKey, normalizedTheme);
+    } catch {
+      // Storage may be unavailable in restricted browser contexts.
     }
+  }
 
-    const themePath = urlProduction + `assets/theme/${theme}/theme.css`;
+  get currentTheme(): AppTheme {
+    return this.document.documentElement.classList.contains('app-dark') ? 'dark' : 'light';
+  }
 
-    if (!this.themeLinkElement) {
-      this.themeLinkElement = this.renderer.createElement('link');
-      this.renderer.setAttribute(this.themeLinkElement, 'rel', 'stylesheet');
-      this.renderer.setAttribute(this.themeLinkElement, 'type', 'text/css');
-      this.renderer.appendChild(document.head, this.themeLinkElement);
+  loadTheme(defaultTheme: AppTheme = 'dark'): void {
+    let savedTheme: string | null = null;
+    try {
+      savedTheme = localStorage.getItem(this.storageKey);
+    } catch {
+      // Fall back to the application default.
     }
-
-    this.renderer.setAttribute(this.themeLinkElement, 'href', themePath);
+    this.setTheme(savedTheme ?? defaultTheme);
   }
 
   onConfigurationTheme(theme: string): void {
-    if(theme === 'DARK'){
-      this.setTheme("aura-dark-cyan");
-    } else {
-      this.setTheme("aura-light-cyan");
-    }
+    this.setTheme(theme === 'DARK' ? 'dark' : 'light');
   }
 }

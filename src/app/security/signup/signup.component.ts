@@ -8,21 +8,20 @@ import {  Router } from '@angular/router';
 import { SecurityService } from '../services/security.service';
 import { ToastService } from '../../shared/services/toast/toast.service';
 import {LoadingComponent} from "../../shared/loading/loading.component";
-import {Ripple} from "primeng/ripple";
 
 @Component({
-  selector: 'app-signup',
-  standalone: true,
-  imports: [SharedCommonModule, LoadingComponent, Ripple],
-  providers: [SecurityService,ToastService],
-  templateUrl: './signup.component.html',
-  styleUrl: './signup.component.scss'
+    selector: 'app-signup',
+    imports: [SharedCommonModule, LoadingComponent],
+    providers: [SecurityService, ToastService],
+    templateUrl: './signup.component.html',
+    styleUrl: './signup.component.scss'
 })
 export class SignupComponent implements OnInit {
 
 
   public signUp: FormGroup;
   public showLoading = false;
+  public showPassword = false;
 
   constructor(
     private readonly fieldsService: FieldsService,

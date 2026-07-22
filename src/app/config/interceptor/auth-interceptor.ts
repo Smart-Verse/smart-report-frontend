@@ -36,15 +36,15 @@ export function authInterceptor(originalRequest: HttpRequest<unknown>, next: Htt
         catchError((error: HttpErrorResponse) => {
 
             if(error.status === 401){
-              cookiesService.delete(EnumCookie.AUTHORIZATION);
-              router.navigate(['login']);
+              cookiesService.clearClientSession();
+              router.navigateByUrl('/login', {replaceUrl: true});
             }
 
-            return throwError(() => {
-            });
+            return throwError(() => error);
           })
     );
 }
 export function urlPermission(request: HttpRequest<unknown>): boolean {
-  return request.url.indexOf("amazon") > -1;
+  const url = request.url;
+  return url.includes("/assets/") || url.startsWith("assets/") || url.includes("amazon");
 }

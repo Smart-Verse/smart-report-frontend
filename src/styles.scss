@@ -1,9 +1,55 @@
-@import "primeng/resources/themes/lara-light-blue/theme.css";
-@import "primeng/resources/primeng.css";
-:root{
-  --custom-primary-color: #075e5e;
+:root {
+  --custom-primary-color: #0f766e;
+  --app-bg: #f1f5f9;
+  --surface: #ffffff;
+  --surface-soft: #f8fafc;
+  --surface-hover: #f1f5f9;
+  --border: #e2e8f0;
+  --border-strong: #cbd5e1;
+  --text: #0f172a;
+  --text-soft: #334155;
+  --text-muted: #64748b;
+  --primary: #0f766e;
+  --primary-soft: #f0fdfa;
+  --primary-border: #99f6e4;
+  --editor-bg: #ffffff;
+  --editor-panel: #f8fafc;
+  --editor-gutter: #f1f5f9;
+  --editor-line: #e2e8f066;
+  --editor-border: #dbe3ec;
+  --editor-text: #1e293b;
+  --editor-muted: #64748b;
+  --editor-selection: #bae6fd;
+}
+
+:root.app-dark {
+  --custom-primary-color: #0f766e;
+  --app-bg: #080f1c;
+  --surface: #0f172a;
+  --surface-soft: #111c2f;
+  --surface-hover: #17233a;
+  --border: #263449;
+  --border-strong: #3a4a62;
+  --text: #e5edf7;
+  --text-soft: #cbd5e1;
+  --text-muted: #8fa1b8;
+  --primary: #2dd4bf;
+  --primary-soft: #102d31;
+  --primary-border: #1f5b5b;
+  --editor-bg: #0b1220;
+  --editor-panel: #080e19;
+  --editor-gutter: #0a111e;
+  --editor-line: #17233a;
+  --editor-border: #263449;
+  --editor-text: #e5e7eb;
+  --editor-muted: #7f91a9;
+  --editor-selection: #164e63;
 }
 body{
+  font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--app-bg);
+  color: var(--text);
+  transition: background-color .2s ease, color .2s ease;
   width: 100vw;
   height: 100vh;
   margin: 0px;
@@ -11,6 +57,10 @@ body{
 }
 html{
   font-size: 14px;
+}
+
+button, input, textarea, select {
+  font: inherit;
 }
 .buttons{
   display: flex;

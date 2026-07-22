@@ -1,20 +1,39 @@
-<div [formGroup]="formGroup">
-  <div class="formgrid grid">
+<form class="template-dialog" [formGroup]="formGroup" (ngSubmit)="onSave()">
+  <div class="intro">
+    <span class="intro-icon"><i class="pi pi-sparkles"></i></span>
+    <div><h2>Dê um bom ponto de partida ao relatório</h2><p>Escolha um modelo pronto. Todo o HTML, CSS, JavaScript e JSON poderá ser alterado no Studio.</p></div>
+  </div>
+
+  <div class="name-field">
     <app-input-text
       formControlName="name"
       name="name"
       [field]="formGroup"
-      class="field col-12 md:col-12 c-margin"
       [label]="translateService.translate('common_description_report')"
       type="text">
     </app-input-text>
   </div>
-</div>
-<div class="buttons">
-  <div style="margin-right: 10px">
-    <p-button  [label]="translateService.translate('common_cancel')" (onClick)="onClose()"/>
-  </div>
-  <div>
-    <p-button  [label]="translateService.translate('common_save')" (onClick)="onSave()"/>
-  </div>
-</div>
+
+  @if (!isEditing) {
+    <div class="selector-heading"><div><span>Modelo inicial</span><h3>Como você quer começar?</h3></div><small>4 opções</small></div>
+    <div class="template-grid">
+      @for (template of templates; track template.key) {
+        <button class="template-card" type="button" [class.selected]="isSelected(template)" (click)="selectTemplate(template)" [style.--accent]="template.accent">
+          <div class="preview" [class]="template.preview">
+            @if (template.preview === 'standard') { <span class="preview-title"></span><div class="preview-stats"><i></i><i></i><i></i></div><b></b><b></b> }
+            @if (template.preview === 'list') { <span class="preview-title"></span><div class="preview-table"><i></i><i></i><i></i><i></i></div> }
+            @if (template.preview === 'chart') { <span class="preview-title"></span><div class="preview-bars"><i></i><i></i><i></i><i></i><i></i></div> }
+            @if (template.preview === 'financial') { <span class="preview-title"></span><div class="preview-money"><i></i><i></i><i></i></div><b></b><b></b> }
+          </div>
+          <div class="template-copy"><span class="template-icon"><i [class]="template.icon"></i></span><div><strong>{{ template.name }}</strong><p>{{ template.description }}</p></div></div>
+          <span class="selected-check"><i class="pi pi-check"></i></span>
+        </button>
+      }
+    </div>
+  }
+
+  <footer>
+    <button class="cancel-button" type="button" (click)="onClose()">{{ translateService.translate('common_cancel') }}</button>
+    <button class="create-button" type="submit" [disabled]="formGroup.invalid"><i class="pi pi-plus"></i>{{ translateService.translate('common_save') }}</button>
+  </footer>
+</form>

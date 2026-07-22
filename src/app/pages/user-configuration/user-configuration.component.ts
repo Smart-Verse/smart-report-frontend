@@ -10,20 +10,20 @@ import {ThemeService} from "../../shared/services/theme/theme.service";
 import {BaseComponent} from "../../shared/common/base-component";
 import {UserConfigurationService} from "../../services/user-configuration/user-configuration.service";
 import {SharedCommonModule} from "../../shared/common/shared-common.module";
+import {formatPlanPrice, PlanOption, PlanOverview, PlanService} from "../../services/plan/plan.service";
 
 @Component({
-  selector: 'app-user-configuration',
-  standalone: true,
-  imports: [
-    SharedCommonModule,
-  ],
-  providers: [
-    UserConfigurationService,
-    ToastService,
-    ThemeService
-  ],
-  templateUrl: './user-configuration.component.html',
-  styleUrl: './user-configuration.component.scss'
+    selector: 'app-user-configuration',
+    imports: [
+        SharedCommonModule,
+    ],
+    providers: [
+        UserConfigurationService,
+        ToastService,
+        ThemeService
+    ],
+    templateUrl: './user-configuration.component.html',
+    styleUrl: './user-configuration.component.scss'
 })
 export class UserConfigurationComponent extends BaseComponent implements OnInit  {
 
@@ -33,6 +33,8 @@ export class UserConfigurationComponent extends BaseComponent implements OnInit 
   configuration: UserConfigurationConfig = new UserConfigurationConfig();
   protected readonly _theme = theme;
   protected readonly _language = language;
+  planOverview?: PlanOverview;
+  readonly formatPrice = formatPlanPrice;
 
   constructor(
     public readonly translateService: TranslateService,
@@ -40,7 +42,8 @@ export class UserConfigurationComponent extends BaseComponent implements OnInit 
     private readonly toastService: ToastService,
     private readonly userConfigurationService: UserConfigurationService,
     private readonly imageService: ImageUploadService,
-    private readonly  themeService: ThemeService
+    private readonly themeService: ThemeService,
+    private readonly planService: PlanService
   ) {
     super();
     this.formGroup = this.fieldsService.onCreateFormBuiderDynamic(this.configuration.fields);
@@ -48,6 +51,7 @@ export class UserConfigurationComponent extends BaseComponent implements OnInit 
 
   ngOnInit(): void {
     this.onGetUserConfiguration();
+    this.loadPlanOverview();
   }
 
   public onSave(): void {
@@ -83,6 +87,19 @@ export class UserConfigurationComponent extends BaseComponent implements OnInit 
         this.onShowLoading();
       }
     });
+  }
+
+  get usagePercent(): number {
+    const limit = this.planOverview?.currentPlan.apiMonthlyLimit;
+    return limit ? Math.min(100, ((this.planOverview?.apiUsed ?? 0) / limit) * 100) : 0;
+  }
+
+  requestPlan(plan: PlanOption): void {
+    this.toastService.info({summary: plan.name, detail: plan.customPlan ? 'Vamos preparar o contato para entender sua volumetria.' : 'Registramos seu interesse. A contratação online será disponibilizada em breve.'});
+  }
+
+  private loadPlanOverview(): void {
+    this.planService.overview().subscribe({next: overview => this.planOverview = overview});
   }
 
   private onGetUrlImage(){

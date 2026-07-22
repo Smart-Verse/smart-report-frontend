@@ -1,0 +1,62 @@
+<section class="docs-page">
+  <header class="docs-hero">
+    <div class="hero-badge"><i class="pi pi-book"></i> Central de documentação</div>
+    <h1>Do JSON ao PDF, sem burocracia.</h1>
+    <p>Aprenda a criar, testar e integrar templates do SmartReport em poucos passos.</p>
+    <div class="hero-actions">
+      <a class="primary-link" routerLink="/home/repository"><i class="pi pi-plus"></i>Criar meu primeiro template</a>
+      <a class="secondary-link" href="#api"><i class="pi pi-code"></i>Ver integração por API</a>
+    </div>
+  </header>
+
+  <div class="docs-layout">
+    <aside class="docs-navigation">
+      <span>Nesta página</span>
+      <a href="#overview">Visão geral</a><a href="#first-report">Primeiro relatório</a><a href="#studio">Usando o Studio</a><a href="#data">Dados e Vue</a><a href="#api">Integração por API</a><a href="#tips">Boas práticas</a>
+    </aside>
+
+    <main class="docs-content">
+      <section id="overview" class="docs-section">
+        <span class="section-number">01</span><div><h2>Como o SmartReport funciona</h2><p>Você organiza templates em repositórios, cria o layout com tecnologias web e envia um JSON. O SmartReport combina esses elementos e devolve um PDF A4 pronto para uso.</p>
+        <div class="flow"><div><i class="pi pi-database"></i><strong>JSON</strong><small>Dados da aplicação</small></div><i class="pi pi-arrow-right"></i><div><i class="pi pi-code"></i><strong>Template</strong><small>HTML, CSS e Vue</small></div><i class="pi pi-arrow-right"></i><div><i class="pi pi-file-pdf"></i><strong>PDF</strong><small>Documento final</small></div></div></div>
+      </section>
+
+      <section id="first-report" class="docs-section">
+        <span class="section-number">02</span><div><h2>Crie seu primeiro relatório</h2><div class="steps">
+          <article><span>1</span><div><h3>Crie um repositório</h3><p>Na Biblioteca, use “Novo repositório” para agrupar templates relacionados, como Financeiro ou Recursos Humanos.</p></div></article>
+          <article><span>2</span><div><h3>Adicione um template</h3><p>Selecione o repositório e clique em “Novo template”. Informe um nome claro para encontrá-lo depois.</p></div></article>
+          <article><span>3</span><div><h3>Abra no Studio</h3><p>Clique no card do template. Edite os quatro arquivos, salve e use “Visualizar” para conferir o PDF.</p></div></article>
+        </div></div>
+      </section>
+
+      <section id="studio" class="docs-section">
+        <span class="section-number">03</span><div><h2>Os arquivos do Studio</h2><div class="file-doc-grid">
+          <article><span class="file-type html">HTML</span><h3>template.html</h3><p>Estrutura do documento. Use interpolação e diretivas Vue diretamente no markup.</p></article>
+          <article><span class="file-type css">CSS</span><h3>styles.css</h3><p>Aparência na tela e no PDF. Prefira medidas previsíveis e regras específicas de impressão.</p></article>
+          <article><span class="file-type js">JS</span><h3>script.js</h3><p>Métodos auxiliares do Vue. Declare funções nomeadas, como formatação de valores e datas.</p></article>
+          <article><span class="file-type json">JSON</span><h3>data.json</h3><p>Dados usados na visualização do Studio. Na integração, podem ser substituídos pelo payload da API.</p></article>
+        </div></div>
+      </section>
+
+      <section id="data" class="docs-section">
+        <span class="section-number">04</span><div><h2>Dados e templates Vue</h2><p>O objeto enviado fica disponível como <code>data</code>. Use <code>{{ '{{ data.campo }}' }}</code> para valores e <code>v-for</code> para listas.</p>
+          <div class="code-block"><header><span>template.html</span><button (click)="copy(htmlExample, 'html')"><i [class]="copiedSnippet === 'html' ? 'pi pi-check' : 'pi pi-copy'"></i>{{ copiedSnippet === 'html' ? 'Copiado' : 'Copiar' }}</button></header><pre><code>{{ htmlExample }}</code></pre></div>
+          <div class="code-grid"><div class="code-block"><header><span>data.json</span><button (click)="copy(jsonExample, 'json')"><i class="pi pi-copy"></i>Copiar</button></header><pre><code>{{ jsonExample }}</code></pre></div><div class="code-block"><header><span>script.js</span><button (click)="copy(jsExample, 'js')"><i class="pi pi-copy"></i>Copiar</button></header><pre><code>{{ jsExample }}</code></pre></div></div>
+        </div>
+      </section>
+
+      <section id="api" class="docs-section">
+        <span class="section-number">05</span><div><h2>Gere relatórios pela API</h2><p>Crie uma credencial em <strong>Minha conta → Chaves de API</strong>. Ela será exibida somente uma vez. Envie a chave no header <code>X-API-Key</code>, junto do UUID do template e dos dados de produção. Se <code>data</code> for <code>null</code>, o JSON salvo no Studio será usado.</p>
+          <a class="api-key-link" routerLink="/home/apiKeys"><i class="pi pi-key"></i><span><strong>Gerenciar chaves de API</strong><small>Crie ou revogue suas credenciais de integração</small></span><i class="pi pi-arrow-right"></i></a>
+          <div class="endpoint"><span class="method">POST</span><code>https://app.smartverse.com.br/api/smartreport/generateReport</code></div>
+          <div class="code-block"><header><span>Exemplo com cURL</span><button (click)="copy(curlExample, 'curl')"><i [class]="copiedSnippet === 'curl' ? 'pi pi-check' : 'pi pi-copy'"></i>{{ copiedSnippet === 'curl' ? 'Copiado' : 'Copiar' }}</button></header><pre><code>{{ curlExample }}</code></pre></div>
+          <div class="response-note"><i class="pi pi-shield"></i><p>Guarde a chave somente no backend ou gerenciador de segredos; nunca a coloque em aplicações web públicas. A resposta JSON contém <code>report</code> com o PDF codificado em base64. Decodifique o valor para salvar o arquivo ou apresentá-lo no navegador.</p></div>
+        </div>
+      </section>
+
+      <section id="tips" class="docs-section">
+        <span class="section-number">06</span><div><h2>Boas práticas</h2><ul class="tips-list"><li><i class="pi pi-check-circle"></i>Use o JSON de exemplo com a mesma estrutura enviada pela sua aplicação.</li><li><i class="pi pi-check-circle"></i>Teste textos longos, listas vazias e valores opcionais antes de publicar.</li><li><i class="pi pi-check-circle"></i>Use CSS de impressão e evite larguras maiores que uma página A4.</li><li><i class="pi pi-check-circle"></i>Não coloque segredos, tokens ou dados sensíveis dentro do template.</li><li><i class="pi pi-check-circle"></i>Salve antes de visualizar para garantir que o backend use a versão atual.</li></ul></div>
+      </section>
+    </main>
+  </div>
+</section>

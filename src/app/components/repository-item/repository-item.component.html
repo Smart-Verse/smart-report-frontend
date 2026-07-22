@@ -1,12 +1,22 @@
-<div *ngFor="let item of repositorys" class="list-view" >
-  <div (mouseover)="onOver(item)" class="item">
-    <div (click)="onSelectedItem(item)">
-      {{ item.name }}
-    </div>
-    <div class="cursor" (click)="repo.toggle($event)">
-      <p-menu #repo [model]="_menu" [popup]="true" />
-      <i class="pi pi-angle-down"></i>
-    </div>
+@if (items.length) {
+  <div class="item-grid" [class.report-grid]="itemType === 'report'">
+    @for (item of items; track item.id) {
+      <article class="library-item" [class.selected]="selectedId === item.id" [class.report-item]="itemType === 'report'" (click)="select(item)" tabindex="0" (keydown.enter)="select(item)">
+        <div class="item-icon"><i [class]="itemType === 'repository' ? 'pi pi-folder' : 'pi pi-file-edit'"></i></div>
+        <div class="item-content">
+          <strong>{{ item.name }}</strong>
+          <span>{{ item.description || (itemType === 'repository' ? 'Coleção de templates' : 'Template de relatório') }}</span>
+        </div>
+        <button class="item-menu" type="button" aria-label="Opções" (click)="openMenu($event, item, menu)"><i class="pi pi-ellipsis-h"></i></button>
+        <p-menu #menu [model]="menuItems" [popup]="true" appendTo="body" />
+        @if (itemType === 'report') { <div class="report-id-row"><span>ID</span><code [title]="item.id">{{ item.id }}</code><button type="button" (click)="copyId($event, item)" [attr.aria-label]="'Copiar UUID de ' + item.name"><i [class]="copiedId === item.id ? 'pi pi-check' : 'pi pi-copy'"></i></button></div><div class="open-hint"><span>Abrir no Studio</span><i class="pi pi-arrow-up-right"></i></div> }
+      </article>
+    }
   </div>
-</div>
-
+} @else {
+  <div class="empty-state">
+    <div class="empty-icon"><i [class]="itemType === 'repository' ? 'pi pi-folder-open' : 'pi pi-file-plus'"></i></div>
+    <h3>{{ emptyTitle }}</h3>
+    <p>{{ emptyText }}</p>
+  </div>
+}

@@ -1,111 +1,118 @@
 <div class="datatable">
-    <p-confirmDialog />
-    <div class="btnsp">
-        <button
-            pButton
-            pRipple
-            (click)="onRegisterData(null,2)"
-            [label]="labelAdd">
-        </button>
-        <button
-          *ngIf="false"
-            pButton
-            pRipple
-            (click)="onShowFilters()"
-            icon="pi pi-filter">
-        </button>
-    </div>
-    <div class="table">
-        <p-table
-            (onRowSelect)="onRowSelected($event)"
-            [columns]="config.fields"
-            [value]="config.values"
-            [rows]="10"
-            [metaKeySelection]="true"
-            [(selection)]="selectedItem"
-            selectionMode="single"
-            styleClass="p-datatable-sm"
-            [dataKey]="'id'"
-            [autoLayout]="true"
-            (onPage)="pageChange($event)"
-            [rowsPerPageOptions]="[10, 20, 50]"
-            [tableStyle]="{ 'min-width': '50rem'}">
-          <ng-template pTemplate="caption">
-            <div class="flex">
-              <p-iconField iconPosition="left" class="ml-auto">
-                <p-inputIcon>
-                  <i class="pi pi-search"></i>
-                </p-inputIcon>
-                <input
-                  pInputText
-                  type="text"
-                  placeholder="Buscar" />
-              </p-iconField>
-            </div>
-          </ng-template>
-            <ng-template pTemplate="header" let-columns>
-                <tr >
-                    <th [style]="'width:' + col.width " *ngFor="let col of columns">
-                        {{ col.header }}
-                    </th>
-                    <th style="width: 10%;text-align: center" *ngIf="enableActions">
-                        Ações
-                    </th>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-rowData let-columns="columns">
-                <tr [pSelectableRow]="rowData">
-                    <td [style]="'width:' + col.width " *ngFor="let col of columns">
-                        {{ onRowData(rowData,col.field, col) }}
-                    </td>
-                    <td style="width: 10%;" *ngIf="enableActions">
-                      <div class="actions">
-                        <ng-container *ngTemplateOutlet="actionTemplate; context: { $implicit: rowData }"></ng-container>
-                        <p-button
-                          type="button"
-                          pRipple
-                          styleClass="p-button-text"
-                          icon="pi pi-pencil"
-                          (click)="onRegisterData(rowData, 1)">
-                        </p-button>
-                        <p-button
-                          type="button"
-                          pRipple
-                          styleClass="p-button-text"
-                          icon="pi pi-trash"
-                          (click)="onDeleteData(rowData, 0)">
-                        </p-button>
-
-                      </div>
-                    </td>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="summary">
-              <div class="summary">
-                <p-button type="button" (onClick)="onRefreshData()" icon="pi pi-refresh" styleClass="p-button-text" />
-                <p-paginator
-                  (onPageChange)="pageChange($event)"
-                  [rows]="config.size"
-                  appendTo="body"
-                  dropdownAppendTo="body"
-                  [totalRecords]="config.totalRecords"
-                  [rowsPerPageOptions]="[5,10, 20, 30]" />
+  <p-confirmDialog />
+  <div class="btnsp">
+    <button
+      pButton
+      pRipple
+      (click)="onRegisterData(null,2)"
+      [label]="labelAdd">
+    </button>
+    @if (false) {
+      <button
+        pButton
+        pRipple
+        (click)="onShowFilters()"
+        icon="pi pi-filter">
+      </button>
+    }
+  </div>
+  <div class="table">
+    <p-table
+      (onRowSelect)="onRowSelected($event)"
+      [columns]="config.fields"
+      [value]="config.values"
+      [rows]="10"
+      [metaKeySelection]="true"
+      [(selection)]="selectedItem"
+      selectionMode="single"
+      styleClass="p-datatable-sm"
+      [dataKey]="'id'"
+      (onPage)="pageChange($event)"
+      [rowsPerPageOptions]="[10, 20, 50]"
+      [tableStyle]="{ 'min-width': '50rem'}">
+      <ng-template pTemplate="caption">
+        <div class="flex">
+          <p-iconField iconPosition="left" class="ml-auto">
+            <p-inputIcon>
+              <i class="pi pi-search"></i>
+            </p-inputIcon>
+            <input
+              pInputText
+              type="text"
+              placeholder="Buscar" />
+          </p-iconField>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header" let-columns>
+        <tr >
+          @for (col of columns; track col) {
+            <th [style]="'width:' + col.width ">
+              {{ col.header }}
+            </th>
+          }
+          @if (enableActions) {
+            <th style="width: 10%;text-align: center">
+              Ações
+            </th>
+          }
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-columns="columns">
+        <tr [pSelectableRow]="rowData">
+          @for (col of columns; track col) {
+            <td [style]="'width:' + col.width ">
+              {{ onRowData(rowData,col.field, col) }}
+            </td>
+          }
+          @if (enableActions) {
+            <td style="width: 10%;">
+              <div class="actions">
+                <ng-container *ngTemplateOutlet="actionTemplate; context: { $implicit: rowData }"></ng-container>
+                <p-button
+                  type="button"
+                  pRipple
+                  styleClass="p-button-text"
+                  icon="pi pi-pencil"
+                  (click)="onRegisterData(rowData, 1)">
+                </p-button>
+                <p-button
+                  type="button"
+                  pRipple
+                  styleClass="p-button-text"
+                  icon="pi pi-trash"
+                  (click)="onDeleteData(rowData, 0)">
+                </p-button>
               </div>
-            </ng-template>
-        </p-table>
-    </div>
+            </td>
+          }
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="summary">
+        <div class="summary">
+          <p-button type="button" (onClick)="onRefreshData()" icon="pi pi-refresh" styleClass="p-button-text" />
+          <p-paginator
+            (onPageChange)="pageChange($event)"
+            [rows]="config.size"
+            appendTo="body"
+            dropdownAppendTo="body"
+            [totalRecords]="config.totalRecords"
+            [rowsPerPageOptions]="[5,10, 20, 30]" />
+        </div>
+      </ng-template>
+    </p-table>
+  </div>
 </div>
 <div class="filter">
-    <p-sidebar [(visible)]="sidebarVisible" position="right">
-        <ng-template pTemplate="header">
-            <span class="font-semibold text-xl">Filtros</span>
-        </ng-template>
-        <ng-template pTemplate="content">
-            <p-button pRipple (onClick)="onRefreshData()"  [outlined]="false"  styleClass="p-button-rounded w-full">
-                <div class="btn-tx">
-                    Filtrar
-                </div>
-            </p-button>
-        </ng-template>
-    </p-sidebar>
+  <p-drawer [(visible)]="sidebarVisible" position="right">
+    <ng-template pTemplate="header">
+      <span class="font-semibold text-xl">Filtros</span>
+    </ng-template>
+    <ng-template pTemplate="content">
+      <p-button pRipple (onClick)="onRefreshData()"  [outlined]="false"  styleClass="p-button-rounded w-full">
+        <div class="btn-tx">
+          Filtrar
+        </div>
+      </p-button>
+    </ng-template>
+  </p-drawer>
 </div>

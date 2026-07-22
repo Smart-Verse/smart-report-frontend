@@ -1,47 +1,29 @@
 <app-loading [showLoading]="showLoading"></app-loading>
-<div class="login">
-    <div class="login-container">
-        <div class="formgrid grid">
-            <div class="field col-12 md:col-12 ">
-              <div class="title">SmartReport</div>
-            </div>
-            <div class="field col-12 md:col-12 c-margin">
-                <p class="text">Login na sua conta</p>
-            </div>
-            <div class="field col-12 md:col-12" [formGroup]="loginForm">
-                <div class="field">
-                    <p-floatLabel >
-                        <input pInputText id="email" formControlName="email" class="w-full" />
-                        <label for="email">Email</label>
-                    </p-floatLabel>
-                </div>
-                <div class="field c-margin">
-                    <p-floatLabel >
-                        <input pInputText type="password" id="password" formControlName="password" class="w-full" />
-                        <label for="password">Senha</label>
-                    </p-floatLabel>
-                </div>
-            </div>
-          <div class="outline field col-12 md:col-12 ">
-            <p-button  (onClick)="onLogin()" [outlined]="false"  styleClass="p-button-rounded p-button-primary w-full">
-              <div pRipple class="btn-tx">
-                Login
-              </div>
-            </p-button>
-          </div>
-          <div class="outline field col-12 md:col-12 ">
-            <p-button  [outlined]="true"  styleClass="p-button-rounded p-button-contrast w-full">
-              <div pRipple class="btn-tx">
-                Recupere a senha
-              </div>
-            </p-button>
-          </div>
-            <div class="w-full">
-                <div class="text-sign">Não possui conta? <a (click)="onSignUp()">Cadastre-se</a></div>
-            </div>
-        </div>
+<main class="auth-page">
+  <section class="auth-form-side">
+    <div class="auth-form-shell">
+      <div class="product-brand">
+        <span class="product-mark"><i class="pi pi-file-edit"></i></span>
+        <span><strong>Smart<span>Report</span></strong><small>UM PRODUTO SMARTVERSE</small></span>
+      </div>
+      <div class="form-heading"><span class="eyebrow">Bem-vindo de volta</span><h1>Acesse seus relatórios</h1><p>Entre para continuar criando templates, conectando dados e gerando documentos profissionais.</p></div>
+      <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+        <label class="auth-field"><span>E-mail</span><div class="input-shell"><i class="pi pi-envelope"></i><input id="email" type="email" formControlName="email" autocomplete="email" placeholder="voce@empresa.com"></div></label>
+        <label class="auth-field"><span>Senha</span><div class="input-shell"><i class="pi pi-lock"></i><input id="password" [type]="showPassword ? 'text' : 'password'" formControlName="password" autocomplete="current-password" placeholder="Digite sua senha"><button type="button" (click)="showPassword = !showPassword" [attr.aria-label]="showPassword ? 'Ocultar senha' : 'Mostrar senha'"><i [class]="showPassword ? 'pi pi-eye-slash' : 'pi pi-eye'"></i></button></div></label>
+        <button class="submit-button" type="submit" [disabled]="loginForm.invalid || showLoading"><span>Entrar</span><i class="pi pi-arrow-right"></i></button>
+      </form>
+      <div class="auth-switch">Não possui uma conta? <button type="button" (click)="onSignUp()">Cadastre-se</button></div>
     </div>
-    <div class="login-area">
-        <div class="image-area"></div>
+  </section>
+  <aside class="ecosystem-panel">
+    <div class="ecosystem-glow glow-top"></div><div class="ecosystem-glow glow-bottom"></div>
+    <div class="ecosystem-content">
+      <span class="ecosystem-kicker">ECOSSISTEMA DE SOLUÇÕES DIGITAIS</span>
+      <span class="smartverse-logo"><img src="assets/logo/smartverse-ecosystem.svg" alt="SmartVerse"></span>
+      <h2>Tecnologia para<br>simplificar relatórios e<br><em>conectar sistemas.</em></h2>
+      <p>O SmartReport é um produto SmartVerse criado para transformar dados em documentos profissionais com simplicidade, liberdade e integração.</p>
+      <div class="product-position"><strong>SmartReport</strong><i></i><span>Relatórios simples. Integrações poderosas.</span></div>
     </div>
-</div>
+    <footer><span>SMARTVERSE</span><small>Soluções digitais que simplificam rotinas.</small></footer>
+  </aside>
+</main>

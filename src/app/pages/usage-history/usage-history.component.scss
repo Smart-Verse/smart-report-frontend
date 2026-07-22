@@ -1,0 +1,28 @@
+:host { display: block; }
+.history-page { max-width: 980px; margin: 0 auto; color: var(--text); }
+.history-hero { min-height: 145px; padding: 26px 30px; display: flex; align-items: center; justify-content: space-between; gap: 24px; background: linear-gradient(135deg, var(--surface), var(--primary-soft)); border: 1px solid var(--primary-border); border-radius: 18px; }
+.eyebrow { color: var(--primary); font-size: 9px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+h1 { margin: 8px 0 6px; font-size: clamp(25px, 4vw, 35px); letter-spacing: -.04em; }
+.history-hero p { margin: 0; color: var(--text-muted); font-size: 11px; }
+.history-icon { width: 58px; height: 58px; flex: 0 0 auto; display: grid; place-items: center; color: var(--primary); background: var(--surface); border: 1px solid var(--primary-border); border-radius: 16px; font-size: 22px; }
+.history-panel { margin-top: 16px; overflow: hidden; background: var(--surface); border: 1px solid var(--border); border-radius: 15px; box-shadow: 0 8px 24px rgba(15,23,42,.045); }
+.history-panel > header { min-height: 58px; padding: 0 22px; display: grid; grid-template-columns: 1fr auto; align-items: center; background: var(--surface-soft); border-bottom: 1px solid var(--border); }
+.history-panel > header div { display: flex; flex-direction: column; gap: 2px; }
+.history-panel > header div:last-child { text-align: right; }
+.history-panel > header span { font-size: 10px; font-weight: 750; }
+.history-panel > header small { color: var(--text-muted); font-size: 8px; }
+.history-list article { min-height: 72px; padding: 12px 22px; display: flex; align-items: center; justify-content: space-between; gap: 20px; border-bottom: 1px solid var(--border); }
+.history-list article:last-child { border-bottom: 0; }
+.period { display: flex; align-items: center; gap: 12px; }
+.calendar { width: 38px; height: 38px; display: grid; place-items: center; color: var(--primary); background: var(--primary-soft); border-radius: 10px; }
+.period div { display: flex; flex-direction: column; gap: 3px; }
+.period strong { font-size: 11px; }
+.period small { color: var(--text-muted); font-size: 8px; }
+.amount { display: flex; align-items: baseline; gap: 6px; }
+.amount strong { color: var(--primary); font-size: 19px; }
+.amount span { color: var(--text-muted); font-size: 8px; }
+.state { min-height: 260px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-muted); text-align: center; }
+.state > i { margin-bottom: 12px; color: var(--primary); font-size: 28px; }
+.state h2 { margin: 0 0 5px; color: var(--text); font-size: 15px; }
+.state p { margin: 0; font-size: 10px; }
+@media (max-width: 560px) { .history-hero { padding: 22px; } .history-icon { display: none; } .history-panel > header, .history-list article { padding-left: 15px; padding-right: 15px; } }

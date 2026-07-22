@@ -3,13 +3,12 @@ import {TabComponent} from "./tab/tab.component";
 import {CommonModule} from "@angular/common";
 
 @Component({
-  selector: 'app-tabs',
-  standalone: true,
-  imports: [
-    CommonModule,
-  ],
-  templateUrl: './tabs.component.html',
-  styleUrl: './tabs.component.scss'
+    selector: 'app-tabs',
+    imports: [
+        CommonModule,
+    ],
+    templateUrl: './tabs.component.html',
+    styleUrl: './tabs.component.scss'
 })
 export class TabsComponent implements AfterContentInit {
   @ContentChildren(TabComponent) tabs!: QueryList<TabComponent>;

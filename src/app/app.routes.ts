@@ -21,6 +21,9 @@ export const routes: Routes = [
     children: [
       { path: 'userConfiguration', component: UserConfigurationComponent },
       { path: 'repository', component: RepositoryComponent },
+      { path: 'documentation', loadComponent: () => import('./pages/documentation/documentation.component').then(component => component.DocumentationComponent) },
+      { path: 'usageHistory', loadComponent: () => import('./pages/usage-history/usage-history.component').then(component => component.UsageHistoryComponent) },
+      { path: 'apiKeys', loadComponent: () => import('./pages/api-keys/api-keys.component').then(component => component.ApiKeysComponent) },
       { path: 'studio/:id', component: StudioComponent },
       { path: '', redirectTo: 'repository', pathMatch: 'full' },
     ]

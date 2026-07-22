@@ -1,19 +1,17 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { SharedCommonModule } from '../../../common/shared-common.module';
-import {EnumCookie} from "../../../services/cookies/cookie.enum";
 import {CookiesService} from "../../../services/cookies/cookies.service";
 
 
 @Component({
-  selector: 'app-sidebar-submenu',
-  standalone: true,
-  imports: [
-    SharedCommonModule,
-    RouterLink
-  ],
-  templateUrl: './sidebar-submenu.component.html',
-  styleUrl: './sidebar-submenu.component.scss'
+    selector: 'app-sidebar-submenu',
+    imports: [
+        SharedCommonModule,
+        RouterLink
+    ],
+    templateUrl: './sidebar-submenu.component.html',
+    styleUrl: './sidebar-submenu.component.scss'
 })
 export class SidebarSubmenuComponent implements OnInit, OnChanges {
 
@@ -63,8 +61,8 @@ export class SidebarSubmenuComponent implements OnInit, OnChanges {
 
   onLogout(route: any){
     if(route === 'login'){
-      this.cookieService.delete(EnumCookie.AUTHORIZATION);
-      this.router.navigate(['login']);
+      this.cookieService.clearClientSession();
+      this.router.navigateByUrl('/login', {replaceUrl: true});
     }
   }
 }

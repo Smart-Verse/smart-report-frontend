@@ -17,27 +17,25 @@ import {MenuItens} from "../../../config/sidebar/menu-itens";
 
 
 @Component({
-  selector: 'app-sidebar',
-  standalone: true,
-  imports: [
-    SharedCommonModule,
-    RouterLink,
-    TooltipModule,
-    AvatarModule,
-    AvatarGroupModule,
-    RouterOutlet,
-    SidebarSubmenuComponent,
-    MenuModule
-  ],
-  providers: [
-    ImageUploadService
-  ],
-  templateUrl: './sidebar.component.html',
-  styleUrl: './sidebar.component.scss'
+    selector: 'app-sidebar',
+    imports: [
+        SharedCommonModule,
+        RouterLink,
+        TooltipModule,
+        AvatarModule,
+        AvatarGroupModule,
+        RouterOutlet,
+        SidebarSubmenuComponent,
+        MenuModule
+    ],
+    providers: [
+        ImageUploadService
+    ],
+    templateUrl: './sidebar.component.html',
+    styleUrl: './sidebar.component.scss'
 })
 export class SidebarComponent implements OnInit {
 
-  theme: string = 'aura-dark-purple';
   menu = new MenuItens();
   isExpanded = false;
   menuItems: any;

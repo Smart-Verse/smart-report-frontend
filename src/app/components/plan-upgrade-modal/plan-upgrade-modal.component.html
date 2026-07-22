@@ -1,0 +1,31 @@
+<div class="upgrade-intro">
+  <span>Planos SmartReport</span>
+  <h2>Mais relatórios, a mesma simplicidade.</h2>
+  <p>Escolha a franquia ideal para sua integração. A criação de templates continua livre em todos os planos.</p>
+</div>
+
+<div class="plans-grid">
+  @for (plan of overview.plans; track plan.id) {
+    <article class="plan-card" [class.current]="plan.currentPlan" [class.featured]="plan.code === 'PRO'">
+      @if (plan.currentPlan) { <span class="plan-badge">Plano atual</span> }
+      @if (plan.code === 'PRO' && !plan.currentPlan) { <span class="plan-badge highlight">Mais capacidade</span> }
+      <div class="plan-icon"><i [class]="plan.customPlan ? 'pi pi-comments' : 'pi pi-bolt'"></i></div>
+      <h3>{{ plan.name }}</h3>
+      <p>{{ plan.description }}</p>
+      <div class="plan-price">
+        @if (plan.customPlan) {
+          <strong>Sob consulta</strong><small>conforme volumetria</small>
+        } @else {
+          <strong>{{ formatPrice(plan.monthlyPrice) }}</strong><small>por mês</small>
+        }
+      </div>
+      <ul>
+        <li><i class="pi pi-chart-line"></i><span>@if (plan.apiMonthlyLimit !== undefined && plan.apiMonthlyLimit !== null) { Até <strong>{{ plan.apiMonthlyLimit }}</strong> gerações/mês } @else { Volume definido para sua operação }</span></li>
+        <li><i class="pi pi-check-circle"></i><span>Templates ilimitados</span></li>
+      </ul>
+      <button type="button" [disabled]="plan.currentPlan" (click)="choose(plan)">
+        {{ plan.currentPlan ? 'Seu plano atual' : (plan.customPlan ? 'Conversar com a SmartVerse' : 'Escolher este plano') }}
+      </button>
+    </article>
+  }
+</div>

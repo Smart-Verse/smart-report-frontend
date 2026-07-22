@@ -3,9 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
-import { SidebarModule } from 'primeng/sidebar';
-import { DropdownModule } from 'primeng/dropdown';
-import { HttpModule } from '../../config/http/http.module';
+import { DrawerModule } from 'primeng/drawer';
+import { SelectModule } from 'primeng/select';
 import { TimelineModule } from 'primeng/timeline';
 import {ImageUploadComponent} from "../components/inputs/image-upload/image-upload.component";
 import {InputNumberComponent} from "../components/inputs/input-number/input-number.component";
@@ -43,10 +42,9 @@ import {TabComponent} from "../components/tabs/tab/tab.component";
     ReactiveFormsModule,
     InputTextModule,
     PasswordModule,
-    SidebarModule,
-    DropdownModule,
+    DrawerModule,
+    SelectModule,
     FormsModule,
-    HttpModule,
     TimelineModule,
     FloatLabelModule,
     LoadingComponent,

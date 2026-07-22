@@ -1,0 +1,47 @@
+<section class="keys-page">
+  <header class="keys-hero">
+    <div><span class="eyebrow">Integrações</span><h1>Chaves de API</h1><p>Autentique seus sistemas sem compartilhar o login da sua conta.</p></div>
+    <div class="security-badge"><i class="pi pi-shield"></i><span>Escopo atual<strong>Gerar relatórios</strong></span></div>
+  </header>
+
+  <div class="keys-layout">
+    <section class="create-panel">
+      <div class="panel-icon"><i class="pi pi-key"></i></div><h2>Criar uma nova chave</h2><p>Use um nome que identifique claramente o sistema consumidor.</p>
+      <label><span>Nome da chave</span><input [(ngModel)]="keyName" maxlength="120" placeholder="Ex.: ERP Produção" (keydown.enter)="create()"></label>
+      <button class="primary-button" type="button" [disabled]="!keyName.trim() || creating" (click)="create()"><i [class]="creating ? 'pi pi-spin pi-spinner' : 'pi pi-plus'"></i>{{ creating ? 'Gerando...' : 'Gerar chave de API' }}</button>
+      <div class="security-note"><i class="pi pi-info-circle"></i><span>O segredo será exibido somente uma vez. Guarde-o em um gerenciador de segredos.</span></div>
+    </section>
+
+    <section class="list-panel">
+      <header><div><span class="eyebrow">Credenciais</span><h2>Suas chaves</h2></div><span class="key-count">{{ keys.length }}</span></header>
+      @if (loadingKeys) {
+        <div class="empty-state"><i class="pi pi-spin pi-spinner"></i><h3>Carregando chaves</h3><p>Aguarde um instante.</p></div>
+      } @else if (loadFailed) {
+        <div class="empty-state error-state"><i class="pi pi-exclamation-triangle"></i><h3>Não foi possível carregar</h3><p>Houve um erro ao consultar suas credenciais.</p><button type="button" (click)="retry()"><i class="pi pi-refresh"></i>Tentar novamente</button></div>
+      } @else if (keys.length) {
+        <div class="key-list">
+          @for (key of keys; track key.id) {
+            <article class="key-item" [class.revoked]="!key.active">
+              <div class="key-symbol"><i class="pi pi-key"></i></div>
+              <div class="key-info"><strong>{{ key.name }}</strong><code>{{ maskedKey(key) }}</code><div class="key-meta"><span>Criada em {{ key.createdAt | date:'dd/MM/yyyy' }}</span><span>{{ key.lastUsedAt ? 'Último uso em ' + (key.lastUsedAt | date:'dd/MM/yyyy HH:mm') : 'Nunca utilizada' }}</span></div></div>
+              <span class="key-status">{{ key.active ? 'Ativa' : 'Revogada' }}</span>
+              @if (key.active) { <button class="revoke-button" type="button" [disabled]="revokingId === key.id" (click)="revoke(key)" title="Revogar chave"><i [class]="revokingId === key.id ? 'pi pi-spin pi-spinner' : 'pi pi-trash'"></i></button> }
+            </article>
+          }
+        </div>
+      } @else {
+        <div class="empty-state"><i class="pi pi-key"></i><h3>Nenhuma chave criada</h3><p>Crie uma credencial para integrar seu primeiro sistema.</p></div>
+      }
+    </section>
+  </div>
+
+  @if (createdKey) {
+    <div class="reveal-backdrop" role="dialog" aria-modal="true" aria-labelledby="key-created-title">
+      <div class="reveal-dialog"><div class="success-icon"><i class="pi pi-check"></i></div><span class="eyebrow">Chave criada</span><h2 id="key-created-title">Copie sua chave agora</h2><p>Por segurança, ela não poderá ser exibida novamente depois que esta janela for fechada.</p>
+        <div class="secret-value"><code>{{ createdKey.apiKey }}</code><button type="button" (click)="copyCreatedKey()"><i [class]="copied ? 'pi pi-check' : 'pi pi-copy'"></i>{{ copied ? 'Copiada' : 'Copiar' }}</button></div>
+        <div class="warning"><i class="pi pi-exclamation-triangle"></i>Não coloque esta chave no frontend, em commits ou em logs.</div>
+        <button class="done-button" type="button" (click)="closeReveal()">Já salvei a chave</button>
+      </div>
+    </div>
+  }
+</section>

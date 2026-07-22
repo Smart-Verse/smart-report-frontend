@@ -1,143 +1,125 @@
-import {AfterContentInit, Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
-import {CommonModule} from "@angular/common";
-import {SharedCommonModule} from "../../shared/common/shared-common.module";
-import { SplitterModule } from 'primeng/splitter';
-import {MonacoEditorModule, NGX_MONACO_EDITOR_CONFIG} from "ngx-monaco-editor-v2";
-import { MenuModule } from 'primeng/menu';
-import {MenuItem} from "primeng/api";
-import {TreeModule, TreeNodeSelectEvent} from 'primeng/tree';
-import {StudioConfig} from "./studio.config";
-import {ReportService} from "../../services/report/report.service";
-import {LoadingService} from "../../shared/services/loading/loading.service";
-import {ToastService} from "../../shared/services/toast/toast.service";
-import {base64ToBlob} from "../../shared/util/constants";
-import {TranslateService} from "../../shared/services/translate/translate.service";
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {SharedCommonModule} from '../../shared/common/shared-common.module';
+import {StudioConfig} from './studio.config';
+import {ReportService} from '../../services/report/report.service';
+import {LoadingService} from '../../shared/services/loading/loading.service';
+import {ToastService} from '../../shared/services/toast/toast.service';
+import {base64ToBlob} from '../../shared/util/constants';
+import {TranslateService} from '../../shared/services/translate/translate.service';
+import {CodeEditorComponent, CodeEditorLanguage} from '../../shared/components/code-editor/code-editor.component';
+
+type StudioFileKey = 'html' | 'css' | 'javascript' | 'json';
+interface StudioFile { key: StudioFileKey; name: string; description: string; icon: string; language: CodeEditorLanguage; badge: string; }
 
 @Component({
   selector: 'app-constructor-report',
-  standalone: true,
-  imports: [
-    CommonModule,
-    SharedCommonModule,
-    SplitterModule,
-    MonacoEditorModule,
-    MenuModule,
-    TreeModule
-  ],
-  providers: [
-    {
-      provide: NGX_MONACO_EDITOR_CONFIG,
-      useValue: {
-        baseUrl: 'assets',
-      },
-    },
-    ReportService,
-    ToastService
-  ],
+  imports: [SharedCommonModule, CodeEditorComponent],
+  providers: [ReportService, ToastService],
   templateUrl: './studio.component.html',
   styleUrl: './studio.component.scss'
 })
 export class StudioComponent extends StudioConfig implements OnInit {
-
-  @ViewChild('tHtml') tHtml!: TemplateRef<any>;
-  @ViewChild('tJson') tJson!: TemplateRef<any>;
-  @ViewChild('tCss') tCss!: TemplateRef<any>;
-  @ViewChild('tJs') tJs!: TemplateRef<any>;
-
+  readonly files: StudioFile[] = [
+    {key: 'html', name: 'template.html', description: 'Estrutura do relatório', icon: 'pi pi-code', language: 'html', badge: 'HTML'},
+    {key: 'css', name: 'styles.css', description: 'Aparência e impressão', icon: 'pi pi-palette', language: 'css', badge: 'CSS'},
+    {key: 'javascript', name: 'script.js', description: 'Comportamento do template', icon: 'pi pi-bolt', language: 'javascript', badge: 'JS'},
+    {key: 'json', name: 'data.json', description: 'Dados para visualização', icon: 'pi pi-database', language: 'json', badge: 'JSON'}
+  ];
+  activeFileKey: StudioFileKey = 'html';
+  hasUnsavedChanges = false;
+  lastSavedAt?: Date;
+  copiedReportId = false;
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,
+    private readonly router: Router,
     private readonly reportService: ReportService,
     private readonly loadingService: LoadingService,
     private readonly toastService: ToastService,
     public readonly translateService: TranslateService
-  ) {
-    super()
+  ) { super(); }
+
+  get activeFile(): StudioFile { return this.files.find(file => file.key === this.activeFileKey) ?? this.files[0]; }
+  get activeContent(): string {
+    switch (this.activeFileKey) {
+      case 'css': return this.css;
+      case 'javascript': return this.js;
+      case 'json': return this.json;
+      default: return this.html;
+    }
   }
+  get lineCount(): number { return this.activeContent ? this.activeContent.split(/\r?\n/).length : 1; }
 
   ngOnInit(): void {
-    this.activatedRoute.paramMap.subscribe(params => {
-      this.id = params.get('id') || '';
-    });
-    this.currentTemplate = this.tHtml;
+    this.activatedRoute.paramMap.subscribe(params => this.id = params.get('id') || '');
     this.onGet();
   }
+  copyReportId(): void {
+    navigator.clipboard?.writeText(this.id).then(() => {
+      this.copiedReportId = true;
+      window.setTimeout(() => this.copiedReportId = false, 1800);
+    });
+  }
 
-  nodeSelect($event: TreeNodeSelectEvent) {
-    switch ($event.node.label){
-      case 'js':
-        this.currentTemplate = this.tJs;
-        break;
-      case 'css':
-        this.currentTemplate = this.tCss;
-        break;
-      case 'template':
-        this.currentTemplate = this.tHtml;
-        break;
-      case 'data':
-        this.currentTemplate = this.tJson;
-        break;
+  goBack(): void {
+    if (!this.hasUnsavedChanges || window.confirm('Existem alterações não salvas. Deseja sair mesmo assim?')) {
+      this.router.navigate(['home', 'repository']);
     }
   }
 
-  onSave(generated: boolean = false): void {
+  selectFile(file: StudioFile): void { this.activeFileKey = file.key; }
+  updateActiveContent(content: string): void {
+    switch (this.activeFileKey) {
+      case 'css': this.css = content; break;
+      case 'javascript': this.js = content; break;
+      case 'json': this.json = content; break;
+      default: this.html = content;
+    }
+    this.hasUnsavedChanges = true;
+  }
+  formatJson(): void {
+    if (this.activeFileKey !== 'json') return;
+    try {
+      this.json = JSON.stringify(JSON.parse(this.json), null, 2);
+      this.hasUnsavedChanges = true;
+    } catch {
+      this.toastService.error({summary: 'JSON inválido', detail: 'Revise a estrutura antes de formatar.'});
+    }
+  }
+  onSave(generated = false): void {
     this.loadingService.showLoading.next(true);
-    var param = {
-      idreport: this.id,
-      js: this.js,
-      html: this.html,
-      css: this.css,
-      data: this.json
-    }
+    const param = {idreport: this.id, js: this.js, html: this.html, css: this.css, data: this.json};
     this.reportService.saveTemplate(param).subscribe({
-      next: (data) => {
+      next: () => {
         this.loadingService.showLoading.next(false);
-        if(generated){
-          this.onGenerate();
-        } else{
-          this.toastService.success({summary: "SmartVerse", detail: "Salvo com sucesso"});
-        }
-
+        this.hasUnsavedChanges = false;
+        this.lastSavedAt = new Date();
+        generated ? this.onGenerate() : this.toastService.success({summary: 'SmartVerse', detail: 'Salvo com sucesso'});
       },
-      error: error => {
-        this.loadingService.showLoading.next(false);
-      }
-    })
+      error: () => this.loadingService.showLoading.next(false)
+    });
   }
-
-  onGet(){
+  onGet(): void {
     this.loadingService.showLoading.next(true);
     this.reportService.getTemplate(this.id).subscribe({
-      next: (data) => {
-        this.js = data.js;
-        this.json = data.data;
-        this.html = data.html;
-        this.css = data.css;
+      next: data => {
+        this.js = data.js ?? ''; this.json = data.data ?? ''; this.html = data.html ?? ''; this.css = data.css ?? '';
+        this.hasUnsavedChanges = false;
         this.loadingService.showLoading.next(false);
       },
-      error: error => {
-        this.loadingService.showLoading.next(false);
-      }
-    })
+      error: () => this.loadingService.showLoading.next(false)
+    });
   }
-
-  onGenerate(){
+  onGenerate(): void {
     this.loadingService.showLoading.next(true);
-    const param = {
-      data: null,
-      idreport: this.id
-    }
-    this.reportService.generateReport(param).subscribe({
-      next: (data) => {
-        const pdfBlob = base64ToBlob(data.report);
-        const blobUrl = URL.createObjectURL(pdfBlob);
+    this.reportService.generateReport({data: null, idreport: this.id}).subscribe({
+      next: data => {
+        const blobUrl = URL.createObjectURL(base64ToBlob(data.report));
         window.open(blobUrl, '_blank');
         this.loadingService.showLoading.next(false);
       },
-      error: error => {
-        this.loadingService.showLoading.next(false);
-      }
-    })
+      error: () => this.loadingService.showLoading.next(false)
+    });
   }
 }

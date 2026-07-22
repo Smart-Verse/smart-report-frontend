@@ -11,22 +11,21 @@ import { Login } from './login';
 import { CookiesService } from '../../shared/services/cookies/cookies.service';
 import { EnumCookie } from '../../shared/services/cookies/cookie.enum';
 import {BaseComponent} from "../../shared/common/base-component";
-import {Ripple} from "primeng/ripple";
 
 
 
 @Component({
-  selector: 'app-login',
-  standalone: true,
-  imports: [SharedCommonModule, Ripple],
-  providers: [SecurityService,ToastService],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+    selector: 'app-login',
+    imports: [SharedCommonModule],
+    providers: [SecurityService, ToastService],
+    templateUrl: './login.component.html',
+    styleUrl: './login.component.scss'
 })
 export class LoginComponent extends BaseComponent implements OnInit {
 
 
   public value: string = "";
+  public showPassword = false;
   public loginForm: FormGroup;
 
   constructor(

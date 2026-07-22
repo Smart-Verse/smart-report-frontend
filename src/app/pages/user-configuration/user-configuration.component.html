@@ -1,58 +1,119 @@
 <app-loading [showLoading]="showLoading"></app-loading>
-<div class="user-configuration">
-  <h2>{{translateService.translate("user_configuration")}}</h2>
-  <hr>
-  <div class="user-configuration-fields ">
-    <div *ngIf="false" class="image-view">
-      <app-image-upload
-        [imageUrl]="urlImage"
-        (eventLoading)="loading()"
-        (eventImageToken)="onGetTokenImage($event)"
-        [tokenImageUrl]="imageToken">
-      </app-image-upload>
-    </div>
-    <div class="user-fields formgrid grid" [formGroup]="formGroup">
-      <app-input-text
-        formControlName="name"
-        name="name"
-        [field]="formGroup"
-        class="field col-12 md:col-6 c-margin"
-        [label]="translateService.translate('user_configuration_name')"
-        type="text">
-      </app-input-text>
-      <app-input-text
-        formControlName="email"
-        name="email"
-        [disabled]="true"
-        [field]="formGroup"
-        class="field col-12 md:col-6 c-margin"
-        [label]="translateService.translate('user_configuration_email')"
-        type="text">
-      </app-input-text>
-      <app-dropdown
-        formControlName="theme"
-        name="theme"
-        [field]="formGroup"
-        [label]="translateService.translate('user_configuration_theme')"
-        [options]="_theme"
-        optionLabel="value"
-        class="field col-12 md:col-6 c-margin">
-      </app-dropdown>
-      <app-dropdown
-        formControlName="lang"
-        name="lang"
-        [field]="formGroup"
-        [label]="translateService.translate('user_configuration_language')"
-        [options]="_language"
-        optionLabel="value"
-        class="field col-12 md:col-6 c-margin">
-      </app-dropdown>
-    </div>
-    <div class="buttons">
-      <div>
-        <p-button  [label]="translateService.translate('common_save')" (onClick)="onSave()" />
-      </div>
-    </div>
 
-  </div>
-</div>
+<section class="settings-page">
+  <header class="settings-hero">
+    <div class="hero-copy">
+      <span class="eyebrow"><i class="pi pi-cog"></i> Preferências da conta</span>
+      <h1>{{ translateService.translate("user_configuration") }}</h1>
+      <p>Personalize sua identificação, o idioma da interface e a aparência do seu workspace.</p>
+    </div>
+    <div class="hero-status">
+      <span class="status-icon"><i class="pi pi-shield"></i></span>
+      <span><small>Conta protegida</small><strong>Configurações pessoais</strong></span>
+    </div>
+  </header>
+
+  <form class="settings-layout" [formGroup]="formGroup" (ngSubmit)="onSave()">
+    <aside class="profile-card">
+      <div class="avatar-preview" aria-hidden="true">
+        <span>{{ (formGroup.get('name')?.value || 'S').charAt(0).toUpperCase() }}</span>
+        <i class="pi pi-user"></i>
+      </div>
+      <h2>{{ formGroup.get('name')?.value || 'Sua conta' }}</h2>
+      <p>{{ formGroup.get('email')?.value || 'Conta SmartReport' }}</p>
+      <span class="account-badge"><i class="pi pi-check-circle"></i> Perfil ativo</span>
+
+      <div class="profile-divider"></div>
+
+      <div class="profile-note">
+        <i class="pi pi-info-circle"></i>
+        <p>Estas preferências afetam somente a experiência da sua conta e podem ser alteradas a qualquer momento.</p>
+      </div>
+
+      @if (false) {
+        <div class="image-view">
+          <app-image-upload
+            [imageUrl]="urlImage"
+            (eventLoading)="loading()"
+            (eventImageToken)="onGetTokenImage($event)"
+            [tokenImageUrl]="imageToken">
+          </app-image-upload>
+        </div>
+      }
+    </aside>
+
+    <main class="settings-panel">
+      <header class="panel-header">
+        <div class="panel-icon"><i class="pi pi-sliders-h"></i></div>
+        <div>
+          <span class="eyebrow">Geral</span>
+          <h2>Perfil e experiência</h2>
+          <p>Mantenha seus dados e preferências de uso atualizados.</p>
+        </div>
+      </header>
+
+      <div class="section-block">
+        <div class="section-heading">
+          <span class="section-number">01</span>
+          <div><h3>Informações pessoais</h3><p>Dados usados para identificar sua conta no SmartReport.</p></div>
+        </div>
+        <div class="fields-grid">
+          <app-input-text
+            formControlName="name"
+            name="name"
+            [field]="formGroup"
+            [label]="translateService.translate('user_configuration_name')"
+            type="text">
+          </app-input-text>
+          <app-input-text
+            formControlName="email"
+            name="email"
+            [disabled]="true"
+            [field]="formGroup"
+            [label]="translateService.translate('user_configuration_email')"
+            type="text">
+          </app-input-text>
+        </div>
+        <div class="locked-field-note"><i class="pi pi-lock"></i>O e-mail está vinculado à autenticação e não pode ser alterado nesta tela.</div>
+      </div>
+
+      <div class="section-block">
+        <div class="section-heading">
+          <span class="section-number">02</span>
+          <div><h3>Preferências da interface</h3><p>Escolha como o workspace deve aparecer para você.</p></div>
+        </div>
+        <div class="fields-grid">
+          <app-dropdown
+            formControlName="theme"
+            name="theme"
+            [field]="formGroup"
+            [label]="translateService.translate('user_configuration_theme')"
+            [options]="_theme"
+            optionLabel="value">
+          </app-dropdown>
+          <app-dropdown
+            formControlName="lang"
+            name="lang"
+            [field]="formGroup"
+            [label]="translateService.translate('user_configuration_language')"
+            [options]="_language"
+            optionLabel="value">
+          </app-dropdown>
+        </div>
+      </div>
+
+      <footer class="panel-footer">
+        <span><i class="pi pi-sync"></i>As alterações serão aplicadas imediatamente.</span>
+        <button class="save-button" type="submit" [disabled]="formGroup.invalid">
+          <i class="pi pi-check"></i>
+          {{ translateService.translate('common_save') }}
+        </button>
+      </footer>
+    </main>
+  </form>
+  @if (planOverview?.currentPlan?.code === 'FREE') {
+    <section class="plans-section"><header class="plans-header"><div><span class="eyebrow">Planos SmartReport</span><h2>Quando seu produto crescer, a gente acompanha.</h2><p>Templates continuam livres. A franquia considera somente gerações autenticadas por API.</p></div><div class="usage-card"><span>Consumo neste mês</span><strong>{{ planOverview?.apiUsed }} <small>/ {{ planOverview?.currentPlan?.apiMonthlyLimit }}</small></strong><div class="usage-track"><i [style.width.%]="usagePercent"></i></div><small>{{ planOverview?.apiRemaining }} gerações disponíveis</small></div></header>
+      <div class="plans-grid">@for (plan of planOverview?.plans; track plan.id) { <article class="plan-card" [class.current]="plan.currentPlan" [class.featured]="plan.code === 'PRO'">@if (plan.currentPlan) { <span class="plan-badge">Seu plano</span> }<div class="plan-icon"><i [class]="plan.customPlan ? 'pi pi-comments' : 'pi pi-bolt'"></i></div><h3>{{ plan.name }}</h3><p>{{ plan.description }}</p><div class="plan-price">@if (plan.customPlan) { <strong>Sob consulta</strong><small>conforme volumetria</small> } @else { <strong>{{ formatPrice(plan.monthlyPrice) }}</strong><small>/ mês</small> }</div><div class="plan-limit"><i class="pi pi-chart-line"></i><span>@if (plan.apiMonthlyLimit !== undefined && plan.apiMonthlyLimit !== null) { Até <strong>{{ plan.apiMonthlyLimit }}</strong> gerações por API/mês } @else { Franquia definida para sua operação }</span></div><div class="plan-limit"><i class="pi pi-infinity"></i><span>Criação de templates <strong>livre</strong></span></div><button type="button" [disabled]="plan.currentPlan" (click)="requestPlan(plan)">{{ plan.currentPlan ? 'Plano atual' : (plan.customPlan ? 'Falar sobre volumetria' : 'Tenho interesse') }}</button></article> }</div>
+    </section>
+  }
+</section>

@@ -1,19 +1,29 @@
-.list-view{
-  display: flex;
-  align-items: center;
-  padding: 10px;
-  background-color: #18181B;
-  margin-bottom: 5px;
-  height: 60px;
-  border-radius: 7px;
-  cursor: pointer;
-}
-.list-view:hover{
-  background-color: #3b3b40;
-}
-.item{
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
+:host { display: block; }
+.item-grid { display: flex; flex-direction: column; gap: 7px; }
+.item-grid.report-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+.library-item { position: relative; display: grid; grid-template-columns: 38px minmax(0, 1fr) 30px; align-items: center; gap: 10px; min-height: 58px; padding: 9px 8px 9px 10px; color: var(--text-soft); background: transparent; border: 1px solid transparent; border-radius: 10px; cursor: pointer; outline: none; transition: background-color .16s ease, border-color .16s ease, transform .16s ease, box-shadow .16s ease; }
+.library-item:hover, .library-item:focus-visible { background: var(--surface-hover); border-color: var(--border); }
+.library-item.selected { color: var(--primary); background: var(--primary-soft); border-color: var(--primary-border); }
+.item-icon { width: 38px; height: 38px; display: grid; place-items: center; color: #0891b2; background: #cffafe; border-radius: 9px; font-size: 15px; }
+.selected .item-icon { color: var(--primary); background: color-mix(in srgb, var(--primary-soft), var(--primary) 12%); }
+.item-content { min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.item-content strong { overflow: hidden; font-size: 12px; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
+.item-content span { overflow: hidden; color: var(--text-muted); font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
+.item-menu { width: 30px; height: 30px; display: grid; place-items: center; color: var(--text-muted); background: transparent; border: 0; border-radius: 7px; cursor: pointer; }
+.item-menu:hover { color: var(--text); background: var(--surface); }
+.library-item.report-item { grid-template-columns: 42px minmax(0, 1fr) 30px; grid-template-rows: auto auto 25px; min-height: 150px; padding: 14px; background: var(--surface); border-color: var(--border); box-shadow: 0 4px 14px rgba(15, 23, 42, .04); }
+.report-item:hover, .report-item:focus-visible { transform: translateY(-2px); border-color: var(--primary-border); box-shadow: 0 10px 24px rgba(15, 23, 42, .09); }
+.report-item .item-icon { width: 42px; height: 42px; color: #7c3aed; background: #ede9fe; }
+.report-item .item-content strong { font-size: 13px; }
+.report-id-row { grid-column: 1 / -1; min-width: 0; padding: 7px 8px; display: grid; grid-template-columns: auto minmax(0, 1fr) 22px; align-items: center; gap: 6px; color: var(--text-muted); background: var(--surface-soft); border: 1px solid var(--border); border-radius: 7px; }
+.report-id-row span { color: var(--primary); font-size: 8px; font-weight: 800; }
+.report-id-row code { overflow: hidden; font: 8px ui-monospace, SFMono-Regular, Consolas, monospace; text-overflow: ellipsis; white-space: nowrap; }
+.report-id-row button { width: 22px; height: 22px; display: grid; place-items: center; color: var(--text-muted); background: transparent; border: 0; border-radius: 5px; cursor: pointer; }
+.report-id-row button:hover { color: var(--primary); background: var(--primary-soft); }
+.open-hint { grid-column: 1 / -1; align-self: end; display: flex; align-items: center; justify-content: space-between; padding-top: 9px; color: var(--text-muted); border-top: 1px solid var(--border); font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
+.empty-state { min-height: 230px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 28px; color: var(--text-muted); text-align: center; }
+.empty-icon { width: 54px; height: 54px; display: grid; place-items: center; margin-bottom: 12px; color: var(--primary); background: var(--primary-soft); border: 1px solid var(--primary-border); border-radius: 16px; font-size: 20px; }
+.empty-state h3 { margin: 0 0 6px; color: var(--text); font-size: 14px; }
+.empty-state p { max-width: 260px; margin: 0; font-size: 11px; line-height: 1.5; }
+:host-context(.app-dark) .item-icon { color: #67e8f9; background: #12303b; }
+:host-context(.app-dark) .report-item .item-icon { color: #c4b5fd; background: #282044; }

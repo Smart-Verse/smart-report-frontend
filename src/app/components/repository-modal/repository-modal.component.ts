@@ -11,17 +11,16 @@ import {UserConfigurationService} from "../../services/user-configuration/user-c
 import {CrudService} from "../../shared/services/crud/crud.service";
 
 @Component({
-  selector: 'app-repository-modal',
-  standalone: true,
-  imports: [
-    SharedCommonModule
-  ],
-  providers: [
-    ToastService,
-    CrudService
-  ],
-  templateUrl: './repository-modal.component.html',
-  styleUrl: './repository-modal.component.scss'
+    selector: 'app-repository-modal',
+    imports: [
+        SharedCommonModule
+    ],
+    providers: [
+        ToastService,
+        CrudService
+    ],
+    templateUrl: './repository-modal.component.html',
+    styleUrl: './repository-modal.component.scss'
 })
 export class RepositoryModalComponent implements OnInit{
 

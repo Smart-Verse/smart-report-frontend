@@ -1,45 +1,34 @@
-import { HttpClientModule } from '@angular/common/http';
 import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterOutlet } from '@angular/router';
-import {MessageService, PrimeNGConfig} from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
-import { HttpModule } from './config/http/http.module';
 import {ThemeService} from "./shared/services/theme/theme.service";
 import {LoadingComponent} from "./shared/loading/loading.component";
 import {LoadingService} from "./shared/services/loading/loading.service";
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [
-    RouterOutlet,
-    HttpClientModule,
-    ToastModule,
-    ReactiveFormsModule,
-    HttpModule,
-    LoadingComponent
-  ],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss',
-  providers: [
-    MessageService
-  ],
+    selector: 'app-root',
+    imports: [
+        RouterOutlet,
+        ToastModule,
+        ReactiveFormsModule,
+        LoadingComponent
+    ],
+    templateUrl: './app.component.html',
+    styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit{
 
   showLoading: boolean = false;
 
   constructor(
-    private config: PrimeNGConfig,
     private themeService: ThemeService,
     private loadingService: LoadingService,
     private readonly chancheDetector: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
-    this.config.ripple = true;
-    this.themeService.setTheme('aura-dark-cyan');
+    this.themeService.loadTheme('dark');
     this.onRegistrySubjectLoading();
   }
 

@@ -1,0 +1,28 @@
+<section class="history-page">
+  <header class="history-hero">
+    <div>
+      <span class="eyebrow">Consumo da integração</span>
+      <h1>Histórico de gerações</h1>
+      <p>Acompanhe mês a mês quantos relatórios foram gerados pelas suas chaves de API.</p>
+    </div>
+    <span class="history-icon"><i class="pi pi-chart-bar"></i></span>
+  </header>
+
+  <section class="history-panel">
+    <header><div><span>Período</span><small>Mês de referência</small></div><div><span>Gerações</span><small>Consumo pela API</small></div></header>
+    @if (loading) {
+      <div class="state"><i class="pi pi-spin pi-spinner"></i><p>Carregando histórico...</p></div>
+    } @else if (!history.length) {
+      <div class="state"><i class="pi pi-inbox"></i><h2>Nenhuma geração registrada</h2><p>Quando sua integração gerar relatórios, o consumo mensal aparecerá aqui.</p></div>
+    } @else {
+      <div class="history-list">
+        @for (item of history; track item.period) {
+          <article>
+            <div class="period"><span class="calendar"><i class="pi pi-calendar"></i></span><div><strong>{{ formatPeriod(item.period) }}</strong><small>{{ item.period }}</small></div></div>
+            <div class="amount"><strong>{{ item.amount }}</strong><span>{{ item.amount === 1 ? 'relatório' : 'relatórios' }}</span></div>
+          </article>
+        }
+      </div>
+    }
+  </section>
+</section>

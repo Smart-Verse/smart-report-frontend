@@ -7,17 +7,16 @@ import {UserConfirmationService} from "../../services/user-confirmation/user-con
 import {SharedCommonModule} from "../../shared/common/shared-common.module";
 
 @Component({
-  selector: 'app-user-confirmation',
-  standalone: true,
-  imports: [
-    SharedCommonModule,
-  ],
-  providers: [
-    ToastService,
-    UserConfirmationService
-  ],
-  templateUrl: './user-confirmation.component.html',
-  styleUrl: './user-confirmation.component.scss'
+    selector: 'app-user-confirmation',
+    imports: [
+        SharedCommonModule,
+    ],
+    providers: [
+        ToastService,
+        UserConfirmationService
+    ],
+    templateUrl: './user-confirmation.component.html',
+    styleUrl: './user-confirmation.component.scss'
 })
 export class UserConfirmationComponent extends BaseComponent implements OnInit {
 
