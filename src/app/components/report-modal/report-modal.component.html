@@ -38,7 +38,7 @@
       @for (template of templates; track template.key) {
         <button class="template-card" type="button" [class.selected]="isSelected(template)" (click)="selectTemplate(template)" [style.--accent]="template.accent">
           <div class="preview" [class]="template.preview">
-            @if (template.preview === 'standard') { <span class="preview-title"></span><div class="preview-stats"><i></i><i></i><i></i></div><b></b><b></b> }
+            @if (template.preview === 'blank') { <span class="preview-blank"></span> } @if (template.preview === 'standard') { <span class="preview-title"></span><div class="preview-stats"><i></i><i></i><i></i></div><b></b><b></b> }
             @if (template.preview === 'list') { <span class="preview-title"></span><div class="preview-table"><i></i><i></i><i></i><i></i></div> }
             @if (template.preview === 'chart') { <span class="preview-title"></span><div class="preview-bars"><i></i><i></i><i></i><i></i><i></i></div> }
             @if (template.preview === 'financial') { <span class="preview-title"></span><div class="preview-money"><i></i><i></i><i></i></div><b></b><b></b> }

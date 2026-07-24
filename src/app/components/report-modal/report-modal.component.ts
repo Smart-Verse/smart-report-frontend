@@ -17,12 +17,12 @@ import {
 } from '../../services/report/page-layout';
 
 interface TemplateOption {
-  key: 'STANDARD' | 'LIST' | 'CHART' | 'FINANCIAL' | 'LANDSCAPE' | 'SALES_RECEIPT';
+  key: 'BLANK' | 'STANDARD' | 'LIST' | 'CHART' | 'FINANCIAL' | 'LANDSCAPE' | 'SALES_RECEIPT';
   name: string;
   description: string;
   icon: string;
   accent: string;
-  preview: 'standard' | 'list' | 'chart' | 'financial' | 'landscape' | 'receipt';
+  preview: 'blank' | 'standard' | 'list' | 'chart' | 'financial' | 'landscape' | 'receipt';
   pageFormat: PageFormat;
   pageOrientation: PageOrientation;
 }
@@ -41,6 +41,7 @@ export class ReportModalComponent implements OnInit {
   readonly pageFormats = PAGE_FORMATS;
   readonly pageOrientations = PAGE_ORIENTATIONS;
   readonly templates: TemplateOption[] = [
+    {key: 'BLANK', name: 'Em branco', description: 'Estrutura mínima para começar do zero.', icon: 'pi pi-file-plus', accent: '#0f766e', preview: 'blank', pageFormat: 'A4', pageOrientation: 'PORTRAIT'},
     {key: 'STANDARD', name: 'Executivo', description: 'Resumo moderno com indicadores e destaques.', icon: 'pi pi-file', accent: '#2563eb', preview: 'standard', pageFormat: 'A4', pageOrientation: 'PORTRAIT'},
     {key: 'LIST', name: 'Listagem', description: 'Tabela organizada para registros e cadastros.', icon: 'pi pi-list', accent: '#0891b2', preview: 'list', pageFormat: 'A4', pageOrientation: 'PORTRAIT'},
     {key: 'CHART', name: 'Gráficos', description: 'Painel analítico com métricas e evolução.', icon: 'pi pi-chart-bar', accent: '#7c3aed', preview: 'chart', pageFormat: 'A4', pageOrientation: 'PORTRAIT'},
