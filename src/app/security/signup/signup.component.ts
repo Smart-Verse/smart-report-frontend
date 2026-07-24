@@ -22,6 +22,8 @@ export class SignupComponent implements OnInit {
   public signUp: FormGroup;
   public showLoading = false;
   public showPassword = false;
+  public showResendConfirmation = false;
+  private pendingEmail = "";
 
   constructor(
     private readonly fieldsService: FieldsService,
@@ -56,8 +58,39 @@ export class SignupComponent implements OnInit {
         this.onSign();
       },
       error: (error) => {
-        this.toastService.error({summary: "Erro", detail: "ocorreu um erro ao cadastrar usuário"});
         this.showLoading = false;
+        if (error?.status === 409 && error?.error?.message === "ACCOUNT_CONFIRMATION_PENDING") {
+          this.pendingEmail = this.signUp.get("email")?.value;
+          this.showResendConfirmation = true;
+          return;
+        }
+        this.toastService.error({summary: "Erro", detail: "ocorreu um erro ao cadastrar usuário"});
+      }
+    });
+  }
+
+  onCloseResendConfirmation() {
+    this.showResendConfirmation = false;
+  }
+
+  onResendConfirmation() {
+    this.showLoading = true;
+    this.securityService.resendConfirmation(this.pendingEmail).subscribe({
+      next: () => {
+        this.showLoading = false;
+        this.showResendConfirmation = false;
+        this.toastService.success({
+          summary: "E-mail reenviado",
+          detail: "Enviamos um novo link de ativação. Verifique também sua caixa de spam."
+        });
+        this.onSign();
+      },
+      error: () => {
+        this.showLoading = false;
+        this.toastService.error({
+          summary: "Não foi possível reenviar",
+          detail: "Tente novamente em alguns instantes."
+        });
       }
     });
   }

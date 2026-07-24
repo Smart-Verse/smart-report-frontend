@@ -67,7 +67,8 @@ export class LoginComponent extends BaseComponent implements OnInit {
         this.onShowLoading();
       },
       error: (error) => {
-        this.toastService.error({summary: "Erro", detail: "Ocorreu um erro"});
+        const detail = error?.error?.message ?? "Não foi possível realizar o login";
+        this.toastService.error({summary: "Erro", detail});
         this.onShowLoading();
       }
     });

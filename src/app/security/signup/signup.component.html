@@ -1,4 +1,16 @@
 <app-loading [showLoading]="showLoading"></app-loading>
+<div class="resend-backdrop" *ngIf="showResendConfirmation" role="dialog" aria-modal="true" aria-labelledby="resend-title">
+  <section class="resend-dialog">
+    <div class="resend-icon"><i class="pi pi-envelope"></i></div>
+    <span class="resend-eyebrow">Conta aguardando ativação</span>
+    <h2 id="resend-title">Esta conta já foi criada</h2>
+    <p>O endereço informado pertence a uma conta que ainda não foi confirmada. Deseja receber um novo link de ativação?</p>
+    <div class="resend-actions">
+      <button type="button" class="resend-cancel" (click)="onCloseResendConfirmation()" [disabled]="showLoading">Agora não</button>
+      <button type="button" class="resend-submit" (click)="onResendConfirmation()" [disabled]="showLoading"><i class="pi pi-send"></i> Reenviar e-mail</button>
+    </div>
+  </section>
+</div>
 <main class="auth-page signup-page">
   <section class="auth-form-side">
     <div class="auth-form-shell">

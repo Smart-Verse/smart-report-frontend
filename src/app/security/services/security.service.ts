@@ -18,4 +18,9 @@ export class SecurityService {
     return this.http.post<any>(`register`, params);
   }
 
+
+  public resendConfirmation(email: string): Observable<any> {
+    return this.http.post<any>(`resendConfirmation`, {email});
+  }
+
 }

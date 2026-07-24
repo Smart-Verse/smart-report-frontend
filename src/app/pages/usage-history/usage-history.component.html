@@ -26,3 +26,23 @@
     }
   </section>
 </section>
+
+<section class="history-panel payment-panel">
+  <header><div><span>Pagamentos e vigência</span><small>Cobranças e vencimentos da assinatura</small></div><div><span>Status</span><small>Processado pelo gateway</small></div></header>
+  @if (paymentLoading) {
+    <div class="state"><i class="pi pi-spin pi-spinner"></i><p>Carregando pagamentos...</p></div>
+  } @else if (!payments.length) {
+    <div class="state"><i class="pi pi-wallet"></i><h2>Nenhum pagamento registrado</h2><p>Suas cobranças aparecerão aqui após iniciar uma contratação.</p></div>
+  } @else {
+    <div class="payment-list">
+      @for (payment of payments; track payment.id) {
+        <article>
+          <div><strong>{{ payment.planCode }}</strong><small>{{ cycleLabel(payment.billingCycle) }} · criado em {{ formatDate(payment.createdAt) }}</small></div>
+          <div><strong>{{ formatPrice(payment.amountCents) }}</strong><small>Pagamento: {{ formatDate(payment.paidAt) }}</small></div>
+          <div><strong>Vigência</strong><small>{{ formatDate(payment.coverageStartAt) }} até {{ formatDate(payment.coverageEndAt) }}</small></div>
+          <span class="payment-status" [attr.data-status]="payment.status">{{ statusLabel(payment.status) }}</span>
+        </article>
+      }
+    </div>
+  }
+</section>

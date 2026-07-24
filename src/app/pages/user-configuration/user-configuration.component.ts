@@ -1,4 +1,6 @@
 import {Component, OnInit} from '@angular/core';
+import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
+import {PlanUpgradeModalComponent} from "../../components/plan-upgrade-modal/plan-upgrade-modal.component";
 import {UserConfigurationConfig} from "./user-configuration.config";
 import {FormGroup} from "@angular/forms";
 import {language, theme} from "../../shared/util/constants";
@@ -20,7 +22,8 @@ import {formatPlanPrice, PlanOption, PlanOverview, PlanService} from "../../serv
     providers: [
         UserConfigurationService,
         ToastService,
-        ThemeService
+        ThemeService,
+        DialogService
     ],
     templateUrl: './user-configuration.component.html',
     styleUrl: './user-configuration.component.scss'
@@ -35,6 +38,7 @@ export class UserConfigurationComponent extends BaseComponent implements OnInit 
   protected readonly _language = language;
   planOverview?: PlanOverview;
   readonly formatPrice = formatPlanPrice;
+  private planDialog: DynamicDialogRef | null | undefined;
 
   constructor(
     public readonly translateService: TranslateService,
@@ -43,7 +47,8 @@ export class UserConfigurationComponent extends BaseComponent implements OnInit 
     private readonly userConfigurationService: UserConfigurationService,
     private readonly imageService: ImageUploadService,
     private readonly themeService: ThemeService,
-    private readonly planService: PlanService
+    private readonly planService: PlanService,
+    private readonly dialogService: DialogService
   ) {
     super();
     this.formGroup = this.fieldsService.onCreateFormBuiderDynamic(this.configuration.fields);
@@ -94,8 +99,16 @@ export class UserConfigurationComponent extends BaseComponent implements OnInit 
     return limit ? Math.min(100, ((this.planOverview?.apiUsed ?? 0) / limit) * 100) : 0;
   }
 
-  requestPlan(plan: PlanOption): void {
-    this.toastService.info({summary: plan.name, detail: plan.customPlan ? 'Vamos preparar o contato para entender sua volumetria.' : 'Registramos seu interesse. A contratação online será disponibilizada em breve.'});
+  requestPlan(_plan: PlanOption): void {
+    if (!this.planOverview) return;
+    this.planDialog = this.dialogService.open(PlanUpgradeModalComponent, {
+      header: "Escolha seu plano e período",
+      width: "min(1120px, 96vw)",
+      modal: true,
+      draggable: false,
+      data: {overview: this.planOverview},
+      baseZIndex: 999999
+    });
   }
 
   private loadPlanOverview(): void {

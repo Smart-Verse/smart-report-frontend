@@ -1,62 +1,97 @@
 # smart-report-frontend — Handoff
 
+> Estado consolidado em 22/07/2026.
+
 ## Responsabilidade e stack
 
-SPA Angular 21 standalone para autenticação, biblioteca, documentação, configurações, API Keys e Studio. Usa PrimeNG 21, PrimeFlex, RxJS e CodeMirror 6.
+SPA Angular 21 standalone para autenticação, biblioteca, Studio, documentação, configurações, planos, histórico de consumo e API Keys.
 
-## Navegação e telas
+- Angular 21 e TypeScript.
+- PrimeNG 21 e PrimeFlex.
+- CodeMirror 6.
+- Temas claro e escuro por tokens CSS.
 
-- `home/repository`: dashboard, métricas, repositórios, templates e UUID copiável.
-- `home/studio/:id`: editor HTML/CSS/JS/JSON, salvar, visualizar PDF e voltar.
-- `home/documentation`: guia de uso e botão para gerenciar API Keys.
-- `home/apiKeys`: criar, listar e revogar chaves; segredo revelado uma única vez.
-- `home/userConfiguration`: perfil, idioma e tema com layout responsivo.
+## Navegação
 
-Ao criar template, o modal oferece Executivo, Listagem, Gráficos e Financeiro e envia `templateType` ao backend.
+- `/login`: autenticação.
+- `/singup`: cadastro histórico; preservar o nome enquanto não houver migração coordenada.
+- `home/repository`: biblioteca, métricas, repositórios e templates.
+- `home/studio/:id`: edição e visualização.
+- `home/documentation`: guia de integração e diretivas.
+- `home/usageHistory`: histórico mensal de geração por API.
+- `home/apiKeys`: criação, listagem e revogação de chaves.
+- `home/userConfiguration`: perfil, idioma, tema e cards dos planos.
 
-## HTTP e autenticação
+Contas Free veem um aviso na biblioteca e podem abrir `PlanUpgradeModalComponent`. A contratação ainda não altera o plano.
+
+## Studio e templates
+
+O Studio edita quatro arquivos: HTML, CSS, JavaScript e JSON. CodeMirror oferece highlighting, histórico, busca, indentação e pares.
+
+A interface não deve citar a tecnologia interna usada para interpretar templates. Documentar apenas o contrato suportado:
+
+- interpolação `{{ data.campo }}`;
+- condicionais `v-if` e `v-else`;
+- repetição `v-for`;
+- atributos dinâmicos `:key`, `:class` e `:style`;
+- funções auxiliares declaradas em `script.js`.
+
+Modelos iniciais: Executivo, Listagem, Gráficos e Financeiro.
+
+## HTTP e sessão
 
 - Desenvolvimento: `http://localhost:5070/smartreport`.
 - Produção: `https://app.smartverse.com.br/api/smartreport`.
-- Existe um único HttpClient raiz em `app.config.ts`, com `withFetch()` e `authInterceptor`.
-- O interceptor prefixa endpoints de negócio, envia JWT e preserva `/assets/` e uploads externos.
-- Traduções e configuração de cadastro continuam locais.
-- Em 401 e no logout, `clearClientSession()` limpa cookies, localStorage e sessionStorage.
-- Guards retornam `UrlTree` e o logout usa `replaceUrl`.
-
-## Tema e Studio
-
-Tokens globais controlam claro/escuro por `.app-dark`. A preferência fica no localStorage enquanto a sessão está ativa. CodeMirror substituiu Monaco e mantém highlighting, histórico, busca, indentação e pares.
-
-O Studio busca `getTemplate`, salva em `saveTemplate` e gera em `generateReport`. A resposta contém PDF em base64.
-
-## Validação
-
-```bash
-npm install
-npm start
-npm run build
-npm test
-```
-
-O build deve permanecer abaixo de 5 MB.
-
-## Pontos de atenção
-
-- O cookie JWT mantém o nome legado `outh`.
-- Muitos contratos ainda usam `any`; conferir runtime após regenerar backend.
-- Outputs gerados podem envolver dados em `output`; mapear explicitamente.
-- Não registrar outro `provideHttpClient()` sem o interceptor.
-- Providers usados por páginas lazy, como `MessageService`, devem estar no injetor raiz.
-- Qualquer novo asset local deve permanecer isento do prefixo da API.
+- Manter um único `provideHttpClient(withFetch(), withInterceptors([authInterceptor]))`.
+- O interceptor prefixa URLs de negócio e adiciona o JWT do cookie `outh`.
+- `/assets/` e uploads externos aprovados não recebem o prefixo.
+- Traduções e configuração de cadastro são assets locais.
+- Em 401 e no logout, limpar cookies, `localStorage` e `sessionStorage`.
+- Guards retornam boolean ou `UrlTree`.
 
 ## Planos
 
-`PlanService` consulta `GET getPlanOverview`; preços, franquias, textos e ordem vêm do catálogo administrativo do backend. Não fixar valores comerciais no Angular.
+`PlanService` consome:
 
-Quando o plano atual é `FREE`, `home/userConfiguration` apresenta consumo do mês e os cards responsivos dos planos. Templates aparecem como livres em todas as opções. Os botões pagos apenas registram visualmente a intenção por enquanto; checkout e troca de assinatura ainda não foram implementados.
+- `GET getPlanOverview`: catálogo, plano atual e uso;
+- `GET getApiUsageHistory`: histórico mensal.
 
-- `home/usageHistory`: listagem mensal das gerações autenticadas por API.
-- A biblioteca mostra um aviso para contas Free e abre `PlanUpgradeModalComponent`; catálogo e valores continuam vindo de `PlanService`.
-- Valores monetários usam `Intl.NumberFormat`, evitando dependência de locale Angular não registrado.
+Preços, descrições, franquias e ordem vêm do backend. Não fixar valores comerciais no Angular. Usar `Intl.NumberFormat` para moeda, pois o locale Angular `pt-BR` não está registrado globalmente.
 
+## Identidade
+
+- Tokens principais: `--surface`, `--surface-soft`, `--text`, `--text-muted`, `--border`, `--primary`.
+- Todo componente novo deve funcionar em claro, escuro e mobile.
+- A marca SmartVerse aparece nas telas de autenticação.
+- O favicon SmartReport está em `src/favicon.svg`; `favicon.ico` é fallback.
+- Não adicionar outro provider local de `HttpClient` ou `MessageService` em páginas lazy.
+
+## Build e publicação
+
+```bash
+npm install
+npm run build
+```
+
+Saída: `dist/smart-report-frontend`. O bundle deve permanecer abaixo de 5 MB.
+
+Após publicar, validar:
+
+- base path e refresh das rotas Angular;
+- login, logout e cookie;
+- carregamento de traduções;
+- temas;
+- biblioteca e Studio;
+- geração humana;
+- API Keys;
+- overview dos planos;
+- modal de upgrade;
+- histórico mensal;
+- favicon.
+
+## Pontos de atenção
+
+- Muitos contratos antigos ainda usam `any`.
+- Outputs gerados podem possuir wrapper; mapear explicitamente.
+- Checkout, pagamento e troca automática de plano não foram implementados.
+- Não expor detalhes internos do renderizador na interface ou no material comercial.

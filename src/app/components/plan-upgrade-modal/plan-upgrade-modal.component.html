@@ -1,8 +1,20 @@
 <div class="upgrade-intro">
   <span>Planos SmartReport</span>
   <h2>Mais relatórios, a mesma simplicidade.</h2>
-  <p>Escolha a franquia ideal para sua integração. A criação de templates continua livre em todos os planos.</p>
+  <p>Escolha a franquia e o período. Renovações são acrescentadas ao vencimento atual, sem perda de dias já pagos.</p>
 </div>
+
+<div class="cycle-selector" role="group" aria-label="Período de contratação">
+  @for (cycleOption of cycles; track cycleOption.key) {
+    <button type="button" [class.selected]="selectedCycle === cycleOption.key" (click)="selectedCycle = cycleOption.key">
+      <span>{{ cycleOption.label }}</span>
+      <small>{{ cycleOption.months }} {{ cycleOption.months === 1 ? 'mês' : 'meses' }}</small>
+      @if (cycleOption.discount) { <strong>Economize {{ cycleOption.discount }}%</strong> }
+    </button>
+  }
+</div>
+
+@if (errorMessage) { <div class="checkout-error"><i class="pi pi-exclamation-circle"></i>{{ errorMessage }}</div> }
 
 <div class="plans-grid">
   @for (plan of overview.plans; track plan.id) {
@@ -15,16 +27,20 @@
       <div class="plan-price">
         @if (plan.customPlan) {
           <strong>Sob consulta</strong><small>conforme volumetria</small>
+        } @else if (plan.code === 'FREE') {
+          <strong>Grátis</strong><small>para sempre</small>
         } @else {
-          <strong>{{ formatPrice(plan.monthlyPrice) }}</strong><small>por mês</small>
+          <strong>{{ formatPrice(total(plan)) }}</strong><small>total por {{ cycle.label.toLowerCase() }}</small>
+          @if (cycle.discount) { <del>{{ formatPrice((plan.monthlyPrice ?? 0) * cycle.months) }}</del> }
         }
       </div>
       <ul>
         <li><i class="pi pi-chart-line"></i><span>@if (plan.apiMonthlyLimit !== undefined && plan.apiMonthlyLimit !== null) { Até <strong>{{ plan.apiMonthlyLimit }}</strong> gerações/mês } @else { Volume definido para sua operação }</span></li>
         <li><i class="pi pi-check-circle"></i><span>Templates ilimitados</span></li>
       </ul>
-      <button type="button" [disabled]="plan.currentPlan" (click)="choose(plan)">
-        {{ plan.currentPlan ? 'Seu plano atual' : (plan.customPlan ? 'Conversar com a SmartVerse' : 'Escolher este plano') }}
+      <button class="choose-button" type="button" [disabled]="plan.code === 'FREE' || !!loadingPlanCode" (click)="choose(plan)">
+        @if (loadingPlanCode === plan.code) { <i class="pi pi-spin pi-spinner"></i> }
+        {{ plan.customPlan ? 'Conversar com a SmartVerse' : (plan.currentPlan ? 'Renovar este plano' : (plan.code === 'FREE' ? 'Plano gratuito' : 'Ir para pagamento')) }}
       </button>
     </article>
   }

@@ -20,6 +20,27 @@ export interface PlanOverview {
   apiRemaining?: number;
 }
 
+export type BillingCycle = "MONTHLY" | "QUARTERLY" | "SEMIANNUAL";
+
+export interface PaymentLinkResponse {
+  url: string;
+  orderNsu: string;
+  status: string;
+  reused: boolean;
+}
+
+export interface PaymentHistoryItem {
+  id: string;
+  planCode: string;
+  billingCycle: BillingCycle;
+  amountCents: number;
+  status: "PENDING" | "PAID" | "FAILED" | "CANCELLED" | "EXPIRED";
+  createdAt: string;
+  paidAt?: string;
+  coverageStartAt?: string;
+  coverageEndAt?: string;
+}
+
 export interface ApiUsageHistoryItem {
   period: string;
   amount: number;
@@ -39,6 +60,14 @@ export class PlanService {
 
   overview(): Observable<PlanOverview> {
     return this.http.get<PlanOverview>("getPlanOverview");
+  }
+
+  createPaymentLink(planCode: string, billingCycle: BillingCycle): Observable<PaymentLinkResponse> {
+    return this.http.post<PaymentLinkResponse>("createPaymentLink", {planCode, billingCycle});
+  }
+
+  paymentHistory(): Observable<{payments: PaymentHistoryItem[]}> {
+    return this.http.get<{payments: PaymentHistoryItem[]}>("getPaymentHistory");
   }
 
   history(): Observable<ApiUsageHistory> {
