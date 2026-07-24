@@ -51,6 +51,8 @@
           <div class="endpoint"><span class="method">POST</span><code>https://app.smartverse.com.br/api/smartreport/generateReport</code></div>
           <div class="code-block"><header><span>Exemplo com cURL</span><button (click)="copy(curlExample, 'curl')"><i [class]="copiedSnippet === 'curl' ? 'pi pi-check' : 'pi pi-copy'"></i>{{ copiedSnippet === 'curl' ? 'Copiado' : 'Copiar' }}</button></header><pre><code>{{ curlExample }}</code></pre></div>
           <div class="response-note"><i class="pi pi-shield"></i><p>Guarde a chave somente no backend ou gerenciador de segredos; nunca a coloque em aplicações web públicas. A resposta JSON contém <code>report</code> com o PDF codificado em base64. Decodifique o valor para salvar o arquivo ou apresentá-lo no navegador.</p></div>
+          <div class="code-block"><header><span>Frontend: Base64 para PDF</span><button (click)="copy(base64Example, 'base64')"><i [class]="copiedSnippet === 'base64' ? 'pi pi-check' : 'pi pi-copy'"></i>{{ copiedSnippet === 'base64' ? 'Copiado' : 'Copiar' }}</button></header><pre><code>{{ base64Example }}</code></pre></div>
+          <p class="api-help"><i class="pi pi-info-circle"></i>O campo <code>report</code> é uma string Base64 sem o prefixo <code>data:application/pdf;base64,</code>. Converta-o para <code>Blob</code> antes de abrir ou baixar. Em aplicações Angular, use <code>window.atob</code> no navegador ou um decoder equivalente.</p>
         </div>
       </section>
 

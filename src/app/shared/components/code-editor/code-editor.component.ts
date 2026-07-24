@@ -155,6 +155,23 @@ export class CodeEditorComponent implements AfterViewInit, OnChanges, OnDestroy,
     }
   }
 
+  insertAtCursor(content: string): void {
+    if (!content || this.disabled) return;
+    if (!this.editor) {
+      this.value += content;
+      this.onChange(this.value);
+      return;
+    }
+
+    const selection = this.editor.state.selection.main;
+    this.editor.dispatch({
+      changes: {from: selection.from, to: selection.to, insert: content},
+      selection: {anchor: selection.from + content.length},
+      scrollIntoView: true
+    });
+    this.editor.focus();
+  }
+
   ngOnDestroy(): void {
     this.themeObserver?.disconnect();
     this.editor?.destroy();

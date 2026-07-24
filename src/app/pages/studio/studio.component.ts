@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {SharedCommonModule} from '../../shared/common/shared-common.module';
 import {StudioConfig} from './studio.config';
@@ -19,6 +19,10 @@ import {
   pageFormatLabel,
   pagePreviewAspectRatio
 } from '../../services/report/page-layout';
+import {
+  appendSnippetOnce, mergeComponentData, REPORT_COMPONENT_CATEGORIES, REPORT_COMPONENTS,
+  ReportComponentCategory, ReportComponentSnippet
+} from './report-component-catalog';
 
 type StudioFileKey = 'html' | 'css' | 'javascript' | 'json';
 interface StudioFile { key: StudioFileKey; name: string; description: string; icon: string; language: CodeEditorLanguage; badge: string; }
@@ -31,6 +35,7 @@ interface StudioFile { key: StudioFileKey; name: string; description: string; ic
   styleUrl: './studio.component.scss'
 })
 export class StudioComponent extends StudioConfig implements OnInit {
+  @ViewChild(CodeEditorComponent) private codeEditor?: CodeEditorComponent;
   readonly files: StudioFile[] = [
     {key: 'html', name: 'template.html', description: 'Estrutura do relatório', icon: 'pi pi-code', language: 'html', badge: 'HTML'},
     {key: 'css', name: 'styles.css', description: 'Aparência e impressão', icon: 'pi pi-palette', language: 'css', badge: 'CSS'},
@@ -38,6 +43,8 @@ export class StudioComponent extends StudioConfig implements OnInit {
     {key: 'json', name: 'data.json', description: 'Dados para visualização', icon: 'pi pi-database', language: 'json', badge: 'JSON'}
   ];
   readonly pageFormats = PAGE_FORMATS;
+  readonly componentCategories = REPORT_COMPONENT_CATEGORIES;
+  readonly components = REPORT_COMPONENTS;
   readonly pageOrientations = PAGE_ORIENTATIONS;
   activeFileKey: StudioFileKey = 'html';
   pageFormat: PageFormat = 'A4';
@@ -45,6 +52,10 @@ export class StudioComponent extends StudioConfig implements OnInit {
   hasUnsavedChanges = false;
   lastSavedAt?: Date;
   copiedReportId = false;
+  toolboxOpen = true;
+  componentSearch = '';
+  activeComponentCategory: 'all' | ReportComponentCategory = 'all';
+  lastInsertedComponent?: string;
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,
@@ -69,6 +80,14 @@ export class StudioComponent extends StudioConfig implements OnInit {
     return isThermalPageFormat(this.pageFormat)
       ? this.pageOrientations.filter(option => option.value === 'PORTRAIT')
       : this.pageOrientations;
+  }
+  get filteredComponents(): readonly ReportComponentSnippet[] {
+    const query = this.componentSearch.trim().toLocaleLowerCase('pt-BR');
+    return this.components.filter(item => {
+      const categoryMatches = this.activeComponentCategory === 'all' || item.category === this.activeComponentCategory;
+      const textMatches = !query || `${item.name} ${item.description} ${item.files.join(' ')}`.toLocaleLowerCase('pt-BR').includes(query);
+      return categoryMatches && textMatches;
+    });
   }
   get pagePreviewRatio(): string { return pagePreviewAspectRatio(this.pageFormat, this.pageOrientation); }
   get pageLayoutLabel(): string {
@@ -95,6 +114,31 @@ export class StudioComponent extends StudioConfig implements OnInit {
   }
 
   selectFile(file: StudioFile): void { this.activeFileKey = file.key; }
+  selectComponentCategory(category: 'all' | ReportComponentCategory): void { this.activeComponentCategory = category; }
+  insertComponent(item: ReportComponentSnippet): void {
+    const htmlWasActive = this.activeFileKey === 'html';
+    if (htmlWasActive) {
+      this.codeEditor?.insertAtCursor(item.html);
+    } else {
+      this.html = `${this.html.trimEnd()}${this.html.trim() ? '\n' : ''}${item.html}`;
+      this.activeFileKey = 'html';
+    }
+
+    const marker = `sr:component:${item.id}`;
+    this.css = appendSnippetOnce(this.css, item.css, marker);
+    this.js = appendSnippetOnce(this.js, item.javascript, marker);
+    try {
+      this.json = mergeComponentData(this.json, item.data);
+    } catch {
+      this.toastService.error({summary: 'Componente adicionado sem dados', detail: 'O data.json atual é inválido. O HTML e o CSS foram inseridos, mas revise o JSON para incluir os dados de exemplo.'});
+    }
+    this.hasUnsavedChanges = true;
+    this.lastInsertedComponent = item.id;
+    window.setTimeout(() => {
+      if (!htmlWasActive) this.codeEditor?.insertAtCursor('');
+      if (this.lastInsertedComponent === item.id) this.lastInsertedComponent = undefined;
+    }, 1600);
+  }
   changePageFormat(format: PageFormat): void {
     this.pageFormat = format;
     if (isThermalPageFormat(format)) this.pageOrientation = 'PORTRAIT';

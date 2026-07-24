@@ -47,6 +47,19 @@ export class DocumentationComponent {
   }).format(value);
 }`;
 
+  readonly base64Example = `const response = await fetch(API_URL + '/generateReport', {
+  method: 'POST',
+  headers: { 'X-API-Key': apiKey, 'Content-Type': 'application/json' },
+  body: JSON.stringify({ idreport, data })
+});
+if (!response.ok) throw new Error('Falha ao gerar relatório');
+const { report } = await response.json();
+const bytes = Uint8Array.from(atob(report), char => char.charCodeAt(0));
+const pdf = new Blob([bytes], { type: 'application/pdf' });
+const url = URL.createObjectURL(pdf);
+window.open(url, '_blank');
+setTimeout(() => URL.revokeObjectURL(url), 60_000);`;
+
   readonly curlExample = `curl -X POST "https://app.smartverse.com.br/api/smartreport/generateReport" \\
   -H "X-API-Key: SUA_CHAVE_DE_API" \\
   -H "Content-Type: application/json" \\

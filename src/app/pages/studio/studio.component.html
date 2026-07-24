@@ -6,11 +6,12 @@
       <div><div class="eyebrow">SmartReport Studio</div><div class="title-row"><h1>Editor de relatório</h1><span class="save-state" [class.unsaved]="hasUnsavedChanges"><span class="state-dot"></span>{{ hasUnsavedChanges ? 'Alterações não salvas' : 'Tudo salvo' }}</span></div><button type="button" class="report-id" (click)="copyReportId()" [title]="id"><span>ID</span><code>{{ id }}</code><i [class]="copiedReportId ? 'pi pi-check' : 'pi pi-copy'"></i></button></div>
     </div>
     <div class="toolbar-actions">
+      <button type="button" class="components-toggle" [class.active]="toolboxOpen" (click)="toolboxOpen = !toolboxOpen" title="Abrir biblioteca de componentes"><i class="pi pi-objects-column"></i><span>Componentes</span></button>
       <p-button icon="pi pi-eye" [label]="translateService.translate('common_preview')" severity="secondary" [outlined]="true" (onClick)="onSave(true)" />
       <p-button icon="pi pi-save" [label]="translateService.translate('common_save')" (onClick)="onSave()" />
     </div>
   </header>
-  <div class="studio-workspace">
+  <div class="studio-workspace" [class.toolbox-open]="toolboxOpen">
     <aside class="file-explorer" aria-label="Arquivos do relatório">
       <div class="explorer-heading"><span>Arquivos</span><span class="file-count">{{ files.length }}</span></div>
       <nav class="file-list">
@@ -45,5 +46,34 @@
         <div class="status-group">@if (lastSavedAt) { <span>Salvo às {{ lastSavedAt | date:'HH:mm' }}</span> }<span>UTF-8</span></div>
       </footer>
     </main>
+    @if (toolboxOpen) {
+      <button type="button" class="toolbox-backdrop" (click)="toolboxOpen = false" aria-label="Fechar biblioteca de componentes"></button>
+      <aside class="component-toolbox" aria-label="Biblioteca de componentes">
+        <header class="toolbox-header">
+          <div><span>Ferramentas</span><h2>Componentes</h2></div>
+          <button type="button" (click)="toolboxOpen = false" aria-label="Fechar componentes"><i class="pi pi-times"></i></button>
+        </header>
+        <p class="toolbox-intro">Clique em um bloco para inserir no HTML. Estilos e dados necessários são preparados automaticamente.</p>
+        <label class="component-search"><i class="pi pi-search"></i><input type="search" [(ngModel)]="componentSearch" placeholder="Buscar componente..." aria-label="Buscar componente"></label>
+        <nav class="category-list" aria-label="Categorias de componentes">
+          @for (category of componentCategories; track category.value) {
+            <button type="button" [class.active]="activeComponentCategory === category.value" (click)="selectComponentCategory(category.value)" [title]="category.label"><i [class]="category.icon"></i><span>{{ category.label }}</span></button>
+          }
+        </nav>
+        <div class="component-result-count">{{ filteredComponents.length }} {{ filteredComponents.length === 1 ? 'componente' : 'componentes' }}</div>
+        <div class="component-list">
+          @for (item of filteredComponents; track item.id) {
+            <button type="button" class="component-card" [class.inserted]="lastInsertedComponent === item.id" (click)="insertComponent(item)">
+              <span class="component-icon"><i [class]="lastInsertedComponent === item.id ? 'pi pi-check' : item.icon"></i></span>
+              <span class="component-copy"><strong>{{ lastInsertedComponent === item.id ? 'Adicionado!' : item.name }}</strong><small>{{ item.description }}</small><span class="file-tags">@for (file of item.files; track file) { <em>{{ file }}</em> }</span></span>
+              <i class="pi pi-plus component-add"></i>
+            </button>
+          } @empty {
+            <div class="component-empty"><i class="pi pi-search"></i><strong>Nenhum componente</strong><span>Tente outro termo ou categoria.</span></div>
+          }
+        </div>
+        <footer class="toolbox-footer"><i class="pi pi-sparkles"></i><span>Os blocos usam HTML, CSS e Vue compatíveis com o motor do SmartReport.</span></footer>
+      </aside>
+    }
   </div>
 </section>
