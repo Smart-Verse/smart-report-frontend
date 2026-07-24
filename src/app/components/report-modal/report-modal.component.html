@@ -14,8 +14,26 @@
     </app-input-text>
   </div>
 
+  <section class="layout-selector">
+    <div class="selector-heading layout-heading"><div><span>Formato de saída</span><h3>Qual será o tamanho da página?</h3></div><small>PDF e impressão</small></div>
+    <div class="layout-grid">
+      <div class="layout-fields">
+        <label class="select-field"><span>Formato</span><p-select formControlName="pageFormat" [options]="pageFormats" optionLabel="label" optionValue="value" appendTo="body" (onChange)="onPageFormatChange($event.value)">
+          <ng-template #selectedItem let-selected><div class="format-option"><strong>{{ selected.label }}</strong><small>{{ selected.description }}</small></div></ng-template>
+          <ng-template #item let-option><div class="format-option"><strong>{{ option.label }}</strong><small>{{ option.description }}</small></div></ng-template>
+        </p-select></label>
+        <label class="select-field"><span>Orientação</span><p-select formControlName="pageOrientation" [options]="availableOrientations" optionLabel="label" optionValue="value" appendTo="body" /></label>
+        @if (selectedPageFormat.startsWith('THERMAL_')) { <p class="thermal-note"><i class="pi pi-info-circle"></i>A altura da bobina acompanha automaticamente o conteúdo.</p> }
+      </div>
+      <div class="paper-preview-wrap" aria-label="Prévia da proporção da página">
+        <div class="paper-preview" [style.aspect-ratio]="previewAspectRatio"><i class="pi pi-file"></i><span>{{ selectedPageFormat.startsWith('THERMAL_') ? 'RECIBO' : 'RELATÓRIO' }}</span></div>
+        <strong>{{ selectedPageFormat }}</strong><small>{{ selectedFormatDescription }} · {{ selectedPageOrientation === 'LANDSCAPE' ? 'Paisagem' : 'Retrato' }}</small>
+      </div>
+    </div>
+  </section>
+
   @if (!isEditing) {
-    <div class="selector-heading"><div><span>Modelo inicial</span><h3>Como você quer começar?</h3></div><small>4 opções</small></div>
+    <div class="selector-heading"><div><span>Modelo inicial</span><h3>Como você quer começar?</h3></div><small>6 opções</small></div>
     <div class="template-grid">
       @for (template of templates; track template.key) {
         <button class="template-card" type="button" [class.selected]="isSelected(template)" (click)="selectTemplate(template)" [style.--accent]="template.accent">
@@ -24,6 +42,8 @@
             @if (template.preview === 'list') { <span class="preview-title"></span><div class="preview-table"><i></i><i></i><i></i><i></i></div> }
             @if (template.preview === 'chart') { <span class="preview-title"></span><div class="preview-bars"><i></i><i></i><i></i><i></i><i></i></div> }
             @if (template.preview === 'financial') { <span class="preview-title"></span><div class="preview-money"><i></i><i></i><i></i></div><b></b><b></b> }
+            @if (template.preview === 'landscape') { <span class="preview-title"></span><div class="preview-landscape"><i></i><i></i><i></i><i></i></div><div class="preview-wide-table"><b></b><b></b><b></b></div> }
+            @if (template.preview === 'receipt') { <div class="preview-receipt"><span></span><b></b><b></b><b></b><i></i><strong></strong></div> }
           </div>
           <div class="template-copy"><span class="template-icon"><i [class]="template.icon"></i></span><div><strong>{{ template.name }}</strong><p>{{ template.description }}</p></div></div>
           <span class="selected-check"><i class="pi pi-check"></i></span>

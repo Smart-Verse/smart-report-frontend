@@ -104,7 +104,7 @@ export class RepositoryComponent implements OnInit {
     }
     this.ref = this.dialogService.open(ReportModalComponent, {
       header: report ? 'Editar template' : this.translateService.translate('common_new_report'),
-      width: report ? 'min(560px, 92vw)' : 'min(780px, 94vw)', modal: true, draggable: true, maximizable: false,
+      width: report ? 'min(720px, 94vw)' : 'min(880px, 96vw)', modal: true, draggable: true, maximizable: false,
       data: {obj: report, repository: this.currentRepository}, baseZIndex: 999999
     });
     this.ref?.onClose.subscribe(() => { this.loadReports(this.currentRepository); this.loadMetrics(); });

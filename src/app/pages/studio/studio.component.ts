@@ -8,6 +8,17 @@ import {ToastService} from '../../shared/services/toast/toast.service';
 import {base64ToBlob} from '../../shared/util/constants';
 import {TranslateService} from '../../shared/services/translate/translate.service';
 import {CodeEditorComponent, CodeEditorLanguage} from '../../shared/components/code-editor/code-editor.component';
+import {
+  isThermalPageFormat,
+  normalizePageFormat,
+  normalizePageOrientation,
+  PAGE_FORMATS,
+  PAGE_ORIENTATIONS,
+  PageFormat,
+  PageOrientation,
+  pageFormatLabel,
+  pagePreviewAspectRatio
+} from '../../services/report/page-layout';
 
 type StudioFileKey = 'html' | 'css' | 'javascript' | 'json';
 interface StudioFile { key: StudioFileKey; name: string; description: string; icon: string; language: CodeEditorLanguage; badge: string; }
@@ -26,7 +37,11 @@ export class StudioComponent extends StudioConfig implements OnInit {
     {key: 'javascript', name: 'script.js', description: 'Comportamento do template', icon: 'pi pi-bolt', language: 'javascript', badge: 'JS'},
     {key: 'json', name: 'data.json', description: 'Dados para visualização', icon: 'pi pi-database', language: 'json', badge: 'JSON'}
   ];
+  readonly pageFormats = PAGE_FORMATS;
+  readonly pageOrientations = PAGE_ORIENTATIONS;
   activeFileKey: StudioFileKey = 'html';
+  pageFormat: PageFormat = 'A4';
+  pageOrientation: PageOrientation = 'PORTRAIT';
   hasUnsavedChanges = false;
   lastSavedAt?: Date;
   copiedReportId = false;
@@ -50,6 +65,17 @@ export class StudioComponent extends StudioConfig implements OnInit {
     }
   }
   get lineCount(): number { return this.activeContent ? this.activeContent.split(/\r?\n/).length : 1; }
+  get availablePageOrientations() {
+    return isThermalPageFormat(this.pageFormat)
+      ? this.pageOrientations.filter(option => option.value === 'PORTRAIT')
+      : this.pageOrientations;
+  }
+  get pagePreviewRatio(): string { return pagePreviewAspectRatio(this.pageFormat, this.pageOrientation); }
+  get pageLayoutLabel(): string {
+    const format = pageFormatLabel(this.pageFormat);
+    if (isThermalPageFormat(this.pageFormat)) return `${format} · altura automática`;
+    return `${format} · ${this.pageOrientation === 'LANDSCAPE' ? 'Paisagem' : 'Retrato'}`;
+  }
 
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe(params => this.id = params.get('id') || '');
@@ -69,6 +95,15 @@ export class StudioComponent extends StudioConfig implements OnInit {
   }
 
   selectFile(file: StudioFile): void { this.activeFileKey = file.key; }
+  changePageFormat(format: PageFormat): void {
+    this.pageFormat = format;
+    if (isThermalPageFormat(format)) this.pageOrientation = 'PORTRAIT';
+    this.hasUnsavedChanges = true;
+  }
+  changePageOrientation(orientation: PageOrientation): void {
+    this.pageOrientation = isThermalPageFormat(this.pageFormat) ? 'PORTRAIT' : orientation;
+    this.hasUnsavedChanges = true;
+  }
   updateActiveContent(content: string): void {
     switch (this.activeFileKey) {
       case 'css': this.css = content; break;
@@ -89,7 +124,15 @@ export class StudioComponent extends StudioConfig implements OnInit {
   }
   onSave(generated = false): void {
     this.loadingService.showLoading.next(true);
-    const param = {idreport: this.id, js: this.js, html: this.html, css: this.css, data: this.json};
+    const param = {
+      idreport: this.id,
+      js: this.js,
+      html: this.html,
+      css: this.css,
+      data: this.json,
+      pageFormat: this.pageFormat,
+      pageOrientation: this.pageOrientation
+    };
     this.reportService.saveTemplate(param).subscribe({
       next: () => {
         this.loadingService.showLoading.next(false);
@@ -105,6 +148,10 @@ export class StudioComponent extends StudioConfig implements OnInit {
     this.reportService.getTemplate(this.id).subscribe({
       next: data => {
         this.js = data.js ?? ''; this.json = data.data ?? ''; this.html = data.html ?? ''; this.css = data.css ?? '';
+        this.pageFormat = normalizePageFormat(data.pageFormat);
+        this.pageOrientation = isThermalPageFormat(this.pageFormat)
+          ? 'PORTRAIT'
+          : normalizePageOrientation(data.pageOrientation);
         this.hasUnsavedChanges = false;
         this.loadingService.showLoading.next(false);
       },

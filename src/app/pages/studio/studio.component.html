@@ -22,6 +22,16 @@
           </button>
         }
       </nav>
+      <section class="page-settings" aria-label="Configuração da página">
+        <div class="page-settings-heading"><span>Página</span><small>{{ pageLayoutLabel }}</small></div>
+        <div class="page-settings-body">
+          <div class="studio-paper-preview" [style.aspect-ratio]="pagePreviewRatio"><span>{{ pageFormat.startsWith('THERMAL_') ? 'RECIBO' : 'PDF' }}</span></div>
+          <div class="page-selects">
+            <label><span>Formato</span><p-select [ngModel]="pageFormat" (ngModelChange)="changePageFormat($event)" [options]="pageFormats" optionLabel="label" optionValue="value" appendTo="body" /></label>
+            <label><span>Orientação</span><p-select [ngModel]="pageOrientation" (ngModelChange)="changePageOrientation($event)" [options]="availablePageOrientations" optionLabel="label" optionValue="value" appendTo="body" /></label>
+          </div>
+        </div>
+      </section>
       <div class="explorer-tip"><i class="pi pi-info-circle"></i><span>Use <kbd>Ctrl</kbd> + <kbd>F</kbd> para buscar no arquivo.</span></div>
     </aside>
     <main class="editor-panel">
